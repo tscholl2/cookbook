@@ -6,14 +6,22 @@ import (
 	"fmt"
 	"log"
 	"net/http"
+	"time"
 
 	"github.com/pkg/errors"
 )
 
 type Recipe struct {
-	Name        string
-	Directions  []string
-	Ingredients []string
+	Name          string
+	Description   string
+	TotalTime     time.Duration
+	Directions    []string
+	Ingredients   []string
+	Servings      int
+	Images        []string
+	Author        string
+	LastEdited    time.Time
+	DatePublished time.Time
 }
 
 func newRecipe(w http.ResponseWriter, r *http.Request) {
