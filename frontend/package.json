@@ -1,0 +1,24 @@
+{
+  "name": "cookbook-frontend",
+  "version": "0.0.1",
+  "scripts": {
+    "dev": "parcel --hmr-port 34921 src/index.html",
+    "prebuild": "rm -f dist/*",
+    "build": "parcel build src/index.html --public-url ./",
+    "postbuild": "echo '⟶  bundle    =' $(du -sbh dist/ | sed 's/\\sdist\\///') && echo '⟶  bundle.gz =' $(tar -zc dist/ | wc -c | numfmt --to=iec)",
+    "lint": "prettier --print-width 100 --trailing-comma all --write src/**/*.{ts,js,tsx,jsx,scss,css}",
+    "typecheck": "tsc --noEmit"
+  },
+  "devDependencies": {
+    "node-sass": "4.8.3",
+    "parcel-bundler": "1.7.1",
+    "parcel-plugin-typescript": "0.7.0",
+    "prettier": "1.12.1",
+    "tslint": "5.9.1",
+    "typescript": "2.8.1"
+  },
+  "dependencies": {
+    "tslib": "1.9.0",
+    "ultradom": "^2.3.4"
+  }
+}
