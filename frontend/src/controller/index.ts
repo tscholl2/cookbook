@@ -1,7 +1,15 @@
-export type Reducer<S = any> = (state: Readonly<S>) => Readonly<S>;
-export type Dispatch<S = any> = (reducer: Reducer<S>) => void;
-export type Listener<S = any> = (state: S, dispatch: Dispatch<S>) => void;
-export type Plugin<S = any> = (reducer: Reducer<S>) => Reducer<S>;
+export interface Reducer<S = any> {
+  (state: Readonly<S>): Readonly<S>;
+}
+export interface Dispatch<S = any> {
+  (reducer: Reducer<S>): void;
+}
+export interface Listener<S = any> {
+  (state: S, dispatch: Dispatch<S>): void;
+}
+export interface Plugin<S = any> {
+  (reducer: Reducer<S>): Reducer<S>;
+}
 
 export class Controller<S = any> {
   private state: S;

@@ -4516,7 +4516,7 @@ uid-number@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/uid-number/-/uid-number-0.0.6.tgz#0ea10e8035e8eb5b8e4449f06da1c730663baa81"
 
-ultradom@^2.3.4:
+ultradom@2.3.4:
   version "2.3.4"
   resolved "https://registry.yarnpkg.com/ultradom/-/ultradom-2.3.4.tgz#717e1fd9d48a92875ca5a0cca672e036f22e61b4"
 
