@@ -21,6 +21,6 @@
   "paths": {
     "src": ["src/"]
   },
-  "include": ["src/**/*"],
+  "include": ["src/**/*", "typings/**/*"],
   "exclude": ["node_modules"]
 }

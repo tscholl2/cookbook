@@ -14,23 +14,3 @@ export function shallowCompare(a: any = {}, b: any = {}) {
   }
   return true;
 }
-
-/*
-// TODO: benchmark for fun
-function shallowCompare(a: any = {}, b: any = {}) {
-  if (a === b) {
-    return true;
-  }
-  for (const key in a) {
-    if (a[key] !== b[key]) {
-      return false;
-    }
-  }
-  for (const key in b) {
-    if (!a.hasOwnProperty(key)) {
-      return false;
-    }
-  }
-  return true;
-}
-*/
