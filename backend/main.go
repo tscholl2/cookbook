@@ -16,12 +16,19 @@ type Recipe struct {
 	Description   string
 	TotalTime     time.Duration
 	Directions    []string
-	Ingredients   []string
+	Ingredients   []Ingredient
 	Servings      int
 	Images        []string
 	Author        string
 	LastEdited    time.Time
 	DatePublished time.Time
+}
+
+type Ingredient struct {
+	Name        string
+	Measurement string
+	Amount      int
+	Images      []string
 }
 
 func newRecipe(w http.ResponseWriter, r *http.Request) {

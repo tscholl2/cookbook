@@ -3,11 +3,13 @@ import { View } from "src/view";
 import { Controller } from "src/controller";
 import { initialState } from "src/model";
 import { debounce } from "src/utils/debounce";
+import { connectControllerToHistory } from "src/model/router";
 
 declare const window: any;
 
 function start(state = initialState) {
   const controller = new Controller(state);
+  connectControllerToHistory(controller);
   // persist state in window for hot reloading
   controller.addListener(state => (window["state"] = state));
   const v = View(controller.dispatch);
