@@ -10,6 +10,7 @@ declare const window: any;
 function start(state = initialState) {
   const controller = new Controller(state);
   connectControllerToHistory(controller);
+  controller.addListener(state => console.log("new state", state));
   // persist state in window for hot reloading
   controller.addListener(state => (window["state"] = state));
   const v = View(controller.dispatch);

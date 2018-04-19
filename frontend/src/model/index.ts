@@ -1,53 +1,24 @@
-interface APIStatus {
-  isLoading?: boolean;
-  error?: string;
-  timestamp?: string;
+import { APIStatus, Recipe } from "./api";
+import { FormStatus } from "./forms";
+import { Route } from "./router";
+
+export interface State {
+  count: number;
+  api: {
+    status: {
+      allRecipes: APIStatus;
+    };
+    data: {
+      recipes: { [id: string]: Recipe };
+    };
+  };
+  forms: {
+    [key: string]: FormStatus<any>;
+  };
+  route: Route;
 }
 
-type UUID = string;
-type Duration = string;
-type Time = string;
-
-export interface Recipe {
-  id: UUID;
-  name: string;
-  description: string;
-  totalTime: Duration;
-  directions: string;
-  ingredients: Array<Ingredient>;
-  servings: number;
-  images: Array<string>;
-  author: string;
-  lastEdited: Time;
-  datePublished: Time;
-}
-
-export interface Ingredient {
-  name: string;
-  measurement: string;
-  amount: number;
-  images: Array<string>;
-}
-
-export interface State
-  extends Readonly<{
-      count: number;
-      api: {
-        status: {
-          allRecipes: APIStatus;
-        };
-        data: {
-          recipes: { [id: string]: Recipe };
-        };
-      };
-      route: {
-        path: string;
-        data: any;
-        title: string;
-      };
-    }> {}
-
-export const initialState: State = {
+export const initialState: Readonly<State> = {
   count: 0,
   api: {
     status: {
@@ -57,6 +28,7 @@ export const initialState: State = {
       recipes: {},
     },
   },
+  forms: {},
   route: {
     path: "",
     data: {},

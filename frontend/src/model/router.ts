@@ -3,7 +3,7 @@ import { Controller } from "src/controller";
 import { shallowCompare } from "src/utils/shallow-compare";
 import { set } from "icepick";
 
-interface Route {
+export interface Route {
   path: string;
   data: any;
   title: string;
