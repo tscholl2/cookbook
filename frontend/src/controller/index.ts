@@ -20,7 +20,9 @@ export class Controller<S = any> {
     this.state = initialState;
   }
 
-  public getState = () => this.state;
+  public getState() {
+    return this.state;
+  }
 
   public addPlugin(plugin: Plugin<S>) {
     this.plugins.push(plugin);
