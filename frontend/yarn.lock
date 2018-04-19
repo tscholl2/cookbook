@@ -3972,6 +3972,10 @@ require-main-filename@^1.0.1:
   version "1.0.1"
   resolved "https://registry.yarnpkg.com/require-main-filename/-/require-main-filename-1.0.1.tgz#97f717b69d48784f5f526a6c5aa8ffdda055a4d1"
 
+reselect@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/reselect/-/reselect-3.0.1.tgz#efdaa98ea7451324d092b2b2163a6a1d7a9a2147"
+
 resolve-url@^0.2.1:
   version "0.2.1"
   resolved "https://registry.yarnpkg.com/resolve-url/-/resolve-url-0.2.1.tgz#2c637fe77c893afd2a663fe21aa9080068e2052a"
@@ -4725,9 +4729,9 @@ uid-number@^0.0.6:
   version "0.0.6"
   resolved "https://registry.yarnpkg.com/uid-number/-/uid-number-0.0.6.tgz#0ea10e8035e8eb5b8e4449f06da1c730663baa81"
 
-ultradom@2.3.4:
-  version "2.3.4"
-  resolved "https://registry.yarnpkg.com/ultradom/-/ultradom-2.3.4.tgz#717e1fd9d48a92875ca5a0cca672e036f22e61b4"
+ultradom@3.0.1:
+  version "3.0.1"
+  resolved "https://registry.yarnpkg.com/ultradom/-/ultradom-3.0.1.tgz#58d5eaf7b43eb0a4587cb42f9391c57e18034a53"
 
 unicode-trie@^0.3.1:
   version "0.3.1"

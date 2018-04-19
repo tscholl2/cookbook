@@ -1,4 +1,4 @@
-import { patch } from "ultradom";
+import { render } from "ultradom";
 import { View } from "src/view";
 import { Controller } from "src/controller";
 import { initialState } from "src/model";
@@ -13,9 +13,9 @@ function start(state = initialState) {
   // persist state in window for hot reloading
   controller.addListener(state => (window["state"] = state));
   const v = View(controller.dispatch);
-  const root = document.getElementById("root");
-  patch(v(controller.getState()), root);
-  const update = debounce(() => patch(v(controller.getState()), root));
+  const root = document.getElementById("root")!;
+  render(v(controller.getState()), root);
+  const update = debounce(() => render(v(controller.getState()), root));
   controller.addListener(update);
   setTimeout(update, 100);
 }

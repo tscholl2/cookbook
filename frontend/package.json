@@ -5,14 +5,10 @@
     "dev": "parcel --hmr-port 34921 src/index.html",
     "prebuild": "rm -f dist/*",
     "build": "parcel build src/index.html --public-url ./",
-    "postbuild":
-      "echo '⟶  bundle    =' $(du -sbh dist/ | sed 's/\\sdist\\///') && echo '⟶  bundle.gz =' $(tar -zc dist/ | wc -c | numfmt --to=iec)",
-    "lint":
-      "prettier --print-width 100 --trailing-comma all --write src/**/*.{ts,js,tsx,jsx,scss,css}",
-    "bench":
-      "find src/ -name *_bench* | xargs -n 1 ts-node -r tsconfig-paths/register -O '{\"module\":\"commonjs\"}'",
-    "test":
-      "find src/ -name *_test* | xargs -n 1 ts-node -r tsconfig-paths/register -O '{\"module\":\"commonjs\"}' | tap-summary",
+    "postbuild": "echo '⟶  bundle    =' $(du -sbh dist/ | sed 's/\\sdist\\///') && echo '⟶  bundle.gz =' $(tar -zc dist/ | wc -c | numfmt --to=iec)",
+    "lint": "prettier --print-width 100 --trailing-comma all --write src/**/*.{ts,js,tsx,jsx,scss,css}",
+    "bench": "find src/ -name *_bench* | xargs -n 1 ts-node -r tsconfig-paths/register -O '{\"module\":\"commonjs\"}'",
+    "test": "find src/ -name *_test* | xargs -n 1 ts-node -r tsconfig-paths/register -O '{\"module\":\"commonjs\"}' | tap-summary",
     "typecheck": "tsc --noEmit"
   },
   "devDependencies": {
@@ -30,7 +26,8 @@
   },
   "dependencies": {
     "icepick": "2.3.0",
+    "reselect": "3.0.1",
     "tslib": "1.9.0",
-    "ultradom": "2.3.4"
+    "ultradom": "3.0.1"
   }
 }

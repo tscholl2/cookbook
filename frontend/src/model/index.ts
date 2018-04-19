@@ -1,6 +1,5 @@
-interface APIStatus<T> {
+interface APIStatus {
   isLoading?: boolean;
-  response?: T;
   error?: string;
   timestamp?: string;
 }
@@ -34,7 +33,12 @@ export interface State
   extends Readonly<{
       count: number;
       api: {
-        allRecipes: APIStatus<Array<Recipe>>;
+        status: {
+          allRecipes: APIStatus;
+        };
+        data: {
+          recipes: { [id: string]: Recipe };
+        };
       };
       route: {
         path: string;
@@ -46,7 +50,12 @@ export interface State
 export const initialState: State = {
   count: 0,
   api: {
-    allRecipes: {},
+    status: {
+      allRecipes: {},
+    },
+    data: {
+      recipes: {},
+    },
   },
   route: {
     path: "",
