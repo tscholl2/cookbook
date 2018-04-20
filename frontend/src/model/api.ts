@@ -34,7 +34,7 @@ export interface Ingredient {
 }
 
 declare const require: any;
-const samples: Array<Recipe> = require("samples.json");
+const samples: Array<Recipe> = require("./samples.json");
 
 export const bindDownloadAllRecipes = (dispatch: Dispatch<State>) => () => {
   dispatch(state =>
@@ -45,14 +45,16 @@ export const bindDownloadAllRecipes = (dispatch: Dispatch<State>) => () => {
     } as State["api"]["status"]["allRecipes"]),
   );
   return (async () => {
-    await new Promise(resolve => setTimeout(1000, resolve));
+    // await new Promise(resolve => setTimeout(100, resolve));
     dispatch(state => {
       state = setIn(state, ["api", "status", "allRecipes"], {
         isLoading: false,
         response: samples,
         timestamp: new Date().toJSON(),
       } as State["api"]["status"]["allRecipes"]);
-      state = merge(state, { api: { data: samples.reduce((p, n) => ({ ...p, [n.id]: n }), {}) } });
+      state = merge(state, {
+        api: { data: { recipes: samples.reduce((p, n) => ({ ...p, [n.id]: n }), {}) } },
+      });
       return state;
     });
   })();

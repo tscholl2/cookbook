@@ -3,18 +3,23 @@ import { State } from "src/model";
 import { goTo } from "src/model/router";
 import { Dispatch } from "src/controller";
 import { set } from "icepick";
+import { bindDownloadAllRecipes } from "src/model/api";
 import { pathsMatcher } from "src/utils/path-matcher";
-import { ViewRecipesPage } from "src/view/pages/view-recipes";
+import { AllRecipesPage } from "src/view/pages/all-recipes";
 import { NewRecipePage } from "src/view/pages/new-recipe";
+import { ViewRecipePage } from "src/view/pages/view-recipe";
 
 export const View = (dispatch: Dispatch<State>) => {
   const paths = [
-    { path: "/view", component: ViewRecipesPage(dispatch) },
+    { path: "/view/:recipeID", component: ViewRecipePage(dispatch) },
+    { path: "/view", component: AllRecipesPage(dispatch) },
     { path: "/new", component: NewRecipePage(dispatch) },
     {
       path: "*",
-      component: ({ count, route: { path } }: State) => (
-        <div>
+      component: ({ count, route: { path }, api }: State) => (
+        <div
+          oncreate={api.status.allRecipes.timestamp ? undefined : bindDownloadAllRecipes(dispatch)}
+        >
           <h1>Counter</h1>
           <h1>{count}</h1>
           <h1>{path}</h1>
@@ -28,6 +33,7 @@ export const View = (dispatch: Dispatch<State>) => {
   ];
   const matcher = pathsMatcher(paths.map(r => r.path));
   return (state: State) => {
-    return paths[matcher(state.route.path)!.index].component(state);
+    const match = matcher(state.route.path)!;
+    return paths[match.index].component(state, match.params);
   };
 };
