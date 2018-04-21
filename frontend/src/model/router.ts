@@ -1,12 +1,34 @@
-import { State } from "src/model";
-import { go } from "src/utils/history";
-import { set } from "icepick";
+import { logReducerCreator } from "src/controller/redux-devtools";
+import { Route } from "src/utils/history";
+import { shallowCompare } from "src/utils/shallow-compare";
+import { set, freeze } from "icepick";
+import { Reducer } from "src/controller";
 
-export interface Route {
-  path: string;
-  data: any;
-  title: string;
-}
+export type State = Route;
 
-export const goTo = (path = "", data: any = {}, title = "") => (s: State) =>
-  set(s, "route", go({ path, data, title }) as State["route"]);
+export const initialState: State = freeze({
+  path: "",
+  data: {},
+  title: "",
+});
+
+export const actions = {
+  goTo: logReducerCreator(
+    (path = "", data: any = {}, title = ""): Reducer<State> => s => {
+      if (s.path !== path) {
+        s = set(s, "path", path);
+      }
+      if (s.title !== title) {
+        s = set(s, "title", title);
+      }
+      if (!shallowCompare(s.data, data)) {
+        s = set(s, "data", data);
+      }
+      if (s.path !== path || s.title !== title || !shallowCompare(s.data,data)){
+        
+      }
+      return s;
+    },
+    "goTo",
+  ),
+};

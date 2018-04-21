@@ -2,7 +2,7 @@ import { h } from "src/view/h";
 import { State } from "src/model";
 import { Dispatch } from "src/controller";
 import { createSelector } from "reselect";
-import { goTo } from "src/model/router";
+import { actions } from "src/model/actions";
 
 export const AllRecipesPage = (dispatch: Dispatch<State>) => {
   return createSelector(
@@ -11,7 +11,7 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
       return (
         <div>
           {recipes.map(r => (
-            <li key={r.id} onclick={() => dispatch(goTo(`/view/${r.id}`))}>
+            <li key={r.id} onclick={() => dispatch(actions.router.goTo(`/view/${r.id}`))}>
               {JSON.stringify(r)}
             </li>
           ))}

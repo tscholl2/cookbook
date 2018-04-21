@@ -33,10 +33,7 @@ export function connectControllerToReduxDevtools(controller: Controller) {
   }
 }
 
-export function logReducerCreator<A extends (...args: any[]) => Reducer<any>>(
-  reducerCreator: A,
-  name: string,
-): A {
+export function logReducerCreator<T extends Function>(reducerCreator: T, name: string): T {
   return ((...args: any[]) => logReducer(reducerCreator(...args), name, args)) as any;
 }
 

@@ -9,6 +9,7 @@ export function connectControllerToHistory<S>(
 ) {
   listeners.set(c, route => c.dispatch(reducerCreator(go(route))));
   listeners.get(c)!(getCurrentRoute());
+  c.addPlugin
 }
 
 export function disconnectControllerFromHistory<S>(c: Controller<S>) {

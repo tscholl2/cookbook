@@ -1,6 +1,23 @@
 import { Dispatch } from "src/controller";
-import { State } from "src/model";
 import { setIn, merge } from "icepick";
+
+export interface State {
+  status: {
+    allRecipes: APIStatus;
+  };
+  data: {
+    recipes: { [id: string]: Recipe };
+  };
+}
+
+export const initialState: State = {
+  status: {
+    allRecipes: {},
+  },
+  data: {
+    recipes: {},
+  },
+};
 
 export interface APIStatus {
   isLoading?: boolean;
@@ -36,26 +53,28 @@ export interface Ingredient {
 declare const require: any;
 const samples: Array<Recipe> = require("./samples.json");
 
-export const bindDownloadAllRecipes = (dispatch: Dispatch<State>) => () => {
-  dispatch(state =>
-    setIn(state, ["api", "status", "allRecipes"], {
-      isLoading: true,
-      response: undefined,
-      timestamp: new Date().toJSON(),
-    } as State["api"]["status"]["allRecipes"]),
-  );
-  return (async () => {
-    // await new Promise(resolve => setTimeout(100, resolve));
-    dispatch(state => {
-      state = setIn(state, ["api", "status", "allRecipes"], {
-        isLoading: false,
-        response: samples,
+export const actions = {
+  downloadAllRecipes: (dispatch: Dispatch<State>) => () => {
+    dispatch(state =>
+      setIn(state, ["status", "allRecipes"], {
+        isLoading: true,
+        response: undefined,
         timestamp: new Date().toJSON(),
-      } as State["api"]["status"]["allRecipes"]);
-      state = merge(state, {
-        api: { data: { recipes: samples.reduce((p, n) => ({ ...p, [n.id]: n }), {}) } },
+      } as State["status"]["allRecipes"]),
+    );
+    return (async () => {
+      // await new Promise(resolve => setTimeout(100, resolve));
+      dispatch(state => {
+        state = setIn(state, ["status", "allRecipes"], {
+          isLoading: false,
+          response: samples,
+          timestamp: new Date().toJSON(),
+        } as State["status"]["allRecipes"]);
+        state = merge(state, {
+          data: { recipes: samples.reduce((p, n) => ({ ...p, [n.id]: n }), {}) },
+        });
+        return state;
       });
-      return state;
-    });
-  })();
+    })();
+  },
 };

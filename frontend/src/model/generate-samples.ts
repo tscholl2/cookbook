@@ -1,4 +1,4 @@
-import { Recipe, Ingredient } from "./";
+import { Recipe, Ingredient } from "./api";
 
 console.log(JSON.stringify(randomArray(10, 20).map(randomRecipe)));
 

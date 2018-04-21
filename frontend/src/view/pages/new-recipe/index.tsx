@@ -1,7 +1,7 @@
 import { h } from "src/view/h";
 import { State } from "src/model";
 import { Dispatch } from "src/controller";
-import { createFormSelector } from "src/model/forms";
+import { createFormSelector } from "src/model/selectors";
 import { Ingredient } from "src/model/api";
 
 interface RecipeForm {
