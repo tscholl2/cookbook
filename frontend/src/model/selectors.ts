@@ -17,13 +17,13 @@ interface FormProps<FormValues> extends FormStatus<FormValues> {
 
 export function createFormSelector<FormValues>(
   name: string,
+  initialValues: FormValues,
   options: {
-    initialValues?: FormValues;
     validate?: (status: FormStatus<FormValues>) => FormErrors<FormValues>;
     onSubmit?: () => void | Promise<void>;
   } = {},
 ) {
-  const { initialValues, validate, onSubmit } = options;
+  const { validate, onSubmit } = options;
   const initialForm = {
     isSubmitting: false,
     values: initialValues || {},
@@ -44,7 +44,11 @@ export function createFormSelector<FormValues>(
           state = setIn(state, ["forms", name, "touched", field], true);
           state = setIn(state, ["forms", name, "focus", field], false);
           if (validate) {
-            state = setIn(state, ["forms", name, "errors"], validate(state.forms[name] as any));
+            state = setIn(
+              state,
+              ["forms", name, "errors"],
+              validate({ ...initialForm, ...state.forms[name] } as any),
+            );
           }
           return state;
         }),
@@ -66,7 +70,11 @@ export function createFormSelector<FormValues>(
         logReducer("form-change", { name, field, value }, state => {
           state = setIn(state, ["forms", name, "values", field], value);
           if (validate) {
-            state = setIn(state, ["forms", name, "errors"], validate(state.forms[name] as any));
+            state = setIn(
+              state,
+              ["forms", name, "errors"],
+              validate({ ...initialForm, ...state.forms[name] } as any),
+            );
           }
           return state;
         }),

@@ -1,32 +1,21 @@
 import { h } from "src/view/h";
-import { State, actionsCreator } from "src/model";
+import { State } from "src/model";
 import { Dispatch } from "src/controller";
-import { set } from "icepick";
 import { AllRecipesPage } from "./pages/all-recipes";
 import { NewRecipePage } from "./pages/new-recipe";
 import { ViewRecipePage } from "./pages/view-recipe";
+import { HomePage } from "./pages/home";
 import { Footer } from "./components/footer";
 import { ConnectHeader } from "./components/header";
 import { selectPageName, PageName } from "src/model/selectors";
 
 export const View = (dispatch: Dispatch<State>) => {
   const Header = ConnectHeader(dispatch);
-  const actions = actionsCreator(dispatch);
   const pages: { [K in PageName]: (state: State) => JSX.Element | Array<JSX.Element> } = {
     [PageName.ALL_RECIPES]: AllRecipesPage(dispatch),
     [PageName.EDIT_RECIPE]: NewRecipePage(dispatch),
     [PageName.RECIPE]: ViewRecipePage(dispatch),
-    [PageName.HOME]: state => (
-      <div>
-        <h1>Counter</h1>
-        <h1>{state.count}</h1>
-        <h1>{state.route.path}</h1>
-        <button onclick={() => dispatch(s => set(s, "count", state.count - 1))}>-</button>
-        <button onclick={() => dispatch(s => set(s, "count", state.count + 1))}>+</button>
-        <button onclick={actions.router.goToNew}>new</button>
-        <button onclick={actions.router.goToAll}>view</button>
-      </div>
-    ),
+    [PageName.HOME]: HomePage(dispatch),
   };
   return (state: State) => {
     return (

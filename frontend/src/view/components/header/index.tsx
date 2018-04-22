@@ -10,7 +10,7 @@ export const ConnectHeader = (dispatch: Dispatch<State>) => {
     recipe => {
       return (
         <header>
-          {recipe && <h1>{recipe.name}</h1>}
+          <h1>{recipe ? recipe.name : "Cookbook"}</h1>
           <nav>
             <ul>
               <li>
