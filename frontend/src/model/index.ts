@@ -2,6 +2,8 @@ import { State as routerState, initialState as routerInitialState } from "src/mo
 import { State as formsState, initialState as formsInitialState } from "src/model/forms";
 import { State as apiState, initialState as apiInitialState } from "src/model/api";
 
+export { actions } from "src/model/actions";
+
 export interface State {
   count: number;
   route: routerState;

@@ -2,7 +2,7 @@ import { logReducerCreator } from "src/controller/redux-devtools";
 import { Route, go } from "src/utils/history";
 import { shallowCompare } from "src/utils/shallow-compare";
 import { freeze } from "icepick";
-import { Reducer } from "src/controller";
+import { Dispatch } from "src/controller";
 
 export type State = Route;
 
@@ -13,13 +13,17 @@ export const initialState: State = freeze({
 });
 
 export const actions = {
-  goTo: logReducerCreator(
-    (path = "", data: any = {}, title = ""): Reducer<State> => s => {
-      if (s.path !== path || s.title !== title || !shallowCompare(s.data, data)) {
-        return go({ path, data, title });
-      }
-      return s;
-    },
-    "goTo",
-  ),
+  goToRecipe: (dispatch: Dispatch<State>) => (recipeID: string) =>
+    dispatch(goTo(`/recipe/${recipeID}`, { recipeID })),
+  goToNew: (dispatch: Dispatch<State>) => () => dispatch(goTo("/new")),
+  goToAll: (dispatch: Dispatch<State>) => () => dispatch(goTo("/view")),
 };
+
+function goTo(path = "", data = {}, title = "") {
+  return logReducerCreator((s: State) => {
+    if (s.path !== path || s.title !== title || !shallowCompare(s.data, data)) {
+      return go({ path, data, title });
+    }
+    return s;
+  }, "goTo");
+}

@@ -9,8 +9,10 @@ import { NewRecipePage } from "src/view/pages/new-recipe";
 import { ViewRecipePage } from "src/view/pages/view-recipe";
 
 export const View = (dispatch: Dispatch<State>) => {
+  const goToNew = actions.router.goToNew(dispatch);
+  const goToAll = actions.router.goToAll(dispatch);
   const paths = [
-    { path: "/view/:recipeID", component: ViewRecipePage(dispatch) },
+    { path: "/recipe/:recipeID", component: ViewRecipePage(dispatch) },
     { path: "/view", component: AllRecipesPage(dispatch) },
     { path: "/new", component: NewRecipePage(dispatch) },
     {
@@ -26,15 +28,14 @@ export const View = (dispatch: Dispatch<State>) => {
           <h1>{path}</h1>
           <button onclick={() => dispatch(s => set(s, "count", count - 1))}>-</button>
           <button onclick={() => dispatch(s => set(s, "count", count + 1))}>+</button>
-          <button onclick={() => dispatch(actions.router.goTo("/new"))}>new</button>
-          <button onclick={() => dispatch(actions.router.goTo("/view"))}>view</button>
+          <button onclick={goToNew}>new</button>
+          <button onclick={goToAll}>view</button>
         </div>
       ),
     },
   ];
   const matcher = pathsMatcher(paths.map(r => r.path));
   return (state: State) => {
-    const match = matcher(state.route.path)!;
-    return (paths[match.index].component as any)(state, match.params); // TODO: one param
+    return paths[matcher(state.route.path)!.index].component(state);
   };
 };

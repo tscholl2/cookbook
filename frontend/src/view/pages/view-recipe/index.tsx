@@ -5,7 +5,7 @@ import { createSelector } from "reselect";
 
 export const ViewRecipePage = (_: Dispatch<State>) => {
   return createSelector(
-    (state: State, params: { [key: string]: string }) => state.api.data.recipes[params.recipeID],
+    (state: State) => state.api.data.recipes[state.route.data.recipeID],
     recipe => {
       return (
         <div>
