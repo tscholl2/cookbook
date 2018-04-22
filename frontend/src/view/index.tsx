@@ -1,14 +1,16 @@
 import { h } from "src/view/h";
-import { State } from "src/model";
+import { State, actions } from "src/model";
 import { Dispatch } from "src/controller";
 import { set } from "icepick";
-import { actions } from "src/model/actions";
 import { pathsMatcher } from "src/utils/path-matcher";
-import { AllRecipesPage } from "src/view/pages/all-recipes";
-import { NewRecipePage } from "src/view/pages/new-recipe";
-import { ViewRecipePage } from "src/view/pages/view-recipe";
+import { AllRecipesPage } from "./pages/all-recipes";
+import { NewRecipePage } from "./pages/new-recipe";
+import { ViewRecipePage } from "./pages/view-recipe";
+import { Footer } from "./components/footer";
+import { ConnectHeader } from "./components/header";
 
 export const View = (dispatch: Dispatch<State>) => {
+  const Header = ConnectHeader(dispatch);
   const goToNew = actions.router.goToNew(dispatch);
   const goToAll = actions.router.goToAll(dispatch);
   const paths = [
@@ -36,6 +38,12 @@ export const View = (dispatch: Dispatch<State>) => {
   ];
   const matcher = pathsMatcher(paths.map(r => r.path));
   return (state: State) => {
-    return paths[matcher(state.route.path)!.index].component(state);
+    return (
+      <div>
+        {Header(state)}
+        <main>{paths[matcher(state.route.path)!.index].component(state)}</main>
+        <Footer />
+      </div>
+    );
   };
 };

@@ -1,8 +1,9 @@
-import { State as routerState, initialState as routerInitialState } from "src/model/router";
-import { State as formsState, initialState as formsInitialState } from "src/model/forms";
-import { State as apiState, initialState as apiInitialState } from "src/model/api";
+import { State as routerState, initialState as routerInitialState } from "./router";
+import { State as formsState, initialState as formsInitialState } from "./forms";
+import { State as apiState, initialState as apiInitialState } from "./api";
+import { actions as A } from "./actions";
 
-export { actions } from "src/model/actions";
+export const actions = A;
 
 export interface State {
   count: number;
