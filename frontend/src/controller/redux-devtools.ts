@@ -16,10 +16,7 @@ export function connectControllerToReduxDevtools(controller: Controller) {
       const next = r(state);
       let s: any = r;
       if (!s.__REDUX_DEVTOOLS_IGNORE__ && next !== state) {
-        devtools.send(
-          { type: s.__redux_devtools_name || "?", args: s.__redux_devtools_args || [] },
-          next,
-        );
+        devtools.send({ type: s.__rdtname || "?", args: s.__rdtargs || [] }, next);
       }
       return next;
     });
@@ -33,17 +30,16 @@ export function connectControllerToReduxDevtools(controller: Controller) {
   }
 }
 
-export function logReducerCreator<T extends Function>(reducerCreator: T, name: string): T {
-  return ((...args: any[]) => logReducer(reducerCreator(...args), name, args)) as any;
+// TODO: unused?
+export function logReducerCreator<T extends Function>(name: string, reducerCreator: T): T {
+  return ((...args: any[]) => logReducer(name, args, reducerCreator(...args))) as any;
 }
 
-export function logDispatch<S>(dispatch: Dispatch<S>, name: string): Dispatch<S> {
-  return (r: Reducer<S>) => dispatch(logReducer(r, name, []));
+// TODO: unused?
+export function logDispatch<S>(name: string, dispatch: Dispatch<S>): Dispatch<S> {
+  return (r: Reducer<S>) => dispatch(logReducer(name, [], r));
 }
 
-function logReducer<S>(r: Reducer<S>, name: string, args: any): Reducer<S> {
-  return Object.assign(r, {
-    __redux_devtools_name: name,
-    __redux_devtools_args: args,
-  });
+export function logReducer<S>(name: string, args: any, r: Reducer<S>): Reducer<S> {
+  return Object.assign(r, { __rdtname: name, __rdtargs: args });
 }

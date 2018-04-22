@@ -1,4 +1,4 @@
-import { logReducerCreator } from "src/controller/redux-devtools";
+import { logReducer } from "src/controller/redux-devtools";
 import { Route, go } from "src/utils/history";
 import { shallowCompare } from "src/utils/shallow-compare";
 import { freeze } from "icepick";
@@ -20,10 +20,10 @@ export const actions = {
 };
 
 function goTo(path = "", data = {}, title = "") {
-  return logReducerCreator((s: State) => {
+  return logReducer("goTo", { path, data, title }, (s: State) => {
     if (s.path !== path || s.title !== title || !shallowCompare(s.data, data)) {
       return go({ path, data, title });
     }
     return s;
-  }, "goTo");
+  });
 }

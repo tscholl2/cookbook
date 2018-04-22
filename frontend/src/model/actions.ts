@@ -31,5 +31,6 @@ function dispatchSlicer<K extends keyof State>(
 }
 
 function reducerSlicer<K extends keyof State>(k: K): (r: Reducer<State[K]>) => Reducer<State> {
-  return r => state => set(state, k, r(state[k] as any) as any);
+  // We use Object.assign to carry any debug/devtool info on r to the monkey-patched function.
+  return r => Object.assign((state: any) => set(state, k, r(state[k])), r as any);
 }

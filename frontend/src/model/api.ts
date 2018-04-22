@@ -1,4 +1,5 @@
 import { Dispatch } from "src/controller";
+import { logReducer } from "src/controller/redux-devtools";
 import { setIn, merge } from "icepick";
 
 export interface State {
@@ -55,26 +56,30 @@ const samples: Array<Recipe> = require("./samples.json");
 
 export const actions = {
   downloadAllRecipes: (dispatch: Dispatch<State>) => () => {
-    dispatch(state =>
-      setIn(state, ["status", "allRecipes"], {
-        isLoading: true,
-        response: undefined,
-        timestamp: new Date().toJSON(),
-      } as State["status"]["allRecipes"]),
+    dispatch(
+      logReducer("DOWNLOADALL_REQUEST", [], state =>
+        setIn(state, ["status", "allRecipes"], {
+          isLoading: true,
+          response: undefined,
+          timestamp: new Date().toJSON(),
+        } as State["status"]["allRecipes"]),
+      ),
     );
     return (async () => {
-      // await new Promise(resolve => setTimeout(100, resolve));
-      dispatch(state => {
-        state = setIn(state, ["status", "allRecipes"], {
-          isLoading: false,
-          response: samples,
-          timestamp: new Date().toJSON(),
-        } as State["status"]["allRecipes"]);
-        state = merge(state, {
-          data: { recipes: samples.reduce((p, n) => ({ ...p, [n.id]: n }), {}) },
-        });
-        return state;
-      });
+      await new Promise(resolve => setTimeout(resolve, 1000));
+      dispatch(
+        logReducer("DOWNLOADALL_SUCCESS", [], state => {
+          state = setIn(state, ["status", "allRecipes"], {
+            isLoading: false,
+            response: samples,
+            timestamp: new Date().toJSON(),
+          } as State["status"]["allRecipes"]);
+          state = merge(state, {
+            data: { recipes: samples.reduce((p, n) => ({ ...p, [n.id]: n }), {}) },
+          });
+          return state;
+        }),
+      );
     })();
   },
 };

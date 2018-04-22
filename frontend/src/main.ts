@@ -4,6 +4,7 @@ import { Controller } from "src/controller";
 import { initialState, State } from "src/model";
 import { debounce } from "src/utils/debounce";
 import { connectControllerToHistory } from "src/controller/history";
+import { connectControllerToReduxDevtools } from "src/controller/redux-devtools";
 import { set } from "icepick";
 
 declare const window: any;
@@ -13,6 +14,7 @@ function start(state = initialState) {
   connectControllerToHistory(controller, route => state =>
     set(state, "route", route as State["route"]),
   );
+  connectControllerToReduxDevtools(controller);
   controller.addListener(state => console.log("new state", state));
   // persist state in window for hot reloading
   controller.addListener(state => (window["state"] = state));
