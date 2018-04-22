@@ -1,10 +1,10 @@
 import { h } from "src/view/h";
 import { Dispatch } from "src/controller";
-import { State, actions } from "src/model";
+import { State, actionsCreator } from "src/model";
 import { createSelector } from "reselect";
 
 export const ConnectHeader = (dispatch: Dispatch<State>) => {
-  const goToAll = actions.router.goToAll(dispatch);
+  const actions = actionsCreator(dispatch);
   return createSelector(
     (state: State) => state.api.data.recipes[state.route.data.recipeID],
     recipe => {
@@ -14,7 +14,7 @@ export const ConnectHeader = (dispatch: Dispatch<State>) => {
           <nav>
             <ul>
               <li>
-                <a onclick={goToAll}>All Recipes</a>
+                <a onclick={actions.router.goToAll}>All Recipes</a>
               </li>
             </ul>
           </nav>

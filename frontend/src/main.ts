@@ -19,7 +19,7 @@ function start(state = initialState) {
   // persist state in window for hot reloading
   controller.addListener(state => (window["state"] = state));
   const v = View(controller.dispatch);
-  const root = document.getElementById("root")!;
+  const root = document.body;
   render(v(controller.getState()), root);
   const update = debounce(() => render(v(controller.getState()), root));
   controller.addListener(update);

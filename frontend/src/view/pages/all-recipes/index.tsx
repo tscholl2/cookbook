@@ -1,6 +1,6 @@
 import { h } from "src/view/h";
 import { State } from "src/model";
-import { actions } from "src/model/actions";
+import { actionsCreator } from "src/model/actions";
 import { createFormSelector } from "src/model/selectors";
 import { Dispatch } from "src/controller";
 import { createSelector } from "reselect";
@@ -9,8 +9,7 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
   const formSelector = createFormSelector("all-recipe-search", { initialValues: { search: "" } })(
     dispatch,
   );
-  const goToRecipe = actions.router.goToRecipe(dispatch);
-  const download = actions.api.downloadAllRecipes(dispatch);
+  const actions = actionsCreator(dispatch);
   return createSelector(
     (state: State) => Object.keys(state.api.data.recipes).map(id => state.api.data.recipes[id]),
     (state: State) => state.api.status.allRecipes,
@@ -18,7 +17,9 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
     (recipes, status, form) => {
       if (status.isLoading || status.timestamp === undefined) {
         return [
-          <h1 oncreate={status.timestamp === undefined ? download : undefined}>
+          <h1
+            oncreate={status.timestamp === undefined ? actions.api.downloadAllRecipes : undefined}
+          >
             ...loading recipes...
           </h1>,
           <progress />,
@@ -42,7 +43,7 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
         </aside>,
         <ul>
           {recipes.map(r => (
-            <li key={r.id} onclick={() => goToRecipe(r.id)}>
+            <li key={r.id} onclick={() => actions.router.goToRecipe(r.id)}>
               {JSON.stringify(r)}
             </li>
           ))}

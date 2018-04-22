@@ -12,12 +12,13 @@ export const initialState: State = freeze({
   title: "",
 });
 
-export const actions = {
-  goToRecipe: (dispatch: Dispatch<State>) => (recipeID: string) =>
-    dispatch(goTo(`/recipe/${recipeID}`, { recipeID })),
-  goToNew: (dispatch: Dispatch<State>) => () => dispatch(goTo("/new")),
-  goToAll: (dispatch: Dispatch<State>) => () => dispatch(goTo("/view")),
-};
+export function actions(dispatch: Dispatch<State>) {
+  return {
+    goToRecipe: (recipeID: string) => dispatch(goTo(`/recipe/${recipeID}`, { recipeID })),
+    goToNew: () => dispatch(goTo("/new")),
+    goToAll: () => dispatch(goTo("/view")),
+  };
+}
 
 function goTo(path = "", data = {}, title = "") {
   return logReducer("goTo", { path, data, title }, (s: State) => {

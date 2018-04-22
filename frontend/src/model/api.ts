@@ -54,32 +54,34 @@ export interface Ingredient {
 declare const require: any;
 const samples: Array<Recipe> = require("./samples.json");
 
-export const actions = {
-  downloadAllRecipes: (dispatch: Dispatch<State>) => () => {
-    dispatch(
-      logReducer("DOWNLOADALL_REQUEST", [], state =>
-        setIn(state, ["status", "allRecipes"], {
-          isLoading: true,
-          response: undefined,
-          timestamp: new Date().toJSON(),
-        } as State["status"]["allRecipes"]),
-      ),
-    );
-    return (async () => {
-      await new Promise(resolve => setTimeout(resolve, 1000));
+export function actions(dispatch: Dispatch<State>) {
+  return {
+    downloadAllRecipes: () => {
       dispatch(
-        logReducer("DOWNLOADALL_SUCCESS", [], state => {
-          state = setIn(state, ["status", "allRecipes"], {
-            isLoading: false,
-            response: samples,
+        logReducer("DOWNLOADALL_REQUEST", [], state =>
+          setIn(state, ["status", "allRecipes"], {
+            isLoading: true,
+            response: undefined,
             timestamp: new Date().toJSON(),
-          } as State["status"]["allRecipes"]);
-          state = merge(state, {
-            data: { recipes: samples.reduce((p, n) => ({ ...p, [n.id]: n }), {}) },
-          });
-          return state;
-        }),
+          } as State["status"]["allRecipes"]),
+        ),
       );
-    })();
-  },
-};
+      return (async () => {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        dispatch(
+          logReducer("DOWNLOADALL_SUCCESS", [], state => {
+            state = setIn(state, ["status", "allRecipes"], {
+              isLoading: false,
+              response: samples,
+              timestamp: new Date().toJSON(),
+            } as State["status"]["allRecipes"]);
+            state = merge(state, {
+              data: { recipes: samples.reduce((p, n) => ({ ...p, [n.id]: n }), {}) },
+            });
+            return state;
+          }),
+        );
+      })();
+    },
+  };
+}
