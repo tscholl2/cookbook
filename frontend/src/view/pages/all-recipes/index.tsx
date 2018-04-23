@@ -6,9 +6,7 @@ import { Dispatch } from "src/controller";
 import { createSelector } from "reselect";
 
 export const AllRecipesPage = (dispatch: Dispatch<State>) => {
-  const formSelector = createFormSelector("all-recipe-search", { initialValues: { search: "" } })(
-    dispatch,
-  );
+  const formSelector = createFormSelector("all-recipe-search", { search: "" })(dispatch);
   const actions = actionsCreator(dispatch);
   return createSelector(
     (state: State) => Object.keys(state.api.data.recipes).map(id => state.api.data.recipes[id]),

@@ -7,7 +7,8 @@ import { ViewRecipePage } from "./pages/view-recipe";
 import { HomePage } from "./pages/home";
 import { Footer } from "./components/footer";
 import { ConnectHeader } from "./components/header";
-import { selectPageName, PageName } from "src/model/selectors";
+import { PageName } from "src/model/router";
+import { selectPageName } from "src/model/selectors";
 
 export const View = (dispatch: Dispatch<State>) => {
   const Header = ConnectHeader(dispatch);

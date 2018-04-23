@@ -2,8 +2,8 @@ import { State } from "./";
 import { FormStatus, FormErrors } from "./forms";
 import { Dispatch } from "src/controller";
 import { setIn } from "icepick";
-import { pathsMatcher } from "src/utils/path-matcher";
 import { logReducer } from "src/controller/redux-devtools";
+import { selectPageName as pageName } from "./router";
 
 // forms
 
@@ -115,23 +115,6 @@ export function createFormSelector<FormValues>(
 
 // Router
 
-// TODO: move this to router.ts
-export const enum PageName {
-  HOME = "HOME",
-  ALL_RECIPES = "ALL_RECIPES",
-  RECIPE = "RECIPE",
-  EDIT_RECIPE = "EDIT_RECIPE",
-}
-
-const pages = [
-  { path: "/recipe/:recipeID", name: PageName.RECIPE },
-  { path: "/view", name: PageName.ALL_RECIPES },
-  { path: "/new", name: PageName.EDIT_RECIPE },
-  { path: "*", name: PageName.HOME },
-];
-
-const pm = pathsMatcher(pages.map(a => a.path));
-
-export function selectPageName(state: State): PageName {
-  return pages[pm(state.route.path)!.index].name;
+export function selectPageName(state: State) {
+  return pageName(state.route);
 }
