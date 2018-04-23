@@ -16,7 +16,7 @@ export function parseIngrediant(line: string): Ingredient {
   }
   const measurement = arr[2].toLowerCase();
   const name = arr[3].toLowerCase();
-  return { name, amount, measurement } as any;
+  return { name, amount, measurement, images: [] };
 }
 
 const number = "\\d+(?:\\.\\d*)?";
