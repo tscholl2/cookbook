@@ -2,6 +2,7 @@ import { h } from "src/view/h";
 import { Dispatch } from "src/controller";
 import { State, actionsCreator } from "src/model";
 import { createSelector } from "reselect";
+import "./style.scss";
 
 export const ConnectHeader = (dispatch: Dispatch<State>) => {
   const actions = actionsCreator(dispatch);
@@ -9,8 +10,8 @@ export const ConnectHeader = (dispatch: Dispatch<State>) => {
     (state: State) => state.api.data.recipes[state.route.data.recipeID],
     recipe => {
       return (
-        <header class="navbar">
-          <h1>{recipe ? recipe.name : "Cookbook"}</h1>
+        <header class="cookbook-header">
+          <h1 class="h1">{recipe ? recipe.name : "Cookbook"}</h1>
           <nav>
             <ul>
               <li>
@@ -20,6 +21,6 @@ export const ConnectHeader = (dispatch: Dispatch<State>) => {
           </nav>
         </header>
       );
-    },
+    }
   );
 };

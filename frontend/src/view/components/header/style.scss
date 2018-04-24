@@ -1,8 +1,11 @@
-.cookbook-footer {
+.cookbook-header {
   background-color: rgb(193, 253, 14);
-  color: #888;
+  color: #000;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   align-items: center;
+  > h1 {
+    margin: 0;
+  }
 }

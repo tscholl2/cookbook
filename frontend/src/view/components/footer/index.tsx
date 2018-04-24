@@ -3,7 +3,7 @@ import "./style.scss";
 
 export function Footer() {
   return (
-    <footer class="footer">
+    <footer class="cookbook-footer">
       <ul class="nav">
         <li class="nav-item">link to source</li>
         <li class="nav-item">link to about</li>
