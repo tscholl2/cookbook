@@ -1,14 +1,15 @@
 import { h } from "src/view/h";
+import "./style.scss";
 
 export function Footer() {
   return (
-    <footer>
-      <ul>
-        <li>link to source</li>
-        <li>link to about</li>
-        <li>link to else</li>
+    <footer class="footer">
+      <ul class="nav">
+        <li class="nav-item">link to source</li>
+        <li class="nav-item">link to about</li>
+        <li class="nav-item">link to else</li>
       </ul>
-      logo
+      <img src="http://via.placeholder.com/150x150" alt="logo" />
     </footer>
   );
 }

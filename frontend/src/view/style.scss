@@ -1,0 +1,27 @@
+// Example of project-name.scss
+// Define variables to override default ones
+$primary-color: #2e5bec;
+$dark-color: #3e396b;
+
+// Import full Spectre source code
+@import "node_modules/spectre.css/src/spectre";
+
+#app {
+  width: 100vw;
+  height: 100vh;
+  display: grid;
+  grid-gap: 0;
+  grid-template-rows: 100px auto 250px;
+  grid-template-areas: "header" "main" "footer";
+  > header {
+    grid-area: header;
+  }
+
+  > main {
+    grid-area: main;
+  }
+
+  > footer {
+    grid-area: footer;
+  }
+}

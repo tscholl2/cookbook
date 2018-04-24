@@ -9,7 +9,7 @@ export const ConnectHeader = (dispatch: Dispatch<State>) => {
     (state: State) => state.api.data.recipes[state.route.data.recipeID],
     recipe => {
       return (
-        <header>
+        <header class="navbar">
           <h1>{recipe ? recipe.name : "Cookbook"}</h1>
           <nav>
             <ul>

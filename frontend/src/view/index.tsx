@@ -10,6 +10,8 @@ import { ConnectHeader } from "./components/header";
 import { PageName } from "src/model/router";
 import { selectPageName } from "src/model/selectors";
 
+import "./style.scss";
+
 export const View = (dispatch: Dispatch<State>) => {
   const Header = ConnectHeader(dispatch);
   const pages: { [K in PageName]: (state: State) => JSX.Element | Array<JSX.Element> } = {
@@ -20,7 +22,7 @@ export const View = (dispatch: Dispatch<State>) => {
   };
   return (state: State) => {
     return (
-      <div>
+      <div id="app">
         <Header {...state} />
         <main>{pages[selectPageName(state)](state)}</main>
         <Footer />
