@@ -4,15 +4,28 @@ import { actionsCreator } from "src/model/actions";
 import { createFormSelector } from "src/model/selectors";
 import { Dispatch } from "src/controller";
 import { createSelector } from "reselect";
+import Fuse from "fuse.js";
 
 export const AllRecipesPage = (dispatch: Dispatch<State>) => {
   const formSelector = createFormSelector("all-recipe-search", { search: "" })(dispatch);
+  const recipesSelector = createSelector(
+    (state: State) => state.api.data.recipes,
+    recipes => Object.keys(recipes).map(id => recipes[id]),
+  );
   const actions = actionsCreator(dispatch);
   return createSelector(
-    (state: State) => Object.keys(state.api.data.recipes).map(id => state.api.data.recipes[id]),
     (state: State) => state.api.status.allRecipes,
     formSelector,
-    (recipes, status, form) => {
+    (state: State) => {
+      const form = formSelector(state);
+      const recipes = recipesSelector(state);
+      if (!form.values.search) {
+        return recipes;
+      }
+      const fuse = new Fuse(recipes, { shouldSort: true, keys: ["name", "directions"] });
+      return fuse.search<typeof recipes[0]>(form.values.search).slice(0, 5);
+    },
+    (status, form, recipes) => {
       if (status.isLoading || status.timestamp === undefined) {
         return [
           <h1
@@ -33,7 +46,7 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
               type="text"
               placeholder="...search"
               value={form.values.search}
-              onchange={form.handleChange}
+              oninput={form.handleChange}
               onblur={form.handleBlur}
               onfocus={form.handleFocus}
             />

@@ -26,6 +26,7 @@
     "typescript": "2.8.1"
   },
   "dependencies": {
+    "fuse.js": "^3.2.0",
     "icepick": "2.3.0",
     "reselect": "3.0.1",
     "tslib": "1.9.0",
