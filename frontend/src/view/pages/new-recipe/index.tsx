@@ -4,14 +4,8 @@ import { Dispatch } from "src/controller";
 import { createFormSelector } from "src/model/selectors";
 import { FormStatus, FormErrors } from "src/model/forms";
 import { parseIngrediant } from "src/utils/parse-ingrediant";
-
-interface RecipeInput {
-  name: string;
-  directions: string;
-  ingrediants: string;
-  servings?: number;
-  author: string;
-}
+import { RecipeInput } from "./types";
+import { Preview } from "./preview";
 
 export const NewRecipePage = (dispatch: Dispatch<State>) => {
   const formSelector = createFormSelector<RecipeInput>(
@@ -29,7 +23,7 @@ export const NewRecipePage = (dispatch: Dispatch<State>) => {
     const { values, errors, handleSubmit, handleChange, handleBlur, handleFocus } = formSelector(
       state,
     );
-    const inputProps = { onchange: handleChange, onblur: handleBlur, onfocus: handleFocus };
+    const inputProps = { oninput: handleChange, onblur: handleBlur, onfocus: handleFocus };
     return (
       <div>
         <h2>Add a new Recipe</h2>
@@ -105,6 +99,7 @@ export const NewRecipePage = (dispatch: Dispatch<State>) => {
             </button>
           </fieldset>
         </form>
+        <Preview {...values} />
       </div>
     );
   };

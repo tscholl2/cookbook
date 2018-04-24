@@ -33,7 +33,6 @@ type Time = string;
 export interface Recipe {
   id: UUID;
   name: string;
-  description: string;
   totalTime: Duration;
   directions: string;
   ingredients: Array<Ingredient>;
