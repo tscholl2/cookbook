@@ -34,73 +34,76 @@ export const NewRecipePage = (dispatch: Dispatch<State>) => {
       <div>
         <h2>Add a new Recipe</h2>
         <form onsubmit={handleSubmit}>
-          <label>
-            Name
-            <input
-              required={true}
-              oncreate={autoFocus}
-              type="text"
-              name="name"
-              placeholder="cooked brocolli"
-              value={values.name}
-              {...inputProps}
-            />
-          </label>
-          {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
-          <br />
-          <label>
-            Servings
-            <input
-              required={true}
-              type="number"
-              name="servings"
-              placeholder="servings"
-              value={values.servings}
-              {...inputProps}
-            />
-          </label>
-          {errors.servings && <p style={{ color: "red" }}>{errors.servings}</p>}
-          <br />
-          <label>
-            Ingrediants
-            <textarea
-              required={true}
-              name="ingrediants"
-              placeholder={"1/2 cup brocolli\n1 tsp salt"}
-              value={values.ingrediants}
-              {...inputProps}
-            />
-          </label>
-          {errors.ingrediants && <p style={{ color: "red" }}>{errors.ingrediants}</p>}
-          <br />
-          <label>
-            Directions
-            <textarea
-              required={true}
-              name="directions"
-              placeholder={"1. cut broccoli\n2. cook broccoli"}
-              value={values.directions}
-              {...inputProps}
-            />
-          </label>
-          {errors.directions && <p style={{ color: "red" }}>{errors.directions}</p>}
-          <br />
-          <label>
-            Author
-            <input
-              required={true}
-              type="text"
-              name="author"
-              placeholder="author"
-              value={values.author}
-              {...inputProps}
-            />
-          </label>
-          {errors.author && <p style={{ color: "red" }}>{errors.author}</p>}
-          <br />
-          <button type="submit" disabled={hasError(errors)}>
-            submit
-          </button>
+          <fieldset>
+            <legend>New Recipe</legend>
+            <label>
+              Name
+              <input
+                required={true}
+                oncreate={autoFocus}
+                type="text"
+                name="name"
+                placeholder="cooked brocolli"
+                value={values.name}
+                {...inputProps}
+              />
+            </label>
+            {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
+            <br />
+            <label>
+              Servings
+              <input
+                required={true}
+                type="number"
+                name="servings"
+                placeholder="servings"
+                value={values.servings}
+                {...inputProps}
+              />
+            </label>
+            {errors.servings && <p style={{ color: "red" }}>{errors.servings}</p>}
+            <br />
+            <label>
+              Ingrediants
+              <textarea
+                required={true}
+                name="ingrediants"
+                placeholder={"1/2 cup brocolli\n1 tsp salt"}
+                value={values.ingrediants}
+                {...inputProps}
+              />
+            </label>
+            {errors.ingrediants && <p style={{ color: "red" }}>{errors.ingrediants}</p>}
+            <br />
+            <label>
+              Directions
+              <textarea
+                required={true}
+                name="directions"
+                placeholder={"1. cut broccoli\n2. cook broccoli"}
+                value={values.directions}
+                {...inputProps}
+              />
+            </label>
+            {errors.directions && <p style={{ color: "red" }}>{errors.directions}</p>}
+            <br />
+            <label>
+              Author
+              <input
+                required={true}
+                type="text"
+                name="author"
+                placeholder="author"
+                value={values.author}
+                {...inputProps}
+              />
+            </label>
+            {errors.author && <p style={{ color: "red" }}>{errors.author}</p>}
+            <br />
+            <button type="submit" disabled={hasError(errors)}>
+              submit
+            </button>
+          </fieldset>
         </form>
       </div>
     );
