@@ -23,7 +23,7 @@
     "ts-node": "6.0.0",
     "tsconfig-paths": "3.3.1",
     "tslint": "5.9.1",
-    "typescript": "2.8.1"
+    "typescript": "2.8.3"
   },
   "dependencies": {
     "fuse.js": "^3.2.0",
