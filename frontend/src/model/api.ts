@@ -5,6 +5,7 @@ import { setIn, merge } from "icepick";
 export interface State {
   status: {
     allRecipes: APIStatus;
+    submitNewRecipe: APIStatus;
   };
   data: {
     recipes: { [id: string]: Recipe };
@@ -14,6 +15,7 @@ export interface State {
 export const initialState: State = {
   status: {
     allRecipes: {},
+    submitNewRecipe: {},
   },
   data: {
     recipes: {},
@@ -55,9 +57,42 @@ const samples: Array<Recipe> = require("./samples.json");
 
 export function actions(dispatch: Dispatch<State>) {
   return {
+    submitNewRecipe: (recipe: Recipe) => {
+      recipe = JSON.parse(JSON.stringify(recipe));
+      recipe.id = `${Math.random()}`;
+      recipe.datePublished = new Date().toJSON();
+      recipe.lastEdited = new Date().toJSON();
+      dispatch(
+        logReducer("SUBMIT_NEW_RECIPE_REQUEST", [], state =>
+          setIn(state, ["status", "submitNewRecipe"], {
+            isLoading: true,
+            response: undefined,
+            timestamp: new Date().toJSON(),
+          } as State["status"]["submitNewRecipe"]),
+        ),
+      );
+      return (async () => {
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        dispatch(
+          logReducer("SUBMIT_NEW_RECIPE_SUCCESS", [], state => {
+            state = setIn(state, ["status", "submitNewRecipe"], {
+              isLoading: false,
+              response: samples,
+              timestamp: new Date().toJSON(),
+            } as State["status"]["submitNewRecipe"]);
+            state = setIn(
+              state,
+              ["data", "recipes", recipe.id],
+              recipe as State["data"]["recipes"][typeof recipe.id],
+            );
+            return state;
+          }),
+        );
+      })();
+    },
     downloadAllRecipes: () => {
       dispatch(
-        logReducer("DOWNLOADALL_REQUEST", [], state =>
+        logReducer("DOWNLOAD_ALL_REQUEST", [], state =>
           setIn(state, ["status", "allRecipes"], {
             isLoading: true,
             response: undefined,
@@ -68,7 +103,7 @@ export function actions(dispatch: Dispatch<State>) {
       return (async () => {
         await new Promise(resolve => setTimeout(resolve, 1000));
         dispatch(
-          logReducer("DOWNLOADALL_SUCCESS", [], state => {
+          logReducer("DOWNLOAD_ALL_SUCCESS", [], state => {
             state = setIn(state, ["status", "allRecipes"], {
               isLoading: false,
               response: samples,
