@@ -1,12 +1,10 @@
 import { h } from "src/view/h";
-import { parseIngrediant } from "src/utils/parse-ingrediant";
-import { RecipeInput } from "./types";
-import { Recipe } from "src/model/api";
+import { parse } from "./parse";
 
-export function Preview(input: RecipeInput) {
+export function Preview({ text = "" } = {}) {
   let preview: JSX.Element;
   try {
-    preview = <p>{JSON.stringify(inputToRecipe(input))}</p>;
+    preview = <p>{JSON.stringify(parse(text))}</p>;
   } catch (e) {
     preview = <p style={{ color: "red" }}>{`${e}`}</p>;
   }
@@ -16,20 +14,4 @@ export function Preview(input: RecipeInput) {
       {preview}
     </div>
   );
-}
-
-function inputToRecipe(input: RecipeInput): Recipe {
-  const { name, author, servings = 1, directions, ingrediants: rawIngrediants } = input;
-  return {
-    name,
-    author,
-    servings,
-    totalTime: "0",
-    images: [],
-    directions,
-    id: "new",
-    ingredients: rawIngrediants ? rawIngrediants.split("\n").map(parseIngrediant) : [],
-    lastEdited: new Date().toJSON(),
-    datePublished: new Date().toJSON(),
-  };
 }
