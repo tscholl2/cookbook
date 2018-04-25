@@ -46,6 +46,8 @@ const pages = [
 
 const pm = pathsMatcher(pages.map(a => a.path));
 
-export function selectPageName(state: State): PageName {
-  return pages[pm(state.path)!.index].name;
+export function createSelectors(state: State) {
+  return {
+    selectPageName: () => pages[pm(state.path)!.index].name,
+  };
 }

@@ -8,7 +8,7 @@ import { HomePage } from "./pages/home";
 import { Footer } from "./components/footer";
 import { ConnectHeader } from "./components/header";
 import { PageName } from "src/model/router";
-import { selectPageName } from "src/model/selectors";
+import { selectorsCreator } from "src/model/selectors";
 
 import "./style.scss";
 
@@ -21,10 +21,11 @@ export const View = (dispatch: Dispatch<State>) => {
     [PageName.HOME]: HomePage(dispatch),
   };
   return (state: State) => {
+    const selectors = selectorsCreator(state);
     return (
       <div id="app">
         <Header {...state} />
-        <main>{pages[selectPageName(state)](state)}</main>
+        <main>{pages[selectors.router.selectPageName()](state)}</main>
         <Footer />
       </div>
     );

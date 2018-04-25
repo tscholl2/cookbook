@@ -7,7 +7,7 @@ import { parseIngrediant } from "src/utils/parse-ingrediant";
 import { RecipeInput } from "./types";
 import { Preview } from "./preview";
 
-export const NewRecipePage = (dispatch: Dispatch<State>) => {
+export function NewRecipePage(dispatch: Dispatch<State>) {
   const formSelector = createFormSelector<RecipeInput>(
     "new-recipe",
     {
@@ -103,7 +103,7 @@ export const NewRecipePage = (dispatch: Dispatch<State>) => {
       </div>
     );
   };
-};
+}
 
 function validate(status: FormStatus<RecipeInput>): FormErrors<RecipeInput> {
   const errors: FormErrors<RecipeInput> = {};

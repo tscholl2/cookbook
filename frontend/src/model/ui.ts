@@ -1,5 +1,5 @@
 import { Dispatch } from "src/controller";
-import { setIn } from "icepick";
+import { setIn, getIn } from "icepick";
 
 export type State = { [key: string]: any };
 export const initialState: State = {};
@@ -10,10 +10,8 @@ export function actions(dispatch: Dispatch<State>) {
   };
 }
 
-/*
-export function selectors() {
+export function createSelectors(state: State) {
   return {
-    getIn: (state: State, path: string[]) => getIn(state, path),
+    getIn: (path: string[]) => getIn(state, path),
   };
 }
-*/

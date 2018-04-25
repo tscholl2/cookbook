@@ -6,7 +6,6 @@ function randomRecipe(): Recipe {
   return {
     id: randomID().toString(),
     name: randomWord(),
-    description: randomParagraph(),
     totalTime: `${(10 * Math.random()).toFixed(2)} hours`,
     directions: randomParagraph(),
     ingredients: randomArray(1, 5).map(randomIngredient),

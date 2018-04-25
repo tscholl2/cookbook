@@ -1,10 +1,10 @@
 import { State } from "./";
 import { FormStatus, FormErrors } from "./forms";
 import { Dispatch } from "src/controller";
-import { setIn, getIn } from "icepick";
+import { setIn } from "icepick";
 import { logReducer } from "src/controller/redux-devtools";
-import { selectPageName as pageName } from "./router";
-// import { selectors as uiSelectors } from "./ui";
+import { createSelectors as routerSelectors } from "./router";
+import { createSelectors as uiSelectors } from "./ui";
 
 // forms
 
@@ -114,14 +114,9 @@ export function createFormSelector<FormValues>(
   };
 }
 
-// Router
-
-export function selectPageName(state: State) {
-  return pageName(state.route);
-}
-
-// UI
-
-export function selectUIValue(state: State, path: string[]) {
-  return getIn(state, ["ui"].concat(path));
+export function selectorsCreator(state: State) {
+  return {
+    router: routerSelectors(state.route),
+    ui: uiSelectors(state.ui),
+  };
 }
