@@ -19,7 +19,7 @@ export function RecipeForm(props: FormProps<RecipeInput>) {
   const someError = hasError(errors);
   const someTouched = hasTouched(touched);
   return (
-    <form class="form-horizontal" onsubmit={handleSubmit}>
+    <form class="cookbook-new-recipe-form form-horizontal" onsubmit={handleSubmit}>
       <fieldset disabled={isSubmitting}>
         <legend>New Recipe</legend>
         <div class={"form-group" + (someTouched && errors.name ? " has-error" : "")}>
@@ -46,7 +46,7 @@ export function RecipeForm(props: FormProps<RecipeInput>) {
         <div class={"form-group" + (someTouched && errors.time ? " has-error" : "")}>
           <div class="col-3 col-sm-12">
             <label class="form-label" for="input-recipe.time">
-              Name
+              Time
             </label>
           </div>
           <div class="col-9 col-sm-12">
@@ -146,6 +146,7 @@ export function RecipeForm(props: FormProps<RecipeInput>) {
           class={"btn active" + (isSubmitting ? " loading" : "")}
           type="submit"
           disabled={isSubmitting || someError || !someTouched}
+          style={{ width: "100%", height: "100px" }}
         >
           submit
         </button>

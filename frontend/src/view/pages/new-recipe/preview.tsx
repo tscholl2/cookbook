@@ -5,7 +5,7 @@ import { inputToRecipe } from "./types";
 export function Preview(input: RecipeInput) {
   let preview: JSX.Element;
   try {
-    preview = <p>{JSON.stringify(inputToRecipe(input))}</p>;
+    preview = <pre>{JSON.stringify(inputToRecipe(input),null,"  ")}</pre>;
   } catch (e) {
     preview = <p style={{ color: "red" }}>{`${e}`}</p>;
   }

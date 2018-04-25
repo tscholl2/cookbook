@@ -34,6 +34,9 @@ export function NewRecipePage(dispatch: Dispatch<State>) {
   };
 }
 
+const number = "\\d+(?:\\.\\d*)?";
+const fraction = `${number}(?:\\/${number})?`;
+const reTime = new RegExp(fraction + "\\s*" + "[a-zA-Z]+");
 function validate(status: FormStatus<RecipeInput>): FormErrors<RecipeInput> {
   const errors: FormErrors<RecipeInput> = {};
   if (!status.values.author) {
@@ -47,6 +50,8 @@ function validate(status: FormStatus<RecipeInput>): FormErrors<RecipeInput> {
   }
   if (!status.values.time) {
     errors.time = "required";
+  } else if (!reTime.test(status.values.time)) {
+    errors.time = "invalid time format";
   }
   if (status.values.servings == null) {
     errors.servings = "required";
