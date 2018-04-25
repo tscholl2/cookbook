@@ -5,13 +5,22 @@ import { FormProps, FormErrors, FormTouched } from "src/model/forms";
 const autoFocus = (el: HTMLElement) => el.focus();
 
 export function RecipeForm(props: FormProps<RecipeInput>) {
-  const { values, errors, touched, handleSubmit, handleChange, handleBlur, handleFocus } = props;
+  const {
+    values,
+    errors,
+    touched,
+    handleSubmit,
+    handleChange,
+    handleBlur,
+    handleFocus,
+    isSubmitting,
+  } = props;
   const inputProps = { oninput: handleChange, onblur: handleBlur, onfocus: handleFocus };
   const someError = hasError(errors);
   const someTouched = hasTouched(touched);
   return (
     <form class="form-horizontal" onsubmit={handleSubmit}>
-      <fieldset>
+      <fieldset disabled={isSubmitting}>
         <legend>New Recipe</legend>
         <div class={"form-group" + (someTouched && errors.name ? " has-error" : "")}>
           <div class="col-3 col-sm-12">
@@ -65,11 +74,12 @@ export function RecipeForm(props: FormProps<RecipeInput>) {
               class="form-input"
               id="input-recipe.servings"
               required={true}
-              type="text"
-              name="name"
-              placeholder="cooked brocolli"
+              type="number"
+              name="servings"
+              placeholder="1"
               value={values.servings}
               {...inputProps}
+              onChange={handleChange}
             />
             {errors.servings && <p class="form-input-hint">{errors.servings}</p>}
           </div>
@@ -115,7 +125,7 @@ export function RecipeForm(props: FormProps<RecipeInput>) {
         <div class={"form-group" + (errors.author && hasTouched(touched) ? " has-error" : "")}>
           <div class="col-3 col-sm-12">
             <label class="form-label" for="input-recipe.author">
-              Name
+              Author
             </label>
           </div>
           <div class="col-9 col-sm-12">
@@ -129,10 +139,14 @@ export function RecipeForm(props: FormProps<RecipeInput>) {
               value={values.author}
               {...inputProps}
             />
-            {errors.author && <p class="form-input-hint">{errors.ingrediants}</p>}
+            {errors.author && <p class="form-input-hint">{errors.author}</p>}
           </div>
         </div>
-        <button type="submit" disabled={someError || !someTouched}>
+        <button
+          class={"btn active" + (isSubmitting ? " loading" : "")}
+          type="submit"
+          disabled={isSubmitting || someError || !someTouched}
+        >
           submit
         </button>
       </fieldset>

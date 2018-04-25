@@ -4,7 +4,7 @@ import { Dispatch } from "src/controller";
 import { actionsCreator } from "src/model/actions";
 import { FormStatus, FormErrors } from "src/model/forms";
 import { parseIngrediant } from "src/utils/parse-ingrediant";
-import { RecipeInput } from "./types";
+import { RecipeInput, inputToRecipe } from "./types";
 import { Preview } from "./preview";
 import { RecipeForm } from "./form";
 import "./style.scss";
@@ -14,7 +14,14 @@ export function NewRecipePage(dispatch: Dispatch<State>) {
   const formSelector = actions.forms.newSelectFormProps<RecipeInput>(
     "new-recipe",
     { name: "", directions: "", ingrediants: "", author: "", time: "" },
-    { validate },
+    {
+      validate,
+      onSubmit: status => {
+        const recipe = inputToRecipe(status.values);
+        // TODO: signal UI when done to show modal & redirect on success?
+        return actions.api.submitNewRecipe(recipe);
+      },
+    },
   );
   return (state: State) => {
     const formProps = formSelector(state.forms);
