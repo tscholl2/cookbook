@@ -28,7 +28,7 @@ function inputToRecipe(input: RecipeInput): Recipe {
     images: [],
     directions,
     id: "new",
-    ingredients: rawIngrediants.split("\n").map(parseIngrediant),
+    ingredients: rawIngrediants ? rawIngrediants.split("\n").map(parseIngrediant) : [],
     lastEdited: new Date().toJSON(),
     datePublished: new Date().toJSON(),
   };

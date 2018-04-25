@@ -55,7 +55,7 @@ export interface Ingredient {
 declare const require: any;
 const samples: Array<Recipe> = require("./samples.json");
 
-export function actions(dispatch: Dispatch<State>) {
+export function createActions(dispatch: Dispatch<State>) {
   return {
     submitNewRecipe: (recipe: Recipe) => {
       recipe = JSON.parse(JSON.stringify(recipe));

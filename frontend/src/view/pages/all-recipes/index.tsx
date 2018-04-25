@@ -1,23 +1,22 @@
 import { h } from "src/view/h";
 import { State } from "src/model";
 import { actionsCreator } from "src/model/actions";
-import { createFormSelector } from "src/model/selectors";
 import { Dispatch } from "src/controller";
 import { createSelector } from "reselect";
 import Fuse from "fuse.js";
 
 export const AllRecipesPage = (dispatch: Dispatch<State>) => {
-  const formSelector = createFormSelector("all-recipe-search", { search: "" })(dispatch);
+  const actions = actionsCreator(dispatch);
+  const formSelector = actions.forms.newSelectFormProps("all-recipe-search", { search: "" });
   const recipesSelector = createSelector(
     (state: State) => state.api.data.recipes,
     recipes => Object.keys(recipes).map(id => recipes[id]),
   );
-  const actions = actionsCreator(dispatch);
   return createSelector(
     (state: State) => state.api.status.allRecipes,
-    formSelector,
+    (state: State) => formSelector(state.forms),
     (state: State) => {
-      const form = formSelector(state);
+      const form = formSelector(state.forms);
       const recipes = recipesSelector(state);
       if (!form.values.search) {
         return recipes;
@@ -43,8 +42,8 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
             Search:
             <input
               name="search"
-              type="text"
-              placeholder="...search"
+              type="search"
+              placeholder="Search"
               value={form.values.search}
               oninput={form.handleChange}
               onblur={form.handleBlur}

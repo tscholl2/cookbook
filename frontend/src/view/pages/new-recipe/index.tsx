@@ -1,28 +1,30 @@
 import { h } from "src/view/h";
 import { State } from "src/model";
 import { Dispatch } from "src/controller";
-import { createFormSelector } from "src/model/selectors";
-import { FormStatus, FormErrors } from "src/model/forms";
+import { actionsCreator } from "src/model/actions";
+import { FormStatus, FormErrors, FormTouched } from "src/model/forms";
 import { parseIngrediant } from "src/utils/parse-ingrediant";
 import { RecipeInput } from "./types";
 import { Preview } from "./preview";
 
 export function NewRecipePage(dispatch: Dispatch<State>) {
-  const formSelector = createFormSelector<RecipeInput>(
+  const actions = actionsCreator(dispatch);
+  const formSelector = actions.forms.newSelectFormProps<RecipeInput>(
     "new-recipe",
-    {
-      name: "",
-      directions: "",
-      ingrediants: "",
-      author: "",
-    },
+    { name: "", directions: "", ingrediants: "", author: "" },
     { validate },
-  )(dispatch);
+  );
   const autoFocus = (el: HTMLElement) => el.focus();
   return (state: State) => {
-    const { values, errors, handleSubmit, handleChange, handleBlur, handleFocus } = formSelector(
-      state,
-    );
+    const {
+      values,
+      errors,
+      touched,
+      handleSubmit,
+      handleChange,
+      handleBlur,
+      handleFocus,
+    } = formSelector(state.forms);
     const inputProps = { oninput: handleChange, onblur: handleBlur, onfocus: handleFocus };
     return (
       <div>
@@ -30,9 +32,13 @@ export function NewRecipePage(dispatch: Dispatch<State>) {
         <form onsubmit={handleSubmit}>
           <fieldset>
             <legend>New Recipe</legend>
-            <label>
-              Name
+            <div class={"form-group" + errors.name ? " has-error" : ""}>
+              <label class="form-label" for="input-recipe.name">
+                Name
+              </label>
               <input
+                class="form-input"
+                id="input-recipe.name"
                 required={true}
                 oncreate={autoFocus}
                 type="text"
@@ -41,60 +47,75 @@ export function NewRecipePage(dispatch: Dispatch<State>) {
                 value={values.name}
                 {...inputProps}
               />
-            </label>
-            {errors.name && <p style={{ color: "red" }}>{errors.name}</p>}
-            <br />
-            <label>
-              Servings
+              {errors.name && <p class="form-input-hint">{errors.name}</p>}
+            </div>
+            <div class={"form-group" + errors.servings ? " has-error" : ""}>
+              <label class="form-label" for="input-recipe.servings">
+                Servings
+              </label>
               <input
+                class="form-input"
+                id="input-recipe.servings"
                 required={true}
-                type="number"
-                name="servings"
-                placeholder="servings"
+                oncreate={autoFocus}
+                type="text"
+                name="name"
+                placeholder="cooked brocolli"
                 value={values.servings}
                 {...inputProps}
               />
-            </label>
-            {errors.servings && <p style={{ color: "red" }}>{errors.servings}</p>}
-            <br />
-            <label>
-              Ingrediants
+              {errors.servings && <p class="form-input-hint">{errors.servings}</p>}
+            </div>
+            <div class={"form-group" + errors.ingrediants ? " has-error" : ""}>
+              <label class="form-label" for="input-recipe.ingrediants">
+                Ingrediants
+              </label>
               <textarea
+                class="form-input"
+                id="input-recipe.ingrediants"
                 required={true}
+                oncreate={autoFocus}
                 name="ingrediants"
                 placeholder={"1/2 cup brocolli\n1 tsp salt"}
                 value={values.ingrediants}
                 {...inputProps}
               />
-            </label>
-            {errors.ingrediants && <p style={{ color: "red" }}>{errors.ingrediants}</p>}
-            <br />
-            <label>
-              Directions
+              {errors.ingrediants && <p class="form-input-hint">{errors.ingrediants}</p>}
+            </div>
+            <div class={"form-group" + errors.directions ? " has-error" : ""}>
+              <label class="form-label" for="input-recipe.directions">
+                Directions
+              </label>
               <textarea
+                class="form-input"
+                id="input-recipe.directions"
                 required={true}
+                oncreate={autoFocus}
                 name="directions"
-                placeholder={"1. cut broccoli\n2. cook broccoli"}
+                placeholder={"1. preheat oven\n2. cook brocoli"}
                 value={values.directions}
                 {...inputProps}
               />
-            </label>
-            {errors.directions && <p style={{ color: "red" }}>{errors.directions}</p>}
-            <br />
-            <label>
-              Author
+              {errors.directions && <p class="form-input-hint">{errors.directions}</p>}
+            </div>
+            <div class={"form-group" + (errors.author && hasTouched(touched)) ? " has-error" : ""}>
+              <label class="form-label" for="input-recipe.author">
+                Name
+              </label>
               <input
+                class="form-input"
+                id="input-recipe.author"
                 required={true}
+                oncreate={autoFocus}
                 type="text"
                 name="author"
                 placeholder="author"
                 value={values.author}
                 {...inputProps}
               />
-            </label>
-            {errors.author && <p style={{ color: "red" }}>{errors.author}</p>}
-            <br />
-            <button type="submit" disabled={hasError(errors)}>
+              {errors.author && <p class="form-input-hint">{errors.ingrediants}</p>}
+            </div>
+            <button type="submit" disabled={hasError(errors) || !hasTouched(touched)}>
               submit
             </button>
           </fieldset>
@@ -145,4 +166,8 @@ function hasError(errors: FormErrors<any>) {
     }
   }
   return false;
+}
+
+function hasTouched(touched: FormTouched<any>) {
+  return hasError(touched as any);
 }

@@ -1,9 +1,9 @@
+import { Dispatch } from "src/controller";
 import { logReducer } from "src/controller/redux-devtools";
 import { Route, go } from "src/utils/history";
 import { shallowCompare } from "src/utils/shallow-compare";
-import { freeze } from "icepick";
-import { Dispatch } from "src/controller";
 import { pathsMatcher } from "src/utils/path-matcher";
+import { freeze } from "icepick";
 
 export type State = Route;
 
@@ -13,11 +13,12 @@ export const initialState: State = freeze({
   title: "",
 });
 
-export function actions(dispatch: Dispatch<State>) {
+export function createActions(dispatch: Dispatch<State>) {
   return {
     goToRecipe: (recipeID: string) => dispatch(goTo(`/recipe/${recipeID}`, { recipeID })),
     goToNew: () => dispatch(goTo("/new")),
     goToAll: () => dispatch(goTo("/view")),
+    selectPageName: (state: State) => pages[pm(state.path)!.index].name,
   };
 }
 
@@ -45,9 +46,3 @@ const pages = [
 ];
 
 const pm = pathsMatcher(pages.map(a => a.path));
-
-export function createSelectors(state: State) {
-  return {
-    selectPageName: () => pages[pm(state.path)!.index].name,
-  };
-}

@@ -1,20 +1,22 @@
 import { Reducer, Dispatch } from "src/controller";
 import { set } from "icepick";
-import { actions as routeActions } from "src/model/router";
-import { actions as apiActions } from "src/model/api";
-import { actions as uiActions } from "src/model/ui";
-import { State } from "src/model";
+import { createActions as formsActions } from "./forms";
+import { createActions as routeActions } from "./router";
+import { createActions as apiActions } from "./api";
+import { createActions as uiActions } from "./ui";
+import { State } from "./";
 
 export function actionsCreator(dispatch: Dispatch<State>) {
   return {
+    forms: formsActions(dispatchSlicer("forms")(dispatch)),
     router: routeActions(dispatchSlicer("route")(dispatch)),
     api: apiActions(dispatchSlicer("api")(dispatch)),
-    uiActions: uiActions(dispatchSlicer("ui")(dispatch))
+    uiActions: uiActions(dispatchSlicer("ui")(dispatch)),
   };
 }
 
 function dispatchSlicer<K extends keyof State>(
-  k: K
+  k: K,
 ): (dispatch: Dispatch<State>) => Dispatch<State[K]> {
   const f = reducerSlicer(k);
   return d => r => d(f(r));
