@@ -4,7 +4,7 @@ import { State } from "src/model";
 import { PageName } from "src/model/router";
 import { actionsCreator } from "src/model/actions";
 import { AllRecipesPage } from "./pages/all-recipes";
-import { NewRecipePage } from "./pages/new-recipe";
+import { NewRecipePage } from "./pages/new-recipe2";
 import { ViewRecipePage } from "./pages/view-recipe";
 import { HomePage } from "./pages/home";
 import { Footer } from "./components/footer";
