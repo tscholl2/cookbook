@@ -16,11 +16,11 @@ $dark-color: #3e396b;
   > header {
     grid-area: header;
   }
-
   > main {
     grid-area: main;
+    max-width: 960px;
+    margin: auto;
   }
-
   > footer {
     grid-area: footer;
   }

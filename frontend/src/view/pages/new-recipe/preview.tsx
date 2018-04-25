@@ -12,7 +12,7 @@ export function Preview(input: RecipeInput) {
   }
   return (
     <div>
-      <h2>Preview</h2>
+      <h2 style={{ textAlign: "center" }}>Preview</h2>
       {preview}
     </div>
   );

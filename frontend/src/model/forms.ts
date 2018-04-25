@@ -76,6 +76,7 @@ export function createActions(dispatch: Dispatch<State>) {
         const value = e.target.value;
         dispatch(
           logReducer("form-change", { name, field, value }, state => {
+            state = setIn(state, [name, "touched", field], true);
             state = setIn(state, [name, "values", field], value);
             if (validate) {
               state = setIn(

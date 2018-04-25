@@ -1,0 +1,15 @@
+.cookbook-editor-container {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-start;
+  > :first-child {
+    // TODO: margin is bad because it won't work on small screens
+    margin-right: 15px;
+    flex-basis: 70%;
+  }
+  > :last-child {
+    margin-left: 15px;
+    flex-basis: 30%;
+  }
+}

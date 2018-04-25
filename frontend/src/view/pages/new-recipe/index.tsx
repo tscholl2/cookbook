@@ -2,10 +2,12 @@ import { h } from "src/view/h";
 import { State } from "src/model";
 import { Dispatch } from "src/controller";
 import { actionsCreator } from "src/model/actions";
-import { FormStatus, FormErrors, FormTouched } from "src/model/forms";
+import { FormStatus, FormErrors } from "src/model/forms";
 import { parseIngrediant } from "src/utils/parse-ingrediant";
 import { RecipeInput } from "./types";
 import { Preview } from "./preview";
+import { RecipeForm } from "./form";
+import "./style.scss";
 
 export function NewRecipePage(dispatch: Dispatch<State>) {
   const actions = actionsCreator(dispatch);
@@ -14,133 +16,12 @@ export function NewRecipePage(dispatch: Dispatch<State>) {
     { name: "", directions: "", ingrediants: "", author: "", time: "" },
     { validate },
   );
-  const autoFocus = (el: HTMLElement) => el.focus();
   return (state: State) => {
-    const {
-      values,
-      errors,
-      touched,
-      handleSubmit,
-      handleChange,
-      handleBlur,
-      handleFocus,
-    } = formSelector(state.forms);
-    const inputProps = { oninput: handleChange, onblur: handleBlur, onfocus: handleFocus };
-    const someError = hasError(errors);
-    const someTouched = hasTouched(touched);
-    console.log(values, errors, touched, someError, someTouched);
+    const formProps = formSelector(state.forms);
     return (
-      <div>
-        <h2>Add a new Recipe</h2>
-        <form onsubmit={handleSubmit}>
-          <fieldset>
-            <legend>New Recipe</legend>
-            <div class={"form-group" + (someTouched && errors.name ? " has-error" : "")}>
-              <label class="form-label" for="input-recipe.name">
-                Name
-              </label>
-              <input
-                class="form-input"
-                id="input-recipe.name"
-                required={true}
-                oncreate={autoFocus}
-                type="text"
-                name="name"
-                placeholder="cooked brocolli"
-                value={values.name}
-                {...inputProps}
-              />
-              {errors.name && <p class="form-input-hint">{errors.name}</p>}
-            </div>
-            <div class={"form-group" + (someTouched && errors.time ? " has-error" : "")}>
-              <label class="form-label" for="input-recipe.time">
-                Name
-              </label>
-              <input
-                class="form-input"
-                id="input-recipe.time"
-                required={true}
-                oncreate={autoFocus}
-                type="text"
-                name="time"
-                placeholder="1 hr"
-                value={values.time}
-                {...inputProps}
-              />
-              {errors.time && <p class="form-input-hint">{errors.time}</p>}
-            </div>
-            <div class={"form-group" + (someTouched && errors.servings ? " has-error" : "")}>
-              <label class="form-label" for="input-recipe.servings">
-                Servings
-              </label>
-              <input
-                class="form-input"
-                id="input-recipe.servings"
-                required={true}
-                oncreate={autoFocus}
-                type="text"
-                name="name"
-                placeholder="cooked brocolli"
-                value={values.servings}
-                {...inputProps}
-              />
-              {errors.servings && <p class="form-input-hint">{errors.servings}</p>}
-            </div>
-            <div class={"form-group" + (someTouched && errors.ingrediants ? " has-error" : "")}>
-              <label class="form-label" for="input-recipe.ingrediants">
-                Ingrediants
-              </label>
-              <textarea
-                class="form-input"
-                id="input-recipe.ingrediants"
-                required={true}
-                oncreate={autoFocus}
-                name="ingrediants"
-                placeholder={"1/2 cup brocolli\n1 tsp salt"}
-                value={values.ingrediants}
-                {...inputProps}
-              />
-              {errors.ingrediants && <p class="form-input-hint">{errors.ingrediants}</p>}
-            </div>
-            <div class={"form-group" + (someTouched && errors.directions ? " has-error" : "")}>
-              <label class="form-label" for="input-recipe.directions">
-                Directions
-              </label>
-              <textarea
-                class="form-input"
-                id="input-recipe.directions"
-                required={true}
-                oncreate={autoFocus}
-                name="directions"
-                placeholder={"1. preheat oven\n2. cook brocoli"}
-                value={values.directions}
-                {...inputProps}
-              />
-              {errors.directions && <p class="form-input-hint">{errors.directions}</p>}
-            </div>
-            <div class={"form-group" + (errors.author && hasTouched(touched) ? " has-error" : "")}>
-              <label class="form-label" for="input-recipe.author">
-                Name
-              </label>
-              <input
-                class="form-input"
-                id="input-recipe.author"
-                required={true}
-                oncreate={autoFocus}
-                type="text"
-                name="author"
-                placeholder="author"
-                value={values.author}
-                {...inputProps}
-              />
-              {errors.author && <p class="form-input-hint">{errors.ingrediants}</p>}
-            </div>
-            <button type="submit" disabled={someError || !someTouched}>
-              submit
-            </button>
-          </fieldset>
-        </form>
-        <Preview {...values} />
+      <div class="cookbook-editor-container">
+        <RecipeForm {...formProps} />
+        <Preview {...formProps.values} />
       </div>
     );
   };
@@ -180,17 +61,4 @@ function validate(status: FormStatus<RecipeInput>): FormErrors<RecipeInput> {
     }
   }
   return errors;
-}
-
-function hasError(errors: FormErrors<any>) {
-  for (let k in errors) {
-    if (errors[k]) {
-      return true;
-    }
-  }
-  return false;
-}
-
-function hasTouched(touched: FormTouched<any>) {
-  return hasError(touched as any);
 }
