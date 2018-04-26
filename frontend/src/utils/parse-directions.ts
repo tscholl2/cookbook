@@ -11,17 +11,16 @@
  * ]
  */
 export function parseDirections(text: string) {
-  const directions = [];
-  while (true) {
-    const arr = re.exec(text);
-    if (arr == null) {
-      break;
+  const directions: string[] = [];
+  const lines = text.split("\n");
+  for (let l of lines) {
+    // Any line that starts with "* ", "- ", or "1. " is a new step.
+    const m = /^(\*|\-|(?:\d+\.?)) (.*)/.exec(l);
+    if (m) {
+      directions.push(m[2]);
+    } else {
+      directions[directions.length - 1] += "\n" + l;
     }
-    directions.push(arr[1].trim());
-    text = text.substr(arr[0].length);
   }
-  return directions;
+  return directions.map(l => l.trim()).filter(l => l);
 }
-
-const itemStart = "(?:\\*|\\-|\\d+\\.?)"; // yes this allows *. but w/e
-const re = new RegExp(`^${itemStart}([^${itemStart}]*)`, "m");
