@@ -3,10 +3,12 @@ import { RecipeInput } from "./types";
 import { inputToRecipe } from "./types";
 import { Markdown } from "src/view/components/markdown";
 
+// TODO: memoize
 export function Preview(input: RecipeInput) {
   let preview: JSX.Element;
   try {
     const recipe = inputToRecipe(input);
+    console.log(recipe.directions.map((l, i) => `${i + 1}. ${l}`).join("\n"));
     preview = (
       <Markdown>{`
 # ${recipe.name}
@@ -23,11 +25,11 @@ ${recipe.ingredients.map(i => `| ${i.amount} | ${i.measurement} | ${i.name} |`).
 
 # Directions
 
-${recipe.directions}
+${recipe.directions.map((l, i) => `${i + 1}. ${l}`).join("\n")}
+
 `}</Markdown>
     );
   } catch (e) {
-    console.error(e);
     preview = <p style={{ color: "red" }}>{`${e}`}</p>;
   }
   return (

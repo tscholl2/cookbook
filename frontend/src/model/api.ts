@@ -36,7 +36,7 @@ export interface Recipe {
   id: UUID;
   name: string;
   totalTime: Duration;
-  directions: string;
+  directions: Array<string>;
   ingredients: Array<Ingredient>;
   servings: number;
   images: Array<string>;

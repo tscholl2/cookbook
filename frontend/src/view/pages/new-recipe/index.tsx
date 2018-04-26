@@ -62,13 +62,17 @@ function validate(status: FormStatus<RecipeInput>): FormErrors<RecipeInput> {
     errors.ingrediants = "required";
   } else {
     const lines = status.values.ingrediants.split("\n");
-    for (let i = 0; i < lines.length; i++) {
-      const line = lines[i];
-      try {
-        parseIngrediant(line);
-      } catch (e) {
-        errors.ingrediants = `unkown ingrediant on line ${i + 1}: ${e}`;
-        break;
+    if (lines.length === 0) {
+      errors.ingrediants = "must include ≥1 ingrediant";
+    } else {
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        try {
+          parseIngrediant(line);
+        } catch (e) {
+          errors.ingrediants = `unkown ingrediant on line ${i + 1}: ${e}`;
+          break;
+        }
       }
     }
   }
