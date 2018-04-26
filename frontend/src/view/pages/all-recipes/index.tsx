@@ -3,6 +3,7 @@ import { State } from "src/model";
 import { actionsCreator } from "src/model/actions";
 import { Dispatch } from "src/controller";
 import { createSelector } from "reselect";
+import { Preview } from "./preview";
 import Fuse from "fuse.js";
 
 export const AllRecipesPage = (dispatch: Dispatch<State>) => {
@@ -51,10 +52,10 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
             />
           </label>
         </aside>,
-        <ul>
+        <ul class="cookbook-all-recipes-list">
           {recipes.map(r => (
-            <li key={r.id} onclick={() => actions.router.goToRecipe(r.id)}>
-              {JSON.stringify(r)}
+            <li class="cookbook-all-recipes-listitem" key={r.id} onclick={() => actions.router.goToRecipe(r.id)}>
+              <Preview recipe={r} />
             </li>
           ))}
         </ul>,

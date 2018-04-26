@@ -5,6 +5,7 @@ $dark-color: #3e396b;
 
 // Import full Spectre source code
 @import "node_modules/spectre.css/src/spectre";
+@import "node_modules/spectre.css/src/spectre-exp.scss";
 
 #app {
   width: 100vw;

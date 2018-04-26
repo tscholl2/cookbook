@@ -5,9 +5,11 @@ console.log(JSON.stringify(randomArray(10, 20).map(randomRecipe)));
 function randomRecipe(): Recipe {
   return {
     id: randomID().toString(),
-    name: randomWord(),
+    name: randomArray(1, 5)
+      .map(randomWord)
+      .join(" "),
     totalTime: `${(10 * Math.random()).toFixed(2)} hours`,
-    directions: randomParagraph(),
+    directions: randomArray(3, 6).map(randomParagraph),
     ingredients: randomArray(1, 5).map(randomIngredient),
     servings: randomInteger(4, 6),
     images: randomArray(0, 2).map(randomImage),

@@ -8,7 +8,7 @@ export function Preview(input: RecipeInput) {
   let preview: JSX.Element;
   try {
     const recipe = inputToRecipe(input);
-    console.log(recipe.directions.map((l, i) => `${i + 1}. ${l}`).join("\n"));
+    // TODO: markdown is unnecessary here
     preview = (
       <Markdown>{`
 # ${recipe.name}
