@@ -2,7 +2,7 @@ import { Recipe } from "src/model/api";
 import { parseIngrediant } from "src/utils/parse-ingrediant";
 import { parseDirections } from "src/utils/parse-directions";
 
-export interface RecipeInput {
+export interface RecipeFormValues {
   id: string;
   name: string;
   ingrediants: string;
@@ -13,7 +13,7 @@ export interface RecipeInput {
   author: string;
 }
 
-export function recipeToInput(recipe: Recipe): RecipeInput {
+export function recipeToFormValues(recipe: Recipe): RecipeFormValues {
   return {
     id: recipe.id,
     name: recipe.name,
@@ -26,7 +26,7 @@ export function recipeToInput(recipe: Recipe): RecipeInput {
   };
 }
 
-export function inputToRecipe(input: RecipeInput): Recipe {
+export function formValuesToRecipe(input: RecipeFormValues): Recipe {
   const {
     name,
     author,

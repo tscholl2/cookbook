@@ -1,14 +1,12 @@
 import { h } from "src/view/h";
-import { RecipeInput } from "./types";
-import { inputToRecipe } from "./types";
-import { Markdown } from "src/view/components/markdown";
+import { RecipeFormValues, formValuesToRecipe } from "src/utils/recipe-form-values";
+// import { Markdown } from "src/view/components/markdown";
 
 // TODO: memoize
-export function Preview(input: RecipeInput) {
+export function Preview(input: RecipeFormValues) {
   let preview: JSX.Element;
   try {
-    const recipe = inputToRecipe(input);
-    // TODO: markdown is unnecessary here
+    const recipe = formValuesToRecipe(input);
     preview = (
       <div>
         <h3>{recipe.name}</h3>

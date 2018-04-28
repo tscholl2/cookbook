@@ -5,7 +5,7 @@ import { createActions as routeActions } from "./router";
 import { createActions as apiActions } from "./api";
 import { createActions as uiActions } from "./ui";
 import { State } from "./";
-import { recipeToInput } from "src/view/pages/new-recipe/types"; // TODO: move this to utils
+import { recipeToFormValues } from "src/utils/recipe-form-values";
 
 export function actionsCreator(dispatch: Dispatch<State>) {
   const actions = {
@@ -18,8 +18,6 @@ export function actionsCreator(dispatch: Dispatch<State>) {
       actions.router.goToNew();
     },
     editRecipe: (id: string) => {
-      console.log("editing");
-
       let state: State;
       dispatch(s => (state = s)); // TODO: dont do this
       const recipe = state!.api.data.recipes[id];
@@ -27,8 +25,7 @@ export function actionsCreator(dispatch: Dispatch<State>) {
         console.error(`recipe ${id} not found`);
         return;
       }
-      console.log("foing");
-      actions.forms.setForm("new-recipe", recipeToInput(recipe));
+      actions.forms.setForm("new-recipe", recipeToFormValues(recipe));
       actions.router.goToNew();
     },
   };

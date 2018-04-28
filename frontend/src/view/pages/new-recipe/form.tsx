@@ -1,10 +1,10 @@
 import { h } from "src/view/h";
-import { RecipeInput } from "./types";
+import { RecipeFormValues } from "src/utils/recipe-form-values";
 import { FormProps, FormErrors, FormTouched } from "src/model/forms";
 
 const autoFocus = (el: HTMLElement) => el.focus();
 
-export function RecipeForm(props: FormProps<RecipeInput>) {
+export function RecipeForm(props: FormProps<RecipeFormValues>) {
   const {
     values,
     errors,
@@ -95,7 +95,6 @@ export function RecipeForm(props: FormProps<RecipeInput>) {
               oncreate={autoFocus}
               class="form-input"
               id="input-recipe.tags"
-              required={true}
               type="text"
               name="tags"
               placeholder="breakfast, hearty"

@@ -4,22 +4,23 @@ import { Dispatch } from "src/controller";
 import { actionsCreator } from "src/model/actions";
 import { FormStatus, FormErrors } from "src/model/forms";
 import { parseIngrediant } from "src/utils/parse-ingrediant";
-import { RecipeInput, inputToRecipe } from "./types";
+import { RecipeFormValues, formValuesToRecipe } from "src/utils/recipe-form-values";
 import { Preview } from "./preview";
 import { RecipeForm } from "./form";
 import "./style.scss";
 
 export function NewRecipePage(dispatch: Dispatch<State>) {
   const actions = actionsCreator(dispatch);
-  const formSelector = actions.forms.newSelectFormProps<RecipeInput>(
+  const formSelector = actions.forms.newSelectFormProps<RecipeFormValues>(
     "new-recipe",
     { id: "", name: "", directions: "", ingrediants: "", author: "", time: "", tags: "" },
     {
       validate,
-      onSubmit: status => {
-        const recipe = inputToRecipe(status.values);
+      onSubmit: async status => {
+        const recipe = formValuesToRecipe(status.values);
+        await actions.api.submitNewRecipe(recipe);
         // TODO: signal UI when done to show modal & redirect on success?
-        return actions.api.submitNewRecipe(recipe);
+        return actions.forms.clearForm("new-recipe");
       },
     },
   );
@@ -37,8 +38,8 @@ export function NewRecipePage(dispatch: Dispatch<State>) {
 const number = "\\d+(?:\\.\\d*)?";
 const fraction = `${number}(?:\\/${number})?`;
 const reTime = new RegExp(fraction + "\\s*" + "[a-zA-Z]+");
-function validate(status: FormStatus<RecipeInput>): FormErrors<RecipeInput> {
-  const errors: FormErrors<RecipeInput> = {};
+function validate(status: FormStatus<RecipeFormValues>): FormErrors<RecipeFormValues> {
+  const errors: FormErrors<RecipeFormValues> = {};
   if (!status.values.author) {
     errors.author = "required";
   }
