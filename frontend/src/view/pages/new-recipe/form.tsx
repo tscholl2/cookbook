@@ -84,6 +84,27 @@ export function RecipeForm(props: FormProps<RecipeInput>) {
             {errors.servings && <p class="form-input-hint">{errors.servings}</p>}
           </div>
         </div>
+        <div class={"form-group" + (someTouched && errors.tags ? " has-error" : "")}>
+          <div class="col-3 col-sm-12">
+            <label class="form-label" for="input-recipe.tags">
+              Tags
+            </label>
+          </div>
+          <div class="col-9 col-sm-12">
+            <input
+              oncreate={autoFocus}
+              class="form-input"
+              id="input-recipe.tags"
+              required={true}
+              type="text"
+              name="tags"
+              placeholder="breakfast, hearty"
+              value={values.tags}
+              {...inputProps}
+            />
+            {errors.tags && <p class="form-input-hint">{errors.tags}</p>}
+          </div>
+        </div>
         <div class={"form-group" + (someTouched && errors.ingrediants ? " has-error" : "")}>
           <div class="col-3 col-sm-12">
             <label class="form-label" for="input-recipe.ingrediants">

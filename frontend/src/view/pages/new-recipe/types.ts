@@ -5,6 +5,7 @@ import { parseDirections } from "src/utils/parse-directions";
 export interface RecipeInput {
   name: string;
   ingrediants: string;
+  tags: string;
   time: string;
   directions: string;
   servings?: number;
@@ -16,9 +17,10 @@ export function inputToRecipe(input: RecipeInput): Recipe {
     name,
     author,
     servings = 1,
-    directions: rawDirections,
+    tags = "",
+    directions: rawDirections = "",
     time: totalTime,
-    ingrediants: rawIngrediants,
+    ingrediants: rawIngrediants = "",
   } = input;
   return {
     name,
@@ -26,6 +28,11 @@ export function inputToRecipe(input: RecipeInput): Recipe {
     servings,
     totalTime,
     images: [],
+    tags: tags
+      .toLowerCase()
+      .split(",")
+      .map(s => s.trim())
+      .filter(s => s),
     directions: parseDirections(rawDirections),
     id: "new",
     ingredients: rawIngrediants ? rawIngrediants.split("\n").map(parseIngrediant) : [],

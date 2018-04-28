@@ -9,6 +9,7 @@ function randomRecipe(): Recipe {
       .map(randomWord)
       .join(" "),
     totalTime: `${(10 * Math.random()).toFixed(2)} hours`,
+    tags: randomArray(1, 3).map(randomWord),
     directions: randomArray(3, 6).map(randomParagraph),
     ingredients: randomArray(1, 5).map(randomIngredient),
     servings: randomInteger(4, 6),

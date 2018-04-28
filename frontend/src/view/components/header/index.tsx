@@ -15,12 +15,18 @@ export const ConnectHeader = (dispatch: Dispatch<State>) => {
           <nav>
             <ul>
               <li>
+                <a onclick={actions.router.goToHome}>home</a>
+              </li>
+              <li>
+                <a onclick={actions.router.goToNew}>new</a>
+              </li>
+              <li>
                 <a onclick={actions.router.goToAll}>All Recipes</a>
               </li>
             </ul>
           </nav>
         </header>
       );
-    }
+    },
   );
 };

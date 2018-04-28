@@ -16,6 +16,7 @@ export function Preview(input: RecipeInput) {
 * Servings = ${recipe.servings}
 * Time = ${recipe.totalTime}
 * Author = ${recipe.author}
+* Tags = ${recipe.tags.join(", ")}
 
 # Ingrediants
 
@@ -30,6 +31,7 @@ ${recipe.directions.map((l, i) => `${i + 1}. ${l}`).join("\n")}
 `}</Markdown>
     );
   } catch (e) {
+    console.error(e);
     preview = <p style={{ color: "red" }}>{`${e}`}</p>;
   }
   return (

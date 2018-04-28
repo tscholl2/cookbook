@@ -15,6 +15,7 @@ export const initialState: State = freeze({
 
 export function createActions(dispatch: Dispatch<State>) {
   return {
+    goToHome: () => dispatch(goTo("/")),
     goToRecipe: (recipeID: string) => dispatch(goTo(`/recipe/${recipeID}`, { recipeID })),
     goToNew: () => dispatch(goTo("/new")),
     goToAll: () => dispatch(goTo("/view")),
