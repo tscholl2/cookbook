@@ -54,8 +54,11 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
         </aside>,
         <ul class="cookbook-all-recipes-list">
           {recipes.map(r => (
-            <li class="cookbook-all-recipes-listitem" key={r.id} onclick={() => actions.router.goToRecipe(r.id)}>
-              <Preview recipe={r} />
+            <li class="cookbook-all-recipes-listitem" key={r.id}>
+              <button onclick={() => actions.editRecipe(r.id)}>edit</button>
+              <div onclick={() => actions.router.goToRecipe(r.id)}>
+                <Preview recipe={r} />
+              </div>
             </li>
           ))}
         </ul>,

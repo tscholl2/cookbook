@@ -13,7 +13,7 @@ export function NewRecipePage(dispatch: Dispatch<State>) {
   const actions = actionsCreator(dispatch);
   const formSelector = actions.forms.newSelectFormProps<RecipeInput>(
     "new-recipe",
-    { name: "", directions: "", ingrediants: "", author: "", time: "", tags: "" },
+    { id: "", name: "", directions: "", ingrediants: "", author: "", time: "", tags: "" },
     {
       validate,
       onSubmit: status => {

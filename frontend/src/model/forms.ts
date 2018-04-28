@@ -23,7 +23,11 @@ export type State = { [key: string]: FormStatus<any> };
 export const initialState: State = {};
 
 export function createActions(dispatch: Dispatch<State>) {
-  return {
+  const actions = {
+    clearForm: (name: string) =>
+      dispatch(logReducer("form-reset", { name }, state => setIn(state, [name], {}))),
+    setForm: <FormValues>(name: string, values: FormValues) =>
+      dispatch(logReducer("setForm", { name, values }, state => setIn(state, [name], { values }))),
     newSelectFormProps: <FormValues>(
       name: string,
       initialValues: FormValues,
@@ -119,4 +123,5 @@ export function createActions(dispatch: Dispatch<State>) {
       };
     },
   };
+  return actions;
 }
