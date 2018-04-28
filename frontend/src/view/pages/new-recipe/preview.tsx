@@ -10,25 +10,36 @@ export function Preview(input: RecipeInput) {
     const recipe = inputToRecipe(input);
     // TODO: markdown is unnecessary here
     preview = (
-      <Markdown>{`
-# ${recipe.name}
-
-* Servings = ${recipe.servings}
-* Time = ${recipe.totalTime}
-* Author = ${recipe.author}
-* Tags = ${recipe.tags.join(", ")}
-
-# Ingrediants
-
-| Amount | Measurement | Name |
-| :----: | :---------: | :--: |
-${recipe.ingredients.map(i => `| ${i.amount} | ${i.measurement} | ${i.name} |`).join("\n")}
-
-# Directions
-
-${recipe.directions.map((l, i) => `${i + 1}. ${l}`).join("\n")}
-
-`}</Markdown>
+      <div>
+        <h3>{recipe.name}</h3>
+        <ul>
+          <li>Servings = {recipe.servings}</li>
+          <li>Time = {recipe.totalTime}</li>
+          <li>Author = {recipe.author}</li>
+          <li>Tags = {recipe.tags.map(t => <span class="label cookbook-tag">{t}</span>)}</li>
+        </ul>
+        <h4>Ingrediants</h4>
+        <table>
+          <thead>
+            <tr>
+              <th>Amount</th>
+              <th>Measurement</th>
+              <th>Name</th>
+            </tr>
+          </thead>
+          <tbody>
+            {recipe.ingredients.map(i => (
+              <tr>
+                <td>{i.amount}</td>
+                <td>{i.measurement}</td>
+                <td>{i.name}</td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+        <h4>Directions</h4>
+        <ol>{recipe.directions.map(l => <li>{l}</li>)}</ol>
+      </div>
     );
   } catch (e) {
     console.error(e);
