@@ -90,6 +90,7 @@ export function createActions(dispatch: Dispatch<State>) {
             return state;
           }),
         );
+        return recipe;
       })();
     },
     downloadAllRecipes: () => {

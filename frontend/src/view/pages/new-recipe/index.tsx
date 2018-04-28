@@ -18,7 +18,7 @@ export function NewRecipePage(dispatch: Dispatch<State>) {
       validate,
       onSubmit: async status => {
         const recipe = formValuesToRecipe(status.values);
-        await actions.api.submitNewRecipe(recipe);
+        await actions.api.submitNewRecipe(recipe); // TODO: this returns the recipe so can use to nav
         // TODO: signal UI when done to show modal & redirect on success?
         return actions.forms.clearForm("new-recipe");
       },
