@@ -7,6 +7,10 @@ $dark-color: #3e396b;
 @import "node_modules/spectre.css/src/spectre";
 @import "node_modules/spectre.css/src/spectre-exp.scss";
 
+body {
+  background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/restaurant_icons.png");
+}
+
 #app {
   width: 100vw;
   height: 100vh;
