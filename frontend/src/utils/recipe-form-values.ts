@@ -10,6 +10,7 @@ export interface RecipeFormValues {
   time: string;
   directions: string;
   servings?: number;
+  images: string[];
   author: string;
 }
 
@@ -23,6 +24,7 @@ export function recipeToFormValues(recipe: Recipe): RecipeFormValues {
     author: recipe.author,
     ingrediants: recipe.ingredients.map(i => `${i.amount} ${i.measurement} ${i.name}`).join("\n"),
     directions: recipe.directions.map((l, i) => `${i + 1}. ${l}`).join("\n"),
+    images: recipe.images,
   };
 }
 
@@ -36,6 +38,7 @@ export function formValuesToRecipe(input: RecipeFormValues): Recipe {
     directions: rawDirections = "",
     time: totalTime,
     ingrediants: rawIngrediants = "",
+    images,
   } = input;
   return {
     id,
@@ -43,7 +46,7 @@ export function formValuesToRecipe(input: RecipeFormValues): Recipe {
     author,
     servings,
     totalTime,
-    images: [],
+    images,
     tags: tags
       .toLowerCase()
       .split(",")

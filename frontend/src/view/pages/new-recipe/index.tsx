@@ -13,7 +13,16 @@ export function NewRecipePage(dispatch: Dispatch<State>) {
   const actions = actionsCreator(dispatch);
   const formSelector = actions.forms.newSelectFormProps<RecipeFormValues>(
     "new-recipe",
-    { id: "", name: "", directions: "", ingrediants: "", author: "", time: "", tags: "" },
+    {
+      id: "",
+      name: "",
+      directions: "",
+      ingrediants: "",
+      author: "",
+      time: "",
+      tags: "",
+      images: [],
+    },
     {
       validate,
       onSubmit: async status => {

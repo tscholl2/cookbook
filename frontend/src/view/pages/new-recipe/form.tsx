@@ -18,6 +18,10 @@ export function RecipeForm(props: FormProps<RecipeFormValues>) {
   const inputProps = { oninput: handleChange, onblur: handleBlur, onfocus: handleFocus };
   const someError = hasError(errors);
   const someTouched = hasTouched(touched);
+  const removeImage = (index: number) =>
+    handleChange({
+      target: { name: "images", value: values.images.filter((_, i) => i !== index) },
+    } as any);
   return (
     <form class="cookbook-new-recipe-form form-horizontal" onsubmit={handleSubmit}>
       <fieldset disabled={isSubmitting}>
@@ -162,11 +166,36 @@ export function RecipeForm(props: FormProps<RecipeFormValues>) {
             {errors.author && <p class="form-input-hint">{errors.author}</p>}
           </div>
         </div>
+        <div class="form-group">
+          <div class="col-3 col-sm-12">
+            <label class="form-label">Images</label>
+          </div>
+          <div class="col-9 col-sm-12">
+            <ul class="cookbook-new-recipe-form-image-list">
+              {values.images.map((s, i) => (
+                <li>
+                  <img src={s} />
+                  <button
+                    type="button"
+                    class="cookbook-top-right btn btn-action circle"
+                    onclick={() => removeImage(i)}
+                  >
+                    ×
+                  </button>
+                </li>
+              ))}
+              <li>
+                <button type="button" class="btn">
+                  Add Image
+                </button>
+              </li>
+            </ul>
+          </div>
+        </div>
         <button
           class={"btn active" + (isSubmitting ? " loading" : "")}
           type="submit"
           disabled={isSubmitting || someError || !someTouched}
-          style={{ width: "100%", height: "100px" }}
         >
           submit
         </button>
