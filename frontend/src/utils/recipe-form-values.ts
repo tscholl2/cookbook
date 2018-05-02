@@ -28,8 +28,9 @@ export function recipeToFormValues(recipe: Recipe): RecipeFormValues {
 
 export function formValuesToRecipe(input: RecipeFormValues): Recipe {
   const {
-    name,
-    author,
+    id = "",
+    name = "",
+    author = "",
     servings = 1,
     tags = "",
     directions: rawDirections = "",
@@ -37,7 +38,7 @@ export function formValuesToRecipe(input: RecipeFormValues): Recipe {
     ingrediants: rawIngrediants = "",
   } = input;
   return {
-    id: "",
+    id,
     name,
     author,
     servings,

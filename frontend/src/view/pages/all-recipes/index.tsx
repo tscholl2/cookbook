@@ -22,7 +22,18 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
     (state: State) => formSelector(state.forms),
     (state: State) => {
       const form = formSelector(state.forms);
-      const recipes = recipesSelector(state);
+      let recipes = recipesSelector(state);
+      if (form.values.numberOfIngrediants !== undefined && form.values.numberOfIngrediants > 0) {
+        recipes = recipes.filter(r => r.ingredients.length <= form.values.numberOfIngrediants!);
+      }
+      if (form.values.tags) {
+        const tags = form.values.tags
+          .split(",")
+          .map(s => s.trim())
+          .filter(s => s);
+        // TODO: fuzz search tags
+        recipes = recipes.filter(r => r.tags.find(t => tags.indexOf(t) > -1) !== undefined);
+      }
       if (!form.values.search) {
         return recipes;
       }
@@ -31,73 +42,73 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
     },
     (status, form, recipes) => {
       if (status.isLoading || status.timestamp === undefined) {
-        return [
-          <h1
-            oncreate={status.timestamp === undefined ? actions.api.downloadAllRecipes : undefined}
-          >
-            ...loading recipes...
-          </h1>,
-          <progress />,
-        ];
+        return (
+          <main>
+            <h1
+              oncreate={status.timestamp === undefined ? actions.api.downloadAllRecipes : undefined}
+            >
+              ...loading recipes...
+            </h1>,
+            <progress />,
+          </main>
+        );
       }
       const tags = form.values.tags
         .split(",")
         .map(s => s.trim())
         .filter(s => s);
-      return [
-        <div class="columns">
-          <aside class="column col-3 cookbook-all-recipes-sidebar">
-            <div class="form-group">
-              <label class="form-label" for="input-search">
-                Search
-              </label>
-              <input
-                id="input-search"
-                class="form-input"
-                name="search"
-                type="search"
-                placeholder="Search"
-                value={form.values.search}
-                oninput={form.handleChange}
-                onblur={form.handleBlur}
-                onfocus={form.handleFocus}
-              />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="input-tags">
-                Tags
-              </label>
-              <input
-                id="input-tags"
-                class="form-input"
-                name="tags"
-                type="text"
-                placeholder="tag1, tag2"
-                value={form.values.tags}
-                oninput={form.handleChange}
-                onblur={form.handleBlur}
-                onfocus={form.handleFocus}
-              />
-            </div>
-            <div class="form-group">
-              <label class="form-label" for="input-numberOfIngrediants">
-                Number of Ingrediants
-              </label>
-              <input
-                id="input-numberOfIngrediants"
-                class="form-input"
-                name="numberOfIngrediants"
-                type="number"
-                placeholder="3"
-                value={form.values.numberOfIngrediants}
-                oninput={form.handleChange}
-                onblur={form.handleBlur}
-                onfocus={form.handleFocus}
-              />
-            </div>
+      return (
+        <main class="cookbook-all-recipes-main">
+          <aside>
+            <form onsubmit={form.handleSubmit}>
+              <fieldset>
+                <legend>Filter</legend>
+                <div class="form-group">
+                  <label class="form-label" for="input-search">
+                    Contains
+                  </label>
+                  <input
+                    id="input-search"
+                    class="form-input"
+                    name="search"
+                    type="search"
+                    placeholder="chop"
+                    value={form.values.search}
+                    oninput={form.handleChange}
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="input-tags">
+                    Tags
+                  </label>
+                  <input
+                    id="input-tags"
+                    class="form-input"
+                    name="tags"
+                    type="text"
+                    placeholder="tag1, tag2"
+                    value={form.values.tags}
+                    oninput={form.handleChange}
+                  />
+                </div>
+                <div class="form-group">
+                  <label class="form-label" for="input-numberOfIngrediants">
+                    Number of Ingrediants
+                  </label>
+                  <input
+                    id="input-numberOfIngrediants"
+                    class="form-input"
+                    name="numberOfIngrediants"
+                    type="number"
+                    placeholder="3"
+                    value={form.values.numberOfIngrediants}
+                    oninput={form.handleChange}
+                  />
+                </div>
+              </fieldset>
+            </form>
           </aside>
-          <div class="divider-vert" data-content="" />
-          <div class="column">
+          <div class="cookbook-all-recipes-list-container">
             {form.values.search && (
               <p>
                 Recipes containing <span class="label cookbook-tag">{form.values.search}</span>
@@ -110,7 +121,7 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
               form.values.numberOfIngrediants > 0 && (
                 <p>
                   Recipes with at most
-                  <span class="label cookbook-tag">{form.values.numberOfIngrediants}</span>{" "}
+                  <span class="label cookbook-tag">{form.values.numberOfIngrediants}</span>
                   ingrediants
                 </p>
               )}
@@ -125,8 +136,8 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
               ))}
             </ul>
           </div>
-        </div>,
-      ];
+        </main>
+      );
     },
   );
 };

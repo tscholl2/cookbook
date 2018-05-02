@@ -14,14 +14,29 @@
   }
 }
 
-.cookbook-all-recipes-sidebar {
+.cookbook-all-recipes-main {
   display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  align-items: center;
-  * input {
-    width: 200px;
+  flex-wrap: wrap;
+  justify-content: center;
+  > aside {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    max-width: 275px;
+    * input {
+      width: 200px;
+    }
+    border-right: 1px solid #ddd;
+    @media screen and (max-width: 700px) {
+      border-right: none;
+    }
   }
+}
+
+.cookbook-all-recipes-list-container {
+  flex: 1;
 }
 
 .cookbook-all-recipes-list {

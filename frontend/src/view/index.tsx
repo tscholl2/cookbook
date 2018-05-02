@@ -25,7 +25,7 @@ export const View = (dispatch: Dispatch<State>) => {
     return (
       <div id="app">
         <Header {...state} />
-        <main>{pages[actions.router.selectPageName(state.route)](state)}</main>
+        {pages[actions.router.selectPageName(state.route)](state)}
         <Footer />
       </div>
     );

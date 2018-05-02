@@ -126,6 +126,9 @@ export function createActions(dispatch: Dispatch<State>) {
           handleFocus,
           handleReset,
           handleSubmit,
+          values: {},
+          errors: {},
+          touched: {},
           ...(state[name] as FormStatus<FormValues>),
         };
       };

@@ -5,8 +5,8 @@ import { set } from "icepick";
 
 export function HomePage(dispatch: Dispatch<State>) {
   const actions = actionsCreator(dispatch);
-  return (state: State) => [
-    <div
+  return (state: State) => (
+    <main
       oncreate={
         state.api.status.allRecipes.timestamp === undefined && actions.api.downloadAllRecipes
       }
@@ -17,12 +17,10 @@ export function HomePage(dispatch: Dispatch<State>) {
       <button style={{ width: "100px", height: "100px" }} onclick={actions.router.goToAll}>
         view
       </button>
-    </div>,
-    <div>
       <h1>Counter</h1>
       <h1>{state.count}</h1>
       <button onclick={() => dispatch(s => set(s, "count", state.count - 1))}>-</button>
       <button onclick={() => dispatch(s => set(s, "count", state.count + 1))}>+</button>
-    </div>,
-  ];
+    </main>
+  );
 }

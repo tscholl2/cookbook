@@ -60,12 +60,13 @@ const samples: Array<Recipe> = require("./samples.json");
 export function createActions(dispatch: Dispatch<State>) {
   return {
     submitNewRecipe: (recipe: Recipe) => {
+      const R = JSON.parse(JSON.stringify(recipe));
       recipe = JSON.parse(JSON.stringify(recipe));
-      recipe.id = `${Math.random()}`;
+      recipe.id = recipe.id || `${Math.random()}`;
       recipe.datePublished = new Date().toJSON();
       recipe.lastEdited = new Date().toJSON();
       dispatch(
-        logReducer("SUBMIT_NEW_RECIPE_REQUEST", [], state =>
+        logReducer("SUBMIT_NEW_RECIPE_REQUEST", { recipe: R }, state =>
           setIn(state, ["status", "submitNewRecipe"], {
             isLoading: true,
             response: undefined,
@@ -76,7 +77,7 @@ export function createActions(dispatch: Dispatch<State>) {
       return (async () => {
         await new Promise(resolve => setTimeout(resolve, 1000));
         dispatch(
-          logReducer("SUBMIT_NEW_RECIPE_SUCCESS", [], state => {
+          logReducer("SUBMIT_NEW_RECIPE_SUCCESS", { recipe }, state => {
             state = setIn(state, ["status", "submitNewRecipe"], {
               isLoading: false,
               response: samples,

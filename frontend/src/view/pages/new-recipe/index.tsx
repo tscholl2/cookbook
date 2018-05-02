@@ -27,10 +27,10 @@ export function NewRecipePage(dispatch: Dispatch<State>) {
   return (state: State) => {
     const formProps = formSelector(state.forms);
     return (
-      <div class="cookbook-editor-container">
+      <main class="cookbook-editor-container">
         <RecipeForm {...formProps} />
         <Preview {...formProps.values} />
-      </div>
+      </main>
     );
   };
 }

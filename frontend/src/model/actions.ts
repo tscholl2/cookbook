@@ -25,6 +25,7 @@ export function actionsCreator(dispatch: Dispatch<State>) {
         console.error(`recipe ${id} not found`);
         return;
       }
+      // TODO: images are cleared when doing this
       actions.forms.setForm("new-recipe", recipeToFormValues(recipe));
       actions.router.goToNew();
     },
