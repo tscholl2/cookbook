@@ -62,7 +62,7 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
           <aside>
             <form onsubmit={form.handleSubmit}>
               <fieldset>
-                <legend>Filter</legend>
+                <legend>Search</legend>
                 <div class="form-group">
                   <label class="form-label" for="input-search">
                     Contains
@@ -125,19 +125,36 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
                   ingrediants
                 </p>
               )}
-            <ul class="cookbook-all-recipes-list">
-              {recipes.map(r => (
-                <li class="cookbook-all-recipes-listitem" key={r.id}>
-                  <button onclick={() => actions.editRecipe(r.id)}>edit</button>
-                  <div onclick={() => actions.router.goToRecipe(r.id)}>
+            {recipes.length === 0 ? (
+              <div class="empty">
+                <div class="empty-icon">
+                  <img src={require("./empty-preview.svg")} />
+                </div>
+                <p class="empty-title h5">No recipes found.</p>
+                <p class="empty-subtitle">Click the button to add a recipe.</p>
+                <div class="empty-action">
+                  <button class="btn btn-primary" onclick={actions.router.goToNew}>
+                    New Recipe
+                  </button>
+                </div>
+              </div>
+            ) : (
+              <ul class="cookbook-all-recipes-list">
+                {recipes.map(r => (
+                  <li
+                    class="cookbook-all-recipes-listitem"
+                    key={r.id}
+                    onclick={() => actions.router.goToRecipe(r.id)}
+                  >
                     <Preview recipe={r} />
-                  </div>
-                </li>
-              ))}
-            </ul>
+                  </li>
+                ))}
+              </ul>
+            )}
           </div>
         </main>
       );
     },
   );
 };
+declare const require: any;
