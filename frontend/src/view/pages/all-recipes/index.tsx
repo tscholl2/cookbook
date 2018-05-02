@@ -8,7 +8,11 @@ import Fuse from "fuse.js";
 
 export const AllRecipesPage = (dispatch: Dispatch<State>) => {
   const actions = actionsCreator(dispatch);
-  const formSelector = actions.forms.newSelectFormProps("all-recipe-search", { search: "" });
+  const formSelector = actions.forms.newSelectFormProps("all-recipe-search", {
+    search: "",
+    tags: "",
+    numberOfIngrediants: undefined as number | undefined,
+  });
   const recipesSelector = createSelector(
     (state: State) => state.api.data.recipes,
     recipes => Object.keys(recipes).map(id => recipes[id]),
@@ -36,32 +40,92 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
           <progress />,
         ];
       }
+      const tags = form.values.tags
+        .split(",")
+        .map(s => s.trim())
+        .filter(s => s);
       return [
-        <h1>All Recipes</h1>,
-        <aside>
-          <label>
-            Search:
-            <input
-              name="search"
-              type="search"
-              placeholder="Search"
-              value={form.values.search}
-              oninput={form.handleChange}
-              onblur={form.handleBlur}
-              onfocus={form.handleFocus}
-            />
-          </label>
-        </aside>,
-        <ul class="cookbook-all-recipes-list">
-          {recipes.map(r => (
-            <li class="cookbook-all-recipes-listitem" key={r.id}>
-              <button onclick={() => actions.editRecipe(r.id)}>edit</button>
-              <div onclick={() => actions.router.goToRecipe(r.id)}>
-                <Preview recipe={r} />
-              </div>
-            </li>
-          ))}
-        </ul>,
+        <div class="columns">
+          <aside class="column col-3 cookbook-all-recipes-sidebar">
+            <div class="form-group">
+              <label class="form-label" for="input-search">
+                Search
+              </label>
+              <input
+                id="input-search"
+                class="form-input"
+                name="search"
+                type="search"
+                placeholder="Search"
+                value={form.values.search}
+                oninput={form.handleChange}
+                onblur={form.handleBlur}
+                onfocus={form.handleFocus}
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="input-tags">
+                Tags
+              </label>
+              <input
+                id="input-tags"
+                class="form-input"
+                name="tags"
+                type="text"
+                placeholder="tag1, tag2"
+                value={form.values.tags}
+                oninput={form.handleChange}
+                onblur={form.handleBlur}
+                onfocus={form.handleFocus}
+              />
+            </div>
+            <div class="form-group">
+              <label class="form-label" for="input-numberOfIngrediants">
+                Number of Ingrediants
+              </label>
+              <input
+                id="input-numberOfIngrediants"
+                class="form-input"
+                name="numberOfIngrediants"
+                type="number"
+                placeholder="3"
+                value={form.values.numberOfIngrediants}
+                oninput={form.handleChange}
+                onblur={form.handleBlur}
+                onfocus={form.handleFocus}
+              />
+            </div>
+          </aside>
+          <div class="divider-vert" data-content="" />
+          <div class="column">
+            {form.values.search && (
+              <p>
+                Recipes containing <span class="label cookbook-tag">{form.values.search}</span>
+              </p>
+            )}
+            {tags.length > 0 && (
+              <p>Recipes with tags {tags.map(t => <span class="label cookbook-tag">{t}</span>)}</p>
+            )}
+            {form.values.numberOfIngrediants !== undefined &&
+              form.values.numberOfIngrediants > 0 && (
+                <p>
+                  Recipes with at most
+                  <span class="label cookbook-tag">{form.values.numberOfIngrediants}</span>{" "}
+                  ingrediants
+                </p>
+              )}
+            <ul class="cookbook-all-recipes-list">
+              {recipes.map(r => (
+                <li class="cookbook-all-recipes-listitem" key={r.id}>
+                  <button onclick={() => actions.editRecipe(r.id)}>edit</button>
+                  <div onclick={() => actions.router.goToRecipe(r.id)}>
+                    <Preview recipe={r} />
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        </div>,
       ];
     },
   );

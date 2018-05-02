@@ -77,7 +77,10 @@ export function createActions(dispatch: Dispatch<State>) {
       };
       const handleChange = (e: any) => {
         const field = e.target.name || e.target.id;
-        const value = e.target.value;
+        let value = e.target.value;
+        if (e.target.type && e.target.type === "number" && value) {
+          value = parseFloat(value);
+        }
         dispatch(
           logReducer("form-change", { name, field, value }, state => {
             state = setIn(state, [name, "touched", field], true);
@@ -114,12 +117,17 @@ export function createActions(dispatch: Dispatch<State>) {
           })();
         }
       };
+      // Set up the initial values if haven't been set yet.
+      dispatch(state => (state[name] ? state : setIn(state, [name], initialForm)));
       return (state: State): FormProps<FormValues> => {
-        const status: FormStatus<FormValues> = {
-          ...initialForm,
+        return {
+          handleBlur,
+          handleChange,
+          handleFocus,
+          handleReset,
+          handleSubmit,
           ...(state[name] as FormStatus<FormValues>),
         };
-        return { handleBlur, handleChange, handleFocus, handleReset, handleSubmit, ...status };
       };
     },
   };

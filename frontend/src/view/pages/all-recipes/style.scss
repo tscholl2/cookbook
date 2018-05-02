@@ -14,6 +14,16 @@
   }
 }
 
+.cookbook-all-recipes-sidebar {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: center;
+  * input {
+    width: 200px;
+  }
+}
+
 .cookbook-all-recipes-list {
   list-style: none;
   display: flex;

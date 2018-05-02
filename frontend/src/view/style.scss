@@ -6,9 +6,11 @@ $dark-color: #3e396b;
 // Import full Spectre source code
 @import "node_modules/spectre.css/src/spectre";
 @import "node_modules/spectre.css/src/spectre-exp.scss";
+@import url("https://fonts.googleapis.com/css?family=Merriweather");
 
 body {
-  background-image: url("https://www.toptal.com/designers/subtlepatterns/patterns/restaurant_icons.png");
+  background-color: rgba(238, 238, 238, 0.16%);
+  font-family: "Merriweather", serif;
 }
 
 #app {
