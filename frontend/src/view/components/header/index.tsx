@@ -11,7 +11,9 @@ export const ConnectHeader = (dispatch: Dispatch<State>) => {
     recipe => {
       return (
         <header class="cookbook-header">
-          <h1 class="h1" onclick={actions.router.goToHome}>{recipe ? recipe.name : "Cookbook"}</h1>
+          <h1 class="h1" onclick={actions.router.goToHome}>
+            Cookbook
+          </h1>
           <nav>
             <ul>
               <li>

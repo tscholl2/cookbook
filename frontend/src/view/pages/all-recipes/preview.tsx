@@ -24,7 +24,7 @@ export function Preview(props: { recipe: Recipe; key?: string }) {
         </div>
       </div>
       <div class="card-body">
-        {recipe.tags.map(t => <span class="label cookbook-tag">{t}</span>)}
+        {recipe.tags.map(t => <span class="chip">{t}</span>)}
       </div>
     </div>
   );

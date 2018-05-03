@@ -13,7 +13,7 @@ export function Preview(input: RecipeFormValues) {
         <li>Servings = {recipe.servings}</li>
         <li>Time = {recipe.totalTime}</li>
         <li>Author = {recipe.author}</li>
-        <li>Tags = {recipe.tags.map(t => <span class="label cookbook-tag">{t}</span>)}</li>
+        <li>Tags = {recipe.tags.map(t => <span class="chip">{t}</span>)}</li>
       </ul>,
       <h4>Ingrediants</h4>,
       <table>

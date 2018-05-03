@@ -111,17 +111,17 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
           <div class="cookbook-all-recipes-list-container">
             {form.values.search && (
               <p>
-                Recipes containing <span class="label cookbook-tag">{form.values.search}</span>
+                Recipes containing <span class="chip">{form.values.search}</span>
               </p>
             )}
             {tags.length > 0 && (
-              <p>Recipes with tags {tags.map(t => <span class="label cookbook-tag">{t}</span>)}</p>
+              <p>Recipes with tags {tags.map(t => <span class="chip">{t}</span>)}</p>
             )}
             {form.values.numberOfIngrediants !== undefined &&
               form.values.numberOfIngrediants > 0 && (
                 <p>
                   Recipes with at most
-                  <span class="label cookbook-tag">{form.values.numberOfIngrediants}</span>
+                  <span class="chip">{form.values.numberOfIngrediants}</span>
                   ingrediants
                 </p>
               )}
