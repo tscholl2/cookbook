@@ -11,7 +11,7 @@ export function HomePage(dispatch: Dispatch<State>) {
         state.api.status.allRecipes.timestamp === undefined && actions.api.downloadAllRecipes
       }
     >
-      <button style={{ width: "100px", height: "100px" }} onclick={actions.clearAndGoToNewRecipe}>
+      <button style={{ width: "100px", height: "100px" }} onclick={actions.router.goToNew}>
         new
       </button>
       <button style={{ width: "100px", height: "100px" }} onclick={actions.router.goToAll}>

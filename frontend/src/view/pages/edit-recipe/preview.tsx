@@ -41,10 +41,5 @@ export function Preview(input: RecipeFormValues) {
     console.error(e);
     preview = <p style={{ color: "red" }}>{`${e}`}</p>;
   }
-  return (
-    <div class="cookbook-new-recipe-preview">
-      <h2 style={{ textAlign: "center" }}>Preview</h2>
-      {preview}
-    </div>
-  );
+  return preview;
 }

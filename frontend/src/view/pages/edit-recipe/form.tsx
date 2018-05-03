@@ -4,7 +4,7 @@ import { FormProps, FormErrors, FormTouched } from "src/model/forms";
 
 const autoFocus = (el: HTMLElement) => el.focus();
 
-export function RecipeForm(props: FormProps<RecipeFormValues>) {
+export function RecipeForm(props: FormProps<RecipeFormValues> & { disabled?: boolean }) {
   const {
     values,
     errors,
@@ -14,6 +14,7 @@ export function RecipeForm(props: FormProps<RecipeFormValues>) {
     handleBlur,
     handleFocus,
     isSubmitting,
+    disabled,
   } = props;
   const inputProps = { oninput: handleChange, onblur: handleBlur, onfocus: handleFocus };
   const someError = hasError(errors);
@@ -23,8 +24,8 @@ export function RecipeForm(props: FormProps<RecipeFormValues>) {
       target: { name: "images", value: values.images.filter((_, i) => i !== index) },
     } as any);
   return (
-    <form class="cookbook-new-recipe-form form-horizontal" onsubmit={handleSubmit}>
-      <fieldset disabled={isSubmitting}>
+    <form class="form-horizontal" onsubmit={handleSubmit}>
+      <fieldset disabled={isSubmitting || disabled}>
         <legend>New Recipe</legend>
         <div class={"form-group" + (someTouched && errors.name ? " has-error" : "")}>
           <div class="col-3 col-sm-12">
@@ -44,7 +45,7 @@ export function RecipeForm(props: FormProps<RecipeFormValues>) {
               value={values.name}
               {...inputProps}
             />
-            {errors.name && <p class="form-input-hint">{errors.name}</p>}
+            {errors.name && someTouched && <p class="form-input-hint">{errors.name}</p>}
           </div>
         </div>
         <div class={"form-group" + (someTouched && errors.time ? " has-error" : "")}>
@@ -64,7 +65,7 @@ export function RecipeForm(props: FormProps<RecipeFormValues>) {
               value={values.time}
               {...inputProps}
             />
-            {errors.time && <p class="form-input-hint">{errors.time}</p>}
+            {errors.time && someTouched && <p class="form-input-hint">{errors.time}</p>}
           </div>
         </div>
         <div class={"form-group" + (someTouched && errors.servings ? " has-error" : "")}>
@@ -85,7 +86,7 @@ export function RecipeForm(props: FormProps<RecipeFormValues>) {
               {...inputProps}
               onChange={handleChange}
             />
-            {errors.servings && <p class="form-input-hint">{errors.servings}</p>}
+            {errors.servings && someTouched && <p class="form-input-hint">{errors.servings}</p>}
           </div>
         </div>
         <div class={"form-group" + (someTouched && errors.tags ? " has-error" : "")}>
@@ -96,7 +97,6 @@ export function RecipeForm(props: FormProps<RecipeFormValues>) {
           </div>
           <div class="col-9 col-sm-12">
             <input
-              oncreate={autoFocus}
               class="form-input"
               id="input-recipe.tags"
               type="text"
@@ -105,7 +105,7 @@ export function RecipeForm(props: FormProps<RecipeFormValues>) {
               value={values.tags}
               {...inputProps}
             />
-            {errors.tags && <p class="form-input-hint">{errors.tags}</p>}
+            {errors.tags && someTouched && <p class="form-input-hint">{errors.tags}</p>}
           </div>
         </div>
         <div class={"form-group" + (someTouched && errors.ingrediants ? " has-error" : "")}>
@@ -124,7 +124,8 @@ export function RecipeForm(props: FormProps<RecipeFormValues>) {
               value={values.ingrediants}
               {...inputProps}
             />
-            {errors.ingrediants && <p class="form-input-hint">{errors.ingrediants}</p>}
+            {errors.ingrediants &&
+              someTouched && <p class="form-input-hint">{errors.ingrediants}</p>}
           </div>
         </div>
         <div class={"form-group" + (someTouched && errors.directions ? " has-error" : "")}>
@@ -143,7 +144,7 @@ export function RecipeForm(props: FormProps<RecipeFormValues>) {
               value={values.directions}
               {...inputProps}
             />
-            {errors.directions && <p class="form-input-hint">{errors.directions}</p>}
+            {errors.directions && someTouched && <p class="form-input-hint">{errors.directions}</p>}
           </div>
         </div>
         <div class={"form-group" + (errors.author && hasTouched(touched) ? " has-error" : "")}>
@@ -163,7 +164,7 @@ export function RecipeForm(props: FormProps<RecipeFormValues>) {
               value={values.author}
               {...inputProps}
             />
-            {errors.author && <p class="form-input-hint">{errors.author}</p>}
+            {errors.author && someTouched && <p class="form-input-hint">{errors.author}</p>}
           </div>
         </div>
         <div class="form-group">
@@ -195,7 +196,7 @@ export function RecipeForm(props: FormProps<RecipeFormValues>) {
         <button
           class={"btn active" + (isSubmitting ? " loading" : "")}
           type="submit"
-          disabled={isSubmitting || someError || !someTouched}
+          disabled={isSubmitting || someError || !someTouched || disabled}
         >
           submit
         </button>

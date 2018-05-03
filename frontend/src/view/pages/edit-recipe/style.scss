@@ -1,15 +1,6 @@
 .cookbook-editor-container {
-  display: flex;
-  flex-direction: row;
-  justify-content: space-evenly;
-  align-items: flex-start;
-  flex-wrap: wrap;
-}
-.cookbook-new-recipe-form {
-  max-width: 600px;
-}
-.cookbook-new-recipe-preview {
-  max-width: 600px;
+  margin-left: 10%;
+  margin-right: 10%;
 }
 .cookbook-new-recipe-form-image-list {
   list-style: none;

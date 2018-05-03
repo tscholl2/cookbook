@@ -5,7 +5,6 @@ import { createActions as routeActions } from "./router";
 import { createActions as apiActions } from "./api";
 import { createActions as uiActions } from "./ui";
 import { State } from "./";
-import { recipeToFormValues } from "src/utils/recipe-form-values";
 
 export function actionsCreator(dispatch: Dispatch<State>) {
   const actions = {
@@ -13,22 +12,6 @@ export function actionsCreator(dispatch: Dispatch<State>) {
     router: routeActions(dispatchSlicer("route")(dispatch)),
     api: apiActions(dispatchSlicer("api")(dispatch)),
     uiActions: uiActions(dispatchSlicer("ui")(dispatch)),
-    clearAndGoToNewRecipe: () => {
-      actions.forms.clearForm("new-recipe");
-      actions.router.goToNew();
-    },
-    editRecipe: (id: string) => {
-      let state: State;
-      dispatch(s => (state = s)); // TODO: dont do this
-      const recipe = state!.api.data.recipes[id];
-      if (recipe === undefined) {
-        console.error(`recipe ${id} not found`);
-        return;
-      }
-      // TODO: images are cleared when doing this
-      actions.forms.setForm("new-recipe", recipeToFormValues(recipe));
-      actions.router.goToNew();
-    },
   };
   return actions;
 }

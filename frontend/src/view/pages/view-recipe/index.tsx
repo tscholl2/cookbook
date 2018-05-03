@@ -44,10 +44,10 @@ export const ViewRecipePage = (dispatch: Dispatch<State>) => {
       }
       return (
         <main key="cookbook-view-recipe" oncreate={oncreate} class="cookbook-view-recipe">
-          <h1 class="cookbook-view-recipe-title">
+          <h1>
             {recipe.name}
             <button
-              onclick={() => actions.editRecipe(recipe.id)}
+              onclick={() => actions.router.goToEdit(recipe.id)}
               class="cookbook-view-recipe-edit-button btn btn-action circle"
             >
               ✎
@@ -59,7 +59,7 @@ export const ViewRecipePage = (dispatch: Dispatch<State>) => {
             src={recipe.images[0] || "http://via.placeholder.com/350x150"}
             alt={recipe.name}
           />
-          <div style={{ display: "flex", justifyContent: "center" }}>
+          <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
             <div class="columns">
               {recipe.tags.length > 0 && (
                 <div class="column col-12">

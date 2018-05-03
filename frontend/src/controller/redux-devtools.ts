@@ -22,6 +22,7 @@ export function connectControllerToReduxDevtools(controller: Controller) {
     });
     devtools.subscribe((message: any) => {
       if (message.type === "DISPATCH" && message.state) {
+        // TODO: change URL?
         controller.dispatch(
           Object.assign(() => JSON.parse(message.state), { __REDUX_DEVTOOLS_IGNORE__: true }),
         );
