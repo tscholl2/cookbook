@@ -23,6 +23,17 @@ export function RecipeForm(props: FormProps<RecipeFormValues> & { disabled?: boo
     handleChange({
       target: { name: "images", value: values.images.filter((_, i) => i !== index) },
     } as any);
+  const handleNewImageFile = (file: File | undefined) => {
+    if (file === undefined) {
+      return;
+    }
+    const reader = new FileReader();
+    reader.onload = (e: FileReaderProgressEvent) =>
+      handleChange({
+        target: { name: "images", value: values.images.concat([e.target!.result]) },
+      } as any);
+    reader.readAsDataURL(file);
+  };
   return (
     <form class="form-horizontal" onsubmit={handleSubmit}>
       <fieldset disabled={isSubmitting || disabled}>
@@ -171,8 +182,35 @@ export function RecipeForm(props: FormProps<RecipeFormValues> & { disabled?: boo
           <div class="col-3 col-sm-12">
             <label class="form-label">Images</label>
           </div>
-          <div class="col-9 col-sm-12">
-            <ul class="cookbook-new-recipe-form-image-list">
+          <div
+            class="col-9 col-sm-12"
+            tabindex={0}
+            onfocus={(e: any) => {
+              const selection = window.getSelection();
+              selection.removeAllRanges();
+              const el = document.getElementById("hidden-selectable")!;
+              const range = document.createRange();
+              range.selectNodeContents(el);
+              selection.addRange(range);
+              if (e.target !== document.activeElement) {
+                e.target.focus();
+              }
+            }}
+            onpaste={(e: any) => handleNewImageFile(handleFilePasteEvent(e))}
+          >
+            <p id="hidden-selectable" style={{ position: "absolute", left: "-1000px" }}>
+              aaa
+            </p>
+            <ul
+              class="cookbook-new-recipe-form-image-list"
+              ondragenter={(e: any) => e.target.classList.add("cookbook-dragging")}
+              ondragover={cancelEvent}
+              ondragleave={(e: any) => e.target.classList.remove("cookbook-dragging")}
+              ondrop={(e: any) => {
+                handleNewImageFile(handleFileDropEvent(e));
+                e.target.classList.remove("cookbook-dragging");
+              }}
+            >
               {values.images.map((s, i) => (
                 <li>
                   <img src={s} />
@@ -186,9 +224,18 @@ export function RecipeForm(props: FormProps<RecipeFormValues> & { disabled?: boo
                 </li>
               ))}
               <li>
-                <button type="button" class="btn">
-                  Add Image
-                </button>
+                <input
+                  type="file"
+                  id="fileInputElement"
+                  accept="image/*"
+                  style={{ display: "none" }}
+                  onchange={(e: any) => handleNewImageFile(handleFileInputEvent(e))}
+                />
+                <button
+                  type="button"
+                  class="btn cookbook-add-image-button"
+                  onclick={() => document.getElementById("fileInputElement")!.click()}
+                />
               </li>
             </ul>
           </div>
@@ -203,6 +250,41 @@ export function RecipeForm(props: FormProps<RecipeFormValues> & { disabled?: boo
       </fieldset>
     </form>
   );
+}
+
+function cancelEvent(e: Event) {
+  e.stopPropagation();
+  e.preventDefault();
+}
+
+function handleFileInputEvent(e: any): File | undefined {
+  e.preventDefault();
+  const files: FileList = e.target.files;
+  if (files.length > 0 && files[0].type.startsWith("image/")) {
+    return files[0];
+  }
+}
+
+function handleFileDropEvent(e: DragEvent): File | undefined {
+  e.preventDefault();
+  const items = e.dataTransfer.files;
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].type.startsWith("image/")) {
+      return items[i];
+    }
+  }
+}
+
+function handleFilePasteEvent(e: ClipboardEvent): File | undefined {
+  e.preventDefault();
+  // use event.originalEvent.clipboard for newer chrome versions
+  const items: DataTransferItemList = e.clipboardData.items;
+  // find first pasted image among pasted items
+  for (let i = 0; i < items.length; i++) {
+    if (items[i].type.startsWith("image/")) {
+      return items[i].getAsFile()!;
+    }
+  }
 }
 
 function hasError(errors: FormErrors<any>) {

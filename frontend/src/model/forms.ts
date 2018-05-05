@@ -1,6 +1,7 @@
 import { Dispatch } from "src/controller";
 import { logReducer } from "src/controller/redux-devtools";
 import { setIn, chain } from "icepick";
+import { shallowCompare } from "../utils/shallow-compare";
 
 export interface FormStatus<FormValues> {
   isSubmitting: boolean;
@@ -46,11 +47,16 @@ export function createActions(dispatch: Dispatch<State>) {
         touched: {},
       };
       const handleValidate = () =>
+        // TODO: don't run validate if values haven't
         validate
           ? dispatch(
-              logReducer("validate-form", { name }, state =>
-                setIn(state, [name, "errors"], validate({ ...initialForm, ...state[name] } as any)),
-              ),
+              logReducer("validate-form", { name }, state => {
+                const errors = validate({ ...initialForm, ...state[name] } as any);
+                if (!shallowCompare(errors, state[name].errors)) {
+                  return setIn(state, [name, "errors"], errors);
+                }
+                return state;
+              }),
             )
           : dispatch(s => s);
       const handleReset = () =>
