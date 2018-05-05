@@ -1,12 +1,13 @@
 import { Dispatch } from "src/controller";
-import { setIn, getIn } from "icepick";
+import { setIn } from "icepick";
+import { logReducer } from "src/controller/redux-devtools";
 
 export type State = { [key: string]: any };
 export const initialState: State = {};
 
 export function createActions(dispatch: Dispatch<State>) {
   return {
-    setIn: (path: string[], value: any) => dispatch(state => setIn(state, path, value)),
-    selectIn: (state: State, path: string[]) => getIn(state, path),
+    setIn: (path: string[], value: any) =>
+      dispatch(logReducer("ui-set", { path, value }, state => setIn(state, path, value))),
   };
 }

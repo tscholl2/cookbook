@@ -7,8 +7,14 @@
   width: 100%;
   margin-left: auto;
   margin-right: auto;
-  > h1 {
+  h1 {
     margin: 0;
     font-size: 5em;
+    cursor: pointer;
+  }
+  nav {
+    ul {
+      list-style: none;
+    }
   }
 }

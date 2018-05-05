@@ -11,6 +11,7 @@ import {
 } from "src/utils/recipe-form-values";
 import { Preview } from "./preview";
 import { RecipeForm } from "./form";
+import { ResponseModal } from "./response-modal";
 import "./style.scss";
 
 export function EditRecipePage(dispatch: Dispatch<State>) {
@@ -33,10 +34,11 @@ export function EditRecipePage(dispatch: Dispatch<State>) {
       {
         validate,
         onSubmit: async status => {
-          const recipe = formValuesToRecipe(status.values);
-          await actions.api.submitNewRecipe(recipe); // TODO: this returns the recipe so can use to nav
+          let recipe = formValuesToRecipe(status.values);
+          recipe = await actions.api.submitNewRecipe(recipe); // TODO: this returns the recipe so can use to nav
           formSelectorCache[name] = undefined; // needs to be clared so that the initial value is updated next edit
           // TODO: signal UI when done to show modal & redirect on success?
+          actions.ui.setIn(["edit-recipe-response"], { success: true, recipeID: recipe.id });
         },
       },
     );
@@ -58,6 +60,20 @@ export function EditRecipePage(dispatch: Dispatch<State>) {
         };
     const formSelector = getFormSelector(state.route.data.recipeID, initialValues);
     const formProps = formSelector(state.forms);
+    let modal: any;
+    if (state.ui["edit-recipe-response"]) {
+      const props = state.ui["edit-recipe-response"] || {};
+      modal = (
+        <ResponseModal
+          onClose={() => actions.ui.setIn(["edit-recipe-response"], undefined)}
+          onView={() => {
+            actions.ui.setIn(["edit-recipe-response"], undefined);
+            actions.router.goToRecipe(props.recipeID);
+          }}
+          success={props.success}
+        />
+      );
+    }
     return (
       <main class="cookbook-editor-container">
         <div class="columns">
@@ -71,6 +87,7 @@ export function EditRecipePage(dispatch: Dispatch<State>) {
             <Preview {...formProps.values} />
           </div>
         </div>
+        {modal}
       </main>
     );
   };

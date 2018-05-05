@@ -133,4 +133,3 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
     },
   );
 };
-declare const require: any;

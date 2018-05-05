@@ -11,7 +11,7 @@ export function actionsCreator(dispatch: Dispatch<State>) {
     forms: formsActions(dispatchSlicer("forms")(dispatch)),
     router: routeActions(dispatchSlicer("route")(dispatch)),
     api: apiActions(dispatchSlicer("api")(dispatch)),
-    uiActions: uiActions(dispatchSlicer("ui")(dispatch)),
+    ui: uiActions(dispatchSlicer("ui")(dispatch)),
   };
   return actions;
 }

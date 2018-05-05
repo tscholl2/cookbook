@@ -9,7 +9,8 @@ export interface Route {
 export function go({ path = "", data = {}, title = "" }: Route): Route {
   const route = getCurrentRoute();
   if (route.path !== path || route.title !== title || !shallowCompare(route.data, data)) {
-    history.pushState(data, title, path);
+    history.pushState(Object.assign(data), title, path);
+    window && window.scrollTo && window.scrollTo(0, 0); // TODO: is this right?
   }
   return { path, data, title };
 }
