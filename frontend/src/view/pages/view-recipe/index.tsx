@@ -38,12 +38,72 @@ export const ViewRecipePage = (dispatch: Dispatch<State>) => {
               ✎
             </button>
           </h1>
-          <img
-            class="img-fit-contain"
-            style={{ maxHeight: "450px", width: "100%" }}
-            src={recipe.images[0] || "http://via.placeholder.com/350x150"}
-            alt={recipe.name}
-          />
+          {recipe.images.length > 0 ? (
+            recipe.images.length === 1 ? (
+              <img
+                class="img-fit-contain"
+                style={{
+                  maxHeight: "450px",
+                  width: "100%",
+                }}
+                src={recipe.images[0]}
+                alt="picture of recipe"
+              />
+            ) : (
+              <div class="carousel">
+                {recipe.images.map((_, i) => (
+                  <input
+                    type="radio"
+                    id={`slide-${i}`}
+                    name="carousel-radio"
+                    hidden={true}
+                    class="carousel-locator"
+                    checked={i === 0}
+                  />
+                ))}
+                <div class="carousel-container">
+                  {recipe.images.map((s, i) => (
+                    <figure class="carousel-item">
+                      <label
+                        class="item-prev btn btn-action btn-lg"
+                        for={`slide-${
+                          i === 0 ? recipe.images.length - 1 : (i - 1) % recipe.images.length
+                        }`}
+                        
+                      >
+                        <span>←</span>
+                      </label>
+                      <label
+                        class="item-next btn btn-action btn-lg"
+                        for={`slide-${(i + 1) % recipe.images.length}`}
+                        
+                      >
+                        <span>→</span>
+                      </label>
+                      <img
+                        src={s}
+                        style={{
+                          maxHeight: "450px",
+                          width: "100%",
+                        }}
+                        class="img-fit-contain rounded"
+                        alt={`picture ${i + 1} of recipe of ${recipe.images.length}`}
+                      />
+                    </figure>
+                  ))}
+                </div>
+                <div class="carousel-nav">
+                  {recipe.images.map((_, i) => (
+                    <label class="nav-item text-hide c-hand" for={`slide-${i}`}>
+                      {i}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )
+          ) : (
+            <img class="img-fit-responsive" src={DinnerPlate} alt="picture of recipe" />
+          )}
           <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
             <div class="columns">
               {recipe.tags.length > 0 && (
