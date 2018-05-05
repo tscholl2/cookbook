@@ -1,4 +1,4 @@
-import { Reducer, Dispatch } from "src/controller";
+import { Dispatch } from "src/controller";
 import { set } from "icepick";
 import { createActions as formsActions } from "./forms";
 import { createActions as routeActions } from "./router";
@@ -16,14 +16,9 @@ export function actionsCreator(dispatch: Dispatch<State>) {
   return actions;
 }
 
-function dispatchSlicer<K extends keyof State>(
-  k: K,
-): (dispatch: Dispatch<State>) => Dispatch<State[K]> {
-  const f = reducerSlicer(k);
-  return d => r => d(f(r));
-}
-
-function reducerSlicer<K extends keyof State>(k: K): (r: Reducer<State[K]>) => Reducer<State> {
-  // We use Object.assign to carry any debug/devtool info on r to the monkey-patched function.
-  return r => Object.assign((state: any) => set(state, k, r(state[k])), r as any);
+function dispatchSlicer<K extends keyof State>(k: K): (d: Dispatch<State>) => Dispatch<State[K]> {
+  return d => r => {
+    const s = d(Object.assign((state: any) => set(state, k, r(state[k])), r as any));
+    return s[k];
+  };
 }

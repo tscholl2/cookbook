@@ -1,9 +1,8 @@
 import { h } from "src/view/h";
 import { RecipeFormValues, formValuesToRecipe } from "src/utils/recipe-form-values";
-// import { Markdown } from "src/view/components/markdown";
+import { memoize } from "src/utils/memoize";
 
-// TODO: memoize
-export function Preview(input: RecipeFormValues) {
+export const Preview = memoize(function Preview(input: RecipeFormValues) {
   let preview: JSX.Element | JSX.Element[];
   try {
     const recipe = formValuesToRecipe(input);
@@ -42,4 +41,4 @@ export function Preview(input: RecipeFormValues) {
     preview = <p style={{ color: "red" }}>{`${e}`}</p>;
   }
   return preview;
-}
+});

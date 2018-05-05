@@ -6,6 +6,7 @@ import { createSelector } from "reselect";
 import { Preview } from "./preview";
 import Fuse from "fuse.js";
 import { SearchForm, initialValues } from "./search-form";
+import { DinnerPlate } from "../../components/dinner-plate";
 
 export const AllRecipesPage = (dispatch: Dispatch<State>) => {
   const actions = actionsCreator(dispatch);
@@ -103,7 +104,7 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
             {recipes.length === 0 ? (
               <div class="empty">
                 <div class="empty-icon">
-                  <img src={require("./empty-preview.svg")} />
+                  <img src={DinnerPlate} />
                 </div>
                 <p class="empty-title h5">No recipes found.</p>
                 <p class="empty-subtitle">Click the button to add a recipe.</p>

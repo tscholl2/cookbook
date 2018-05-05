@@ -37,7 +37,6 @@ export function EditRecipePage(dispatch: Dispatch<State>) {
           await actions.api.submitNewRecipe(recipe); // TODO: this returns the recipe so can use to nav
           formSelectorCache[name] = undefined; // needs to be clared so that the initial value is updated next edit
           // TODO: signal UI when done to show modal & redirect on success?
-          return actions.forms.clearForm(name);
         },
       },
     );

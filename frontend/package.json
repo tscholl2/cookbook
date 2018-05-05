@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "parcel --hmr-port 34921 src/index.html",
     "prebuild": "rm -f dist/*",
-    "build": "parcel build src/index.html --public-url ./",
+    "build": "parcel build --no-cache src/index.html --public-url ./",
     "postbuild": "echo '⟶  bundle    =' $(du -sbh dist/ | sed 's/\\sdist\\///') && echo '⟶  bundle.gz =' $(tar -zc dist/ | wc -c | numfmt --to=iec)",
     "lint": "prettier --print-width 100 --trailing-comma all --write src/**/*.{ts,js,tsx,jsx,scss,css}",
     "bench": "find src/ -name *_bench* | xargs -n 1 ts-node -r tsconfig-paths/register -O '{\"module\":\"commonjs\"}'",
@@ -16,13 +16,13 @@
     "benchmark": "2.1.4",
     "node-sass": "4.9.0",
     "parcel-bundler": "1.7.0",
-    "parcel-plugin-typescript": "0.7.0",
+    "parcel-plugin-typescript": "0.7.1",
     "prettier": "1.12.1",
     "tap-summary": "4.0.0",
     "tape": "4.9.0",
-    "ts-node": "6.0.1",
+    "ts-node": "6.0.2",
     "tsconfig-paths": "3.3.1",
-    "tslint": "5.9.1",
+    "tslint": "5.10.0",
     "typescript": "2.8.3"
   },
   "dependencies": {
@@ -31,6 +31,6 @@
     "reselect": "3.0.1",
     "spectre.css": "0.5.1",
     "tslib": "1.9.0",
-    "ultradom": "3.0.1"
+    "ultradom": "https://github.com/tscholl2/patchdom.git#add-types-info"
   }
 }

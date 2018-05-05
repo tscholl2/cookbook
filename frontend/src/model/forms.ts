@@ -1,6 +1,6 @@
 import { Dispatch } from "src/controller";
 import { logReducer } from "src/controller/redux-devtools";
-import { setIn } from "icepick";
+import { setIn, chain } from "icepick";
 
 export interface FormStatus<FormValues> {
   isSubmitting: boolean;
@@ -27,7 +27,7 @@ export const initialState: State = {};
 export function createActions(dispatch: Dispatch<State>) {
   const actions = {
     clearForm: (name: string) =>
-      dispatch(logReducer("form-reset", { name }, state => setIn(state, [name], {}))),
+      dispatch(logReducer("form-clear", { name }, state => setIn(state, [name], {}))),
     setForm: <FormValues>(name: string, values: FormValues) =>
       dispatch(logReducer("setForm", { name, values }, state => setIn(state, [name], { values }))),
     newSelectFormProps: <FormValues>(
@@ -35,7 +35,7 @@ export function createActions(dispatch: Dispatch<State>) {
       initialValues: FormValues,
       options: {
         validate?: (status: FormStatus<FormValues>) => FormErrors<FormValues>;
-        onSubmit?: (status: FormStatus<FormValues>) => void | Promise<void>;
+        onSubmit?: (status: FormStatus<FormValues>) => any;
       } = {},
     ) => {
       const { validate, onSubmit } = options;
@@ -45,6 +45,14 @@ export function createActions(dispatch: Dispatch<State>) {
         errors: {},
         touched: {},
       };
+      const handleValidate = () =>
+        validate
+          ? dispatch(
+              logReducer("validate-form", { name }, state =>
+                setIn(state, [name, "errors"], validate({ ...initialForm, ...state[name] } as any)),
+              ),
+            )
+          : dispatch(s => s);
       const handleReset = () =>
         dispatch(
           logReducer("form-reset", { name }, state =>
@@ -54,24 +62,19 @@ export function createActions(dispatch: Dispatch<State>) {
       const handleBlur = (e: any) => {
         const field = e.target.name || e.target.id;
         dispatch(
-          logReducer("form-blur", { name, field }, state => {
-            state = setIn(state, [name, "touched", field], true);
-            state = setIn(state, [name, "focus", field], false);
-            if (validate) {
-              state = setIn(
-                state,
-                [name, "errors"],
-                validate({ ...initialForm, ...state[name] } as any),
-              );
-            }
-            return state;
-          }),
+          logReducer("form-blur", { name, field }, state =>
+            chain(state)
+              .setIn([name, "touched", field], true)
+              .setIn([name, "focus", field], false)
+              .value(),
+          ),
         );
+        return handleValidate();
       };
       const handleFocus = (e: any) => {
         e && e.preventDefault();
         const field = e.target.name || e.target.id;
-        dispatch(
+        return dispatch(
           logReducer("form-focus", { name, field }, state =>
             setIn(state, [name, "focus", field], true),
           ),
@@ -84,43 +87,43 @@ export function createActions(dispatch: Dispatch<State>) {
           value = parseFloat(value);
         }
         dispatch(
-          logReducer("form-change", { name, field, value }, state => {
-            state = setIn(state, [name, "touched", field], true);
-            state = setIn(state, [name, "values", field], value);
-            if (validate) {
-              state = setIn(
-                state,
-                [name, "errors"],
-                validate({ ...initialForm, ...state[name] } as any),
-              );
-            }
-            return state;
-          }),
+          logReducer("form-change", { name, field, value }, state =>
+            chain(state)
+              .setIn([name, "touched", field], true)
+              .setIn([name, "values", field], value)
+              .value(),
+          ),
         );
+        return handleValidate();
       };
       const handleSubmit = (e: Event) => {
         e && e.preventDefault();
-        // TODO: validate
-        if (onSubmit) {
-          dispatch(
-            logReducer("form-start submit", { name }, state =>
-              setIn(state, [name, "isSubmitting"], true),
+        let state = handleValidate();
+        if (!onSubmit || (state[name].errors && hasError(state[name].errors))) {
+          return state;
+        }
+        state = dispatch(
+          logReducer("form-start submit", { name }, state =>
+            setIn(state, [name, "isSubmitting"], true),
+          ),
+        );
+        return (async () => {
+          await onSubmit(state[name]);
+          return dispatch(
+            logReducer("form-end submit", { name }, state =>
+              setIn(state, [name, "isSubmitting"], false),
             ),
           );
-          (async () => {
-            let state!: State;
-            dispatch(s => (state = s)); // TODO: not a great solution
-            await onSubmit(state[name]);
-            dispatch(
-              logReducer("form-end submit", { name }, state =>
-                setIn(state, [name, "isSubmitting"], false),
-              ),
-            );
-          })();
-        }
+        })();
       };
       // Set up the initial values if haven't been set yet.
-      dispatch(state => (state[name] ? state : setIn(state, [name], initialForm)));
+      dispatch(
+        logReducer(
+          "form-initialize",
+          { name },
+          state => (state[name] ? state : setIn(state, [name], initialForm)),
+        ),
+      );
       return (state: State): FormProps<FormValues> => {
         return {
           handleBlur,
@@ -137,4 +140,13 @@ export function createActions(dispatch: Dispatch<State>) {
     },
   };
   return actions;
+}
+
+function hasError<V>(errors: FormErrors<V>) {
+  for (let key in errors) {
+    if (errors[key]) {
+      return true;
+    }
+  }
+  return false;
 }

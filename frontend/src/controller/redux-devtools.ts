@@ -1,4 +1,4 @@
-import { Controller, Reducer, Dispatch } from "../controller";
+import { Controller, Reducer } from "../controller";
 declare const window: any;
 
 export function connectControllerToReduxDevtools(controller: Controller) {
@@ -22,23 +22,13 @@ export function connectControllerToReduxDevtools(controller: Controller) {
     });
     devtools.subscribe((message: any) => {
       if (message.type === "DISPATCH" && message.state) {
-        // TODO: change URL?
+        // TODO: should be able to change the URL from here.
         controller.dispatch(
           Object.assign(() => JSON.parse(message.state), { __REDUX_DEVTOOLS_IGNORE__: true }),
         );
       }
     });
   }
-}
-
-// TODO: unused?
-export function logReducerCreator<T extends Function>(name: string, reducerCreator: T): T {
-  return ((...args: any[]) => logReducer(name, args, reducerCreator(...args))) as any;
-}
-
-// TODO: unused?
-export function logDispatch<S>(name: string, dispatch: Dispatch<S>): Dispatch<S> {
-  return (r: Reducer<S>) => dispatch(logReducer(name, [], r));
 }
 
 export function logReducer<S>(name: string, args: any, r: Reducer<S>): Reducer<S> {

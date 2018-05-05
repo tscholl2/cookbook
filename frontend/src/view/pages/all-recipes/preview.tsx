@@ -1,7 +1,6 @@
 import { h } from "src/view/h";
 import { Recipe } from "src/model/api";
-declare const require: any;
-const empty = require("./empty-preview.svg");
+import { DinnerPlate } from "src/view/components/dinner-plate";
 import "./style.scss";
 
 export function Preview(props: { recipe: Recipe; key?: string }) {
@@ -14,7 +13,7 @@ export function Preview(props: { recipe: Recipe; key?: string }) {
       {...otherProps}
     >
       <div class="card-image">
-        <img class="img-fit-cover" src={recipe.images[0] || empty} />
+        <img class="img-fit-contain" src={recipe.images[0] || DinnerPlate} />
       </div>
       <div class="card-header">
         <div class="card-title h1">{recipe.name}</div>
@@ -23,9 +22,7 @@ export function Preview(props: { recipe: Recipe; key?: string }) {
           Takes {recipe.totalTime}
         </div>
       </div>
-      <div class="card-body">
-        {recipe.tags.map(t => <span class="chip">{t}</span>)}
-      </div>
+      <div class="card-body">{recipe.tags.map(t => <span class="chip">{t}</span>)}</div>
     </div>
   );
 }

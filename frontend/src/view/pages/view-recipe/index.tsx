@@ -3,9 +3,8 @@ import { State } from "src/model";
 import { actionsCreator } from "src/model/actions";
 import { Dispatch } from "src/controller";
 import { createSelector } from "reselect";
+import { DinnerPlate } from "src/view/components/dinner-plate";
 import "./style.scss";
-declare const require: any;
-const empty = require("../all-recipes/empty-preview.svg"); // TODO: move to components/
 
 export const ViewRecipePage = (dispatch: Dispatch<State>) => {
   const actions = actionsCreator(dispatch);
@@ -16,7 +15,7 @@ export const ViewRecipePage = (dispatch: Dispatch<State>) => {
         return (
           <div class="empty">
             <div class="empty-icon">
-              <img src={empty} />
+              <img src={DinnerPlate} />
             </div>
             <p class="empty-title h5">404: recipe not found.</p>
             <p class="empty-subtitle">Click the button to add a recipe.</p>
