@@ -1,7 +1,6 @@
 import { h } from "src/view/h";
 import { State } from "src/model";
 import { actionsCreator } from "src/model/actions";
-import {} from "src/model/api";
 import { Dispatch } from "src/controller";
 import { createSelector } from "reselect";
 import "./style.scss";
@@ -10,22 +9,9 @@ const empty = require("../all-recipes/empty-preview.svg"); // TODO: move to comp
 
 export const ViewRecipePage = (dispatch: Dispatch<State>) => {
   const actions = actionsCreator(dispatch);
-  const createOnCreate = (state: State) => {
-    // TODO: use createSelector to memoize
-    return () => {
-      if (state.api.status.allRecipes.timestamp === undefined) {
-        actions.api.downloadAllRecipes();
-      }
-    };
-  };
   return createSelector(
     (state: State) => state.api.data.recipes[state.route.data.recipeID],
-    (state: State) => state.api.status.allRecipes,
-    createOnCreate,
-    (recipe, status, oncreate) => {
-      if (status.isLoading || status.timestamp === undefined) {
-        return <progress oncreate={oncreate} />;
-      }
+    recipe => {
       if (recipe === undefined) {
         return (
           <div class="empty">
@@ -43,7 +29,7 @@ export const ViewRecipePage = (dispatch: Dispatch<State>) => {
         );
       }
       return (
-        <main key="cookbook-view-recipe" oncreate={oncreate} class="cookbook-view-recipe">
+        <main key="cookbook-view-recipe" class="cookbook-view-recipe">
           <h1>
             {recipe.name}
             <button

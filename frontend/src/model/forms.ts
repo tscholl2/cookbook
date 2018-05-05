@@ -18,7 +18,9 @@ export interface FormProps<FormValues> extends FormStatus<FormValues> {
   handleReset(): void;
 }
 
-export type State = { [key: string]: FormStatus<any> };
+export interface State {
+  [key: string]: FormStatus<any>;
+}
 
 export const initialState: State = {};
 

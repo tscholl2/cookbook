@@ -5,20 +5,16 @@ import { Dispatch } from "src/controller";
 import { createSelector } from "reselect";
 import { Preview } from "./preview";
 import Fuse from "fuse.js";
+import { SearchForm, initialValues } from "./search-form";
 
 export const AllRecipesPage = (dispatch: Dispatch<State>) => {
   const actions = actionsCreator(dispatch);
-  const formSelector = actions.forms.newSelectFormProps("all-recipe-search", {
-    search: "",
-    tags: "",
-    numberOfIngrediants: undefined as number | undefined,
-  });
+  const formSelector = actions.forms.newSelectFormProps("all-recipe-search", initialValues);
   const recipesSelector = createSelector(
     (state: State) => state.api.data.recipes,
     recipes => Object.keys(recipes).map(id => recipes[id]),
   );
   return createSelector(
-    (state: State) => state.api.status.allRecipes,
     (state: State) => formSelector(state.forms),
     (state: State) => {
       const form = formSelector(state.forms);
@@ -32,7 +28,37 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
           .map(s => s.trim())
           .filter(s => s);
         // TODO: fuzz search tags
-        recipes = recipes.filter(r => r.tags.find(t => tags.indexOf(t) > -1) !== undefined);
+        recipes = recipes.filter(
+          r =>
+            r.tags.find(
+              t =>
+                tags.find(i =>
+                  t
+                    .toLowerCase()
+                    .trim()
+                    .startsWith(i),
+                ) !== undefined,
+            ) !== undefined,
+        );
+      }
+      if (form.values.ingrediants) {
+        const ingrediants = form.values.ingrediants
+          .split(",")
+          .map(s => s.trim())
+          .filter(s => s);
+        // TODO: fuzz search ingrediants
+        recipes = recipes.filter(
+          r =>
+            r.ingredients.find(
+              t =>
+                ingrediants.find(i =>
+                  t.name
+                    .toLowerCase()
+                    .trim()
+                    .startsWith(i),
+                ) !== undefined,
+            ) !== undefined,
+        );
       }
       if (!form.values.search) {
         return recipes;
@@ -40,73 +66,19 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
       const fuse = new Fuse(recipes, { shouldSort: true, keys: ["name", "directions"] });
       return fuse.search<typeof recipes[0]>(form.values.search).slice(0, 5);
     },
-    (status, form, recipes) => {
-      if (status.isLoading || status.timestamp === undefined) {
-        return (
-          <main>
-            <h1
-              oncreate={status.timestamp === undefined ? actions.api.downloadAllRecipes : undefined}
-            >
-              ...loading recipes...
-            </h1>,
-            <progress />,
-          </main>
-        );
-      }
+    (form, recipes) => {
       const tags = form.values.tags
+        .split(",")
+        .map(s => s.trim())
+        .filter(s => s);
+      const ingrediants = form.values.ingrediants
         .split(",")
         .map(s => s.trim())
         .filter(s => s);
       return (
         <main class="cookbook-all-recipes-main">
           <aside>
-            <form onsubmit={form.handleSubmit}>
-              <fieldset>
-                <legend>Search</legend>
-                <div class="form-group">
-                  <label class="form-label" for="input-search">
-                    Contains
-                  </label>
-                  <input
-                    id="input-search"
-                    class="form-input"
-                    name="search"
-                    type="search"
-                    placeholder="chop"
-                    value={form.values.search}
-                    oninput={form.handleChange}
-                  />
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="input-tags">
-                    Tags
-                  </label>
-                  <input
-                    id="input-tags"
-                    class="form-input"
-                    name="tags"
-                    type="text"
-                    placeholder="tag1, tag2"
-                    value={form.values.tags}
-                    oninput={form.handleChange}
-                  />
-                </div>
-                <div class="form-group">
-                  <label class="form-label" for="input-numberOfIngrediants">
-                    Number of Ingrediants
-                  </label>
-                  <input
-                    id="input-numberOfIngrediants"
-                    class="form-input"
-                    name="numberOfIngrediants"
-                    type="number"
-                    placeholder="3"
-                    value={form.values.numberOfIngrediants}
-                    oninput={form.handleChange}
-                  />
-                </div>
-              </fieldset>
-            </form>
+            <SearchForm {...form} />
           </aside>
           <div class="cookbook-all-recipes-list-container">
             {form.values.search && (
@@ -116,6 +88,9 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
             )}
             {tags.length > 0 && (
               <p>Recipes with tags {tags.map(t => <span class="chip">{t}</span>)}</p>
+            )}
+            {ingrediants.length > 0 && (
+              <p>Recipes using {ingrediants.map(i => <span class="chip">{i}</span>)}</p>
             )}
             {form.values.numberOfIngrediants !== undefined &&
               form.values.numberOfIngrediants > 0 && (

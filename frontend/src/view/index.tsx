@@ -22,11 +22,27 @@ export const View = (dispatch: Dispatch<State>) => {
     [PageName.RECIPE]: ViewRecipePage(dispatch),
     [PageName.HOME]: HomePage(dispatch),
   };
+  const LoadingScreen = (
+    <main>
+      <h2 style={{ textAlign: "center" }}>Downloading Recipes...</h2>
+      <div class="loading loading-lg" />
+    </main>
+  );
   return (state: State) => {
+    const isLoading =
+      state.api.status.allRecipes.timestamp === undefined || state.api.status.allRecipes.isLoading;
     return (
-      <div id="app">
+      <div
+        id="app"
+        // on start download all recipes
+        oncreate={
+          state.api.status.allRecipes.timestamp === undefined
+            ? actions.api.downloadAllRecipes
+            : undefined
+        }
+      >
         <Header {...state} />
-        {pages[actions.router.selectPageName(state.route)](state)}
+        {isLoading ? LoadingScreen : pages[actions.router.selectPageName(state.route)](state)}
         <Footer />
       </div>
     );
