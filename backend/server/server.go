@@ -3,22 +3,30 @@ package main
 import (
 	"compress/gzip"
 	"encoding/json"
-	"fmt"
 	"log"
 	"net/http"
+	"strings"
 
 	"github.com/pkg/errors"
+	"github.com/shurcooL/httpgzip"
 )
 
-func hello(w http.ResponseWriter, r *http.Request) {
-	fmt.Fprintf(w, "hello")
-}
+//go:generate esc -o static.go -pkg main -private -prefix static static
 
 func main() {
-	http.HandleFunc("/", hello)
-	if err := http.ListenAndServe(":8000", nil); err != nil {
-		log.Fatal("ListenAndServe: ", err)
-	}
+	webHandler := httpgzip.FileServer(_escFS(false), httpgzip.FileServerOptions{IndexHTML: true})
+	apiHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		writeJSON(w, map[string]interface{}{"hello": "world"})
+	})
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		if strings.HasPrefix(r.URL.Path, "/api") {
+			apiHandler.ServeHTTP(w, r)
+			return
+		}
+		webHandler.ServeHTTP(w, r)
+		return
+	})
+	log.Fatal(http.ListenAndServe(":8080", nil))
 }
 
 func writeJSON(w http.ResponseWriter, v interface{}) error {
