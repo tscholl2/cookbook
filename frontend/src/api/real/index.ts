@@ -8,11 +8,13 @@ export const API: IAPI = {
     const resp = await fetch(base + "/all");
     return await resp.json();
   },
-  editRecipe: async (_: Recipe) => {
-    throw new Error("TODO");
+  editRecipe: async (recipe: Recipe) => {
+    const resp = await fetch(base + "/edit", { method: "POST", body: JSON.stringify(recipe) });
+    return await resp.json();
   },
-  newRecipe: async (_: Recipe) => {
-    throw new Error("TODO");
+  newRecipe: async (recipe: Recipe) => {
+    const resp = await fetch(base + "/new", { method: "POST", body: JSON.stringify(recipe) });
+    return await resp.json();
   },
   status: async () => {
     const resp = await fetch(base + "/status");

@@ -5,7 +5,6 @@ import "time"
 type UUID string
 type Tag string
 type Duration string
-type Time time.Time
 
 type Recipe struct {
 	ID            UUID         `json:"id"`
@@ -17,8 +16,8 @@ type Recipe struct {
 	Servings      int          `json:"servings"`
 	Images        []string     `json:"images"`
 	Author        string       `json:"author"`
-	LastEdited    Time         `json:"lastEdited"`
-	DatePublished Time         `json:"datePublished"`
+	LastEdited    time.Time    `json:"lastEdited"`
+	DatePublished time.Time    `json:"datePublished"`
 }
 
 type Ingredient struct {

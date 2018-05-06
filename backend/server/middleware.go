@@ -9,6 +9,7 @@ import (
 	"time"
 
 	"github.com/TylerBrock/colorjson"
+	"github.com/tscholl2/cookbook/backend/pkg"
 )
 
 type middleware func(http.Handler) http.Handler
@@ -34,7 +35,7 @@ func getLoggingMap(r *http.Request) map[string]interface{} {
 func requestIDMiddleware() middleware {
 	return func(next http.Handler) http.Handler {
 		return http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-			ID := newUUID()[:8]
+			ID := pkg.NewUUID()[:8]
 			next.ServeHTTP(w, r.WithContext(context.WithValue(r.Context(), reqIDCtxKey, ID)))
 		})
 	}

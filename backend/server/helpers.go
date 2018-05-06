@@ -4,7 +4,6 @@ import (
 	"compress/gzip"
 	"encoding/json"
 	"fmt"
-	"math/rand"
 	"net/http"
 
 	"github.com/pkg/errors"
@@ -27,9 +26,9 @@ func readJSON(r *http.Request, v interface{}) error {
 	return errors.Wrap(json.NewDecoder(r.Body).Decode(v), "json")
 }
 
-type HttpErrHandler func(http.ResponseWriter, *http.Request) error
+type httpErrHandler func(http.ResponseWriter, *http.Request) error
 
-func errorHandler(h HttpErrHandler) http.HandlerFunc {
+func errorHandler(h httpErrHandler) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		if err := h(w, r); err != nil {
 			var code int
@@ -60,14 +59,4 @@ func (err httpError) Error() string {
 
 func codeErr(code int) httpError {
 	return httpError{errors.New(http.StatusText(code)), code}
-}
-
-const alphabet = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
-
-func newUUID() string {
-	var buf [22]byte
-	for i := range buf {
-		buf[i] = alphabet[rand.Intn(len(alphabet))]
-	}
-	return string(buf[:])
 }

@@ -2,24 +2,25 @@ package server
 
 import (
 	"context"
-	"fmt"
 	"log"
 	"net/http"
 	"os"
 	"strings"
+
+	"github.com/tscholl2/cookbook/backend/app"
 )
 
 type Server struct {
 	server http.Server
 	port   string
+	app    app.App
 }
 
-func New(port string) (s Server) {
+func New(port string, app app.App) (s Server) {
 	s.port = port
 	webHandler := newWebHandler()
-	apiHandler := newAPIHandler()
+	apiHandler := newAPIHandler(app)
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		fmt.Println("got request for ", r.URL.Path)
 		if strings.HasPrefix(r.URL.Path, "/api") {
 			r.URL.Path = r.URL.Path[4:]
 			apiHandler.ServeHTTP(w, r)
