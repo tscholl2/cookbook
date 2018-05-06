@@ -18,7 +18,7 @@ export const API: IAPI = {
   editRecipe: async (recipe: Recipe) => {
     await pause();
     recipe = clone(recipe);
-    recipe.id = recipe.id || `${Math.random()}`;
+    recipe.id = recipe.id || `${Math.random()}`.substr(2);
     recipe.datePublished = new Date().toJSON();
     recipe.lastEdited = new Date().toJSON();
     server.data[recipe.id] = recipe;
