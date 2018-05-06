@@ -24,8 +24,14 @@ export function createActions(dispatch: Dispatch<State>) {
   };
 }
 
+export function getStateFromPath(path: string) {
+  const { params } = pm(path) || { params: {} };
+  return params;
+}
+
 function goTo(path = "", data = {}, title = "") {
   return logReducer("goTo", { path, data, title }, (s: State) => {
+    data = { ...data, ...getStateFromPath(path) };
     if (s.path !== path || s.title !== title || !shallowCompare(s.data, data)) {
       return go({ path, data, title });
     }
@@ -39,6 +45,7 @@ export const enum PageName {
   RECIPE = "RECIPE",
   EDIT_RECIPE = "EDIT_RECIPE",
   NEW_RECIPE = "NEW_RECIPE",
+  NOT_FOUND = "NOT_FOUND",
 }
 
 const pages = [
@@ -47,6 +54,7 @@ const pages = [
   { path: "/new", name: PageName.NEW_RECIPE },
   { path: "/edit/:recipeID", name: PageName.EDIT_RECIPE },
   { path: "*", name: PageName.HOME },
+  // TODO: add 404
 ];
 
 const pm = pathsMatcher(pages.map(a => a.path));

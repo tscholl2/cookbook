@@ -11,7 +11,6 @@ export function connectControllerToHistory<S>(
   listeners.set(c, route =>
     c.dispatch(logReducer("native navigation", route, reducerCreator(go(route)))),
   );
-  listeners.get(c)!(getCurrentRoute());
   c.addPlugin;
 }
 
