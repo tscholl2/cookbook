@@ -6,6 +6,7 @@ import { actionsCreator } from "src/model/actions";
 import { AllRecipesPage } from "./pages/all-recipes";
 import { EditRecipePage } from "./pages/edit-recipe";
 import { ViewRecipePage } from "./pages/view-recipe";
+import { NotFoundPage } from "./pages/not-found";
 import { HomePage } from "./pages/home";
 import { Footer } from "./components/footer";
 import { ConnectHeader } from "./components/header";
@@ -21,6 +22,7 @@ export const View = (dispatch: Dispatch<State>) => {
     [PageName.NEW_RECIPE]: EditRecipePage(dispatch),
     [PageName.RECIPE]: ViewRecipePage(dispatch),
     [PageName.HOME]: HomePage(dispatch),
+    [PageName.NOT_FOUND]: NotFoundPage(dispatch),
   };
   const LoadingScreen = (
     <main>

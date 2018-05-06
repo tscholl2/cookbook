@@ -53,8 +53,8 @@ const pages = [
   { path: "/view", name: PageName.ALL_RECIPES },
   { path: "/new", name: PageName.NEW_RECIPE },
   { path: "/edit/:recipeID", name: PageName.EDIT_RECIPE },
-  { path: "*", name: PageName.HOME },
-  // TODO: add 404
+  { path: "/\\w+", name: PageName.NOT_FOUND },
+  { path: "/", name: PageName.HOME },
 ];
 
 const pm = pathsMatcher(pages.map(a => a.path));
