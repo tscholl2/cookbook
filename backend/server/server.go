@@ -1,47 +1,54 @@
-package main
+package server
 
 import (
-	"compress/gzip"
-	"encoding/json"
+	"context"
+	"fmt"
 	"log"
 	"net/http"
+	"os"
 	"strings"
-
-	"github.com/pkg/errors"
-	"github.com/shurcooL/httpgzip"
 )
 
-//go:generate esc -o static.go -pkg main -private -prefix static static
+type Server struct {
+	server http.Server
+	port   string
+}
 
-func main() {
-	webHandler := httpgzip.FileServer(_escFS(false), httpgzip.FileServerOptions{IndexHTML: true})
-	apiHandler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
-		writeJSON(w, map[string]interface{}{"hello": "world"})
-	})
-	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+func New(port string) (s Server) {
+	s.port = port
+	webHandler := newWebHandler()
+	apiHandler := newAPIHandler()
+	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
+		fmt.Println("got request for ", r.URL.Path)
 		if strings.HasPrefix(r.URL.Path, "/api") {
+			r.URL.Path = r.URL.Path[4:]
 			apiHandler.ServeHTTP(w, r)
 			return
 		}
 		webHandler.ServeHTTP(w, r)
 		return
 	})
-	log.Fatal(http.ListenAndServe(":8080", nil))
-}
-
-func writeJSON(w http.ResponseWriter, v interface{}) error {
-	w.Header().Set("content-type", "application/json;charset=utf-8")
-	w.Header().Set("content-encoding", "gzip")
-	W, err := gzip.NewWriterLevel(w, 1)
-	if err != nil {
-		return err
+	s.server = http.Server{
+		Addr: ":" + s.port,
+		Handler: applyMiddlewares(
+			handler,
+			loggingMiddleware(log.New(os.Stdout, "", 0), log.New(os.Stderr, "", 0)),
+			requestIDMiddleware(),
+		),
 	}
-	defer W.Close()
-	encoder := json.NewEncoder(W)
-	encoder.SetIndent("", "  ")
-	return errors.Wrap(encoder.Encode(v), "json")
+	return
 }
 
-func readJSON(r *http.Request, v interface{}) error {
-	return errors.Wrap(json.NewDecoder(r.Body).Decode(v), "json")
+func (s Server) Start() {
+	log.Println("server started ", s.port)
+	go func() {
+		if err := s.server.ListenAndServe(); err != nil {
+			log.Fatalln(err)
+		}
+	}()
+}
+
+func (s Server) Stop() {
+	s.server.Shutdown(context.TODO())
+	log.Println("server stopped")
 }
