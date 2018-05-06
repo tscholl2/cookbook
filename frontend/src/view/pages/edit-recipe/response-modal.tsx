@@ -14,7 +14,7 @@ export function ResponseModal(props: Props) {
       <div class="modal-container">
         <div class="modal-header">
           <a onclick={props.onClose} class="btn btn-clear float-right" aria-label="Close" />
-          <div class="modal-title h5">Saved!</div>
+          <div class="modal-title h5">{props.success ? "Saved!" : "Failed"}</div>
         </div>
         <div class="modal-body">
           <div class="content text-center">
@@ -22,7 +22,7 @@ export function ResponseModal(props: Props) {
               class="circle"
               style={{
                 fontSize: "2em",
-                background: "green",
+                background: props.success ? "green" : "red",
                 display: "flex",
                 width: "200px",
                 height: "200px",
@@ -32,7 +32,7 @@ export function ResponseModal(props: Props) {
                 color: "white",
               }}
             >
-              ✓
+              {props.success ? "✓" : "×"}
             </div>
           </div>
         </div>

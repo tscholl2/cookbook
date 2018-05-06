@@ -1,4 +1,4 @@
-import { Recipe } from "src/model/api";
+import { Recipe } from "src/api";
 import { parseIngrediant } from "src/utils/parse-ingrediant";
 import { parseDirections } from "src/utils/parse-directions";
 

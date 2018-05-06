@@ -1,4 +1,4 @@
-import { Ingredient } from "src/model/api";
+import { Ingredient } from "src/api";
 
 /**
  * Takes a line of text and returns the best interpretation of an ingrediant it can,

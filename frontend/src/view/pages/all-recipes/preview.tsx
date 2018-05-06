@@ -1,5 +1,5 @@
 import { h } from "src/view/h";
-import { Recipe } from "src/model/api";
+import { Recipe } from "src/api";
 import { DinnerPlate } from "src/view/components/dinner-plate";
 import "./style.scss";
 

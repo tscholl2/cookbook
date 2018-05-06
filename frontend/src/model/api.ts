@@ -1,6 +1,7 @@
 import { Dispatch } from "src/controller";
 import { logReducer } from "src/controller/redux-devtools";
-import { setIn, merge } from "icepick";
+import { setIn, chain } from "icepick";
+import { API, Recipe } from "src/api";
 
 export interface State {
   status: {
@@ -28,97 +29,86 @@ export interface APIStatus {
   timestamp?: string;
 }
 
-type UUID = string;
-type Duration = string;
-type Time = string;
-type Tag = string;
-
-export interface Recipe {
-  id: UUID;
-  name: string;
-  totalTime: Duration;
-  tags: Array<Tag>;
-  directions: Array<string>;
-  ingredients: Array<Ingredient>;
-  servings: number;
-  images: Array<string>;
-  author: string;
-  lastEdited: Time;
-  datePublished: Time;
-}
-
-export interface Ingredient {
-  name: string;
-  measurement: string;
-  amount: string;
-}
-
-declare const require: any;
-const samples: Array<Recipe> = require("./samples.json");
-
+// TODO: DRY-er
 export function createActions(dispatch: Dispatch<State>) {
   return {
     submitNewRecipe: (recipe: Recipe) => {
-      const R = JSON.parse(JSON.stringify(recipe));
-      recipe = JSON.parse(JSON.stringify(recipe));
-      recipe.id = recipe.id || `${Math.random()}`;
-      recipe.datePublished = new Date().toJSON();
-      recipe.lastEdited = new Date().toJSON();
       dispatch(
-        logReducer("SUBMIT_NEW_RECIPE_REQUEST", { recipe: R }, state =>
+        logReducer("SUBMIT_NEW_RECIPE_REQUEST", { recipe }, state =>
           setIn(state, ["status", "submitNewRecipe"], {
             isLoading: true,
-            response: undefined,
+            error: undefined,
             timestamp: new Date().toJSON(),
           } as State["status"]["submitNewRecipe"]),
         ),
       );
-      return (async () => {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        dispatch(
-          logReducer("SUBMIT_NEW_RECIPE_SUCCESS", { recipe }, state => {
-            state = setIn(state, ["status", "submitNewRecipe"], {
-              isLoading: false,
-              response: samples,
-              timestamp: new Date().toJSON(),
-            } as State["status"]["submitNewRecipe"]);
-            state = setIn(
-              state,
-              ["data", "recipes", recipe.id],
-              recipe as State["data"]["recipes"][typeof recipe.id],
-            );
-            return state;
-          }),
-        );
-        return recipe;
-      })();
+      return (recipe.id === "" ? API.newRecipe : API.editRecipe)(recipe)
+        .then(recipe => {
+          dispatch(
+            logReducer("SUBMIT_NEW_RECIPE_SUCCESS", { recipe }, state => {
+              state = setIn(state, ["status", "submitNewRecipe"], {
+                isLoading: false,
+                timestamp: new Date().toJSON(),
+              } as State["status"]["submitNewRecipe"]);
+              state = setIn(
+                state,
+                ["data", "recipes", recipe.id],
+                recipe as State["data"]["recipes"][typeof recipe.id],
+              );
+              return state;
+            }),
+          );
+          return recipe;
+        })
+        .catch(e => {
+          console.error(e);
+          dispatch(
+            logReducer("SUBMIT_NEW_RECIPE_FAILURE", {}, state => {
+              return setIn(state, ["status", "submitNewRecipe"], {
+                isLoading: false,
+                error: `${e}`,
+                timestamp: new Date().toJSON(),
+              } as State["status"]["submitNewRecipe"]);
+            }),
+          );
+        });
     },
     downloadAllRecipes: () => {
       dispatch(
         logReducer("DOWNLOAD_ALL_REQUEST", [], state =>
           setIn(state, ["status", "allRecipes"], {
             isLoading: true,
-            response: undefined,
+            error: undefined,
             timestamp: new Date().toJSON(),
           } as State["status"]["allRecipes"]),
         ),
       );
-      return (async () => {
-        await new Promise(resolve => setTimeout(resolve, 1000));
-        dispatch(
-          logReducer("DOWNLOAD_ALL_SUCCESS", [], state => {
-            state = setIn(state, ["status", "allRecipes"], {
-              isLoading: false,
-              response: samples,
-              timestamp: new Date().toJSON(),
-            } as State["status"]["allRecipes"]);
-            state = merge(state, {
-              data: { recipes: samples.reduce((p, n) => ({ ...p, [n.id]: n }), {}) },
-            });
-            return state;
-          }),
-        );
-      })();
+      API.downloadAllRecipes()
+        .then(recipes =>
+          dispatch(
+            logReducer("DOWNLOAD_ALL_SUCCESS", [], state =>
+              chain(state)
+                .setIn(["status", "allRecipes"], {
+                  isLoading: false,
+                  timestamp: new Date().toJSON(),
+                } as State["status"]["allRecipes"])
+                .setIn(["data", "recipes"], recipes as State["data"]["recipes"])
+                .value(),
+            ),
+          ),
+        )
+        .catch(e => {
+          console.error(e);
+          dispatch(
+            logReducer("DOWNLOAD_ALL_FAILURE", {}, state => {
+              return setIn(state, ["status", "submitNewRecipe"], {
+                isLoading: false,
+                error: `${e}`,
+                timestamp: new Date().toJSON(),
+              } as State["status"]["submitNewRecipe"]);
+            }),
+          );
+        });
     },
   };
 }
