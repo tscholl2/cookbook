@@ -50,8 +50,7 @@ export interface Recipe {
 export interface Ingredient {
   name: string;
   measurement: string;
-  amount: number;
-  images: Array<string>;
+  amount: string;
 }
 
 declare const require: any;

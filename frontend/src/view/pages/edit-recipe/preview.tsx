@@ -1,6 +1,7 @@
 import { h } from "src/view/h";
 import { RecipeFormValues, formValuesToRecipe } from "src/utils/recipe-form-values";
 import { memoize } from "src/utils/memoize";
+import { IngredientAmount } from "src/view/components/ingredient-amount";
 
 export const Preview = memoize(function Preview(input: RecipeFormValues) {
   let preview: JSX.Element | JSX.Element[];
@@ -15,7 +16,7 @@ export const Preview = memoize(function Preview(input: RecipeFormValues) {
         <li>Tags = {recipe.tags.map(t => <span class="chip">{t}</span>)}</li>
       </ul>,
       <h4>Ingrediants</h4>,
-      <table>
+      <table class="text-center">
         <thead>
           <tr>
             <th>Amount</th>
@@ -26,7 +27,9 @@ export const Preview = memoize(function Preview(input: RecipeFormValues) {
         <tbody>
           {recipe.ingredients.map(i => (
             <tr>
-              <td>{i.amount}</td>
+              <td>
+                <IngredientAmount amount={i.amount} />
+              </td>
               <td>{i.measurement}</td>
               <td>{i.name}</td>
             </tr>

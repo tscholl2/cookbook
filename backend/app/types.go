@@ -22,8 +22,7 @@ type Recipe struct {
 }
 
 type Ingredient struct {
-	Name        string   `json:"name"`
-	Measurement string   `json:"measurement"`
-	Amount      float64  `json:"amount"`
-	Images      []string `json:"images"`
+	Name        string `json:"name"`
+	Measurement string `json:"measurement"`
+	Amount      string `json:"amount"`
 }

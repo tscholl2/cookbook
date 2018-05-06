@@ -4,6 +4,7 @@ import { actionsCreator } from "src/model/actions";
 import { Dispatch } from "src/controller";
 import { createSelector } from "reselect";
 import { DinnerPlate } from "src/view/components/dinner-plate";
+import { IngredientAmount } from "src/view/components/ingredient-amount";
 import "./style.scss";
 
 export const ViewRecipePage = (dispatch: Dispatch<State>) => {
@@ -69,14 +70,12 @@ export const ViewRecipePage = (dispatch: Dispatch<State>) => {
                         for={`slide-${
                           i === 0 ? recipe.images.length - 1 : (i - 1) % recipe.images.length
                         }`}
-                        
                       >
                         <span>←</span>
                       </label>
                       <label
                         class="item-next btn btn-action btn-lg"
                         for={`slide-${(i + 1) % recipe.images.length}`}
-                        
                       >
                         <span>→</span>
                       </label>
@@ -122,7 +121,7 @@ export const ViewRecipePage = (dispatch: Dispatch<State>) => {
           <div class="columns">
             <div class="column col-4 col-lg-12">
               <h2>Ingredients</h2>
-              <table class="table table-striped table-hover">
+              <table class="table table-striped table-hover text-center">
                 <thead>
                   <tr>
                     <th>Name</th>
@@ -134,7 +133,9 @@ export const ViewRecipePage = (dispatch: Dispatch<State>) => {
                   {recipe.ingredients.map(i => (
                     <tr>
                       <td>{i.name}</td>
-                      <td>{i.amount}</td>
+                      <td>
+                        <IngredientAmount amount={i.amount} />
+                      </td>
                       <td>{i.measurement}</td>
                     </tr>
                   ))}

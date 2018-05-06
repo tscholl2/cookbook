@@ -24,8 +24,7 @@ function randomIngredient(): Ingredient {
   return {
     name: randomWord(),
     measurement: randomWord(),
-    amount: randomInteger(1, 10),
-    images: randomArray(0, 1).map(randomImage),
+    amount: randomInteger(1, 10).toString(),
   };
 }
 
