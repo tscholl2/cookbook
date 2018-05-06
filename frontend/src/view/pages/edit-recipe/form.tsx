@@ -23,9 +23,14 @@ export function RecipeForm(props: FormProps<RecipeFormValues> & { disabled?: boo
     handleChange({
       target: { name: "images", value: values.images.filter((_, i) => i !== index) },
     } as any);
-  const handleNewImageFile = (file: File | undefined) => {
+  const handleNewImageFile = (file: File | string | undefined) => {
     if (file === undefined) {
       return;
+    }
+    if (typeof file === "string") {
+      return handleChange({
+        target: { name: "images", value: values.images.concat([file]) },
+      } as any);
     }
     const reader = new FileReader();
     reader.onload = (e: FileReaderProgressEvent) =>
@@ -265,7 +270,7 @@ function handleFileInputEvent(e: any): File | undefined {
   }
 }
 
-function handleFileDropEvent(e: DragEvent): File | undefined {
+function handleFileDropEvent(e: DragEvent): File | string | undefined {
   e.preventDefault();
   const items = e.dataTransfer.files;
   for (let i = 0; i < items.length; i++) {
@@ -273,17 +278,23 @@ function handleFileDropEvent(e: DragEvent): File | undefined {
       return items[i];
     }
   }
+  const text = e.dataTransfer.getData("text") || "";
+  if (text.startsWith("http")) {
+    return text;
+  }
 }
 
-function handleFilePasteEvent(e: ClipboardEvent): File | undefined {
+function handleFilePasteEvent(e: ClipboardEvent): File | string | undefined {
   e.preventDefault();
-  // use event.originalEvent.clipboard for newer chrome versions
   const items: DataTransferItemList = e.clipboardData.items;
-  // find first pasted image among pasted items
   for (let i = 0; i < items.length; i++) {
     if (items[i].type.startsWith("image/")) {
       return items[i].getAsFile()!;
     }
+  }
+  const text = e.clipboardData.getData("text") || "";
+  if (text.startsWith("http")) {
+    return text;
   }
 }
 
