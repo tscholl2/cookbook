@@ -1,6 +1,7 @@
 .cookbook-header {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
   justify-content: space-evenly;
   align-items: center;
   max-width: 1000px;
@@ -13,8 +14,14 @@
     cursor: pointer;
   }
   nav {
-    ul {
-      list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    flex-direction: row;
+    align-items: center;
+    > button {
+      margin-left: 5px;
+      margin-right: 5px;
+      margin-top: 0;
     }
   }
 }

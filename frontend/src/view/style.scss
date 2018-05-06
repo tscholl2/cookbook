@@ -19,6 +19,9 @@ body {
   display: grid;
   grid-gap: 0;
   grid-template-rows: 150px auto 250px;
+  @media screen and (max-width: 500px) {
+    grid-template-rows: auto auto auto;
+  }
   grid-template-areas: "header" "main" "footer";
   > header {
     grid-area: header;

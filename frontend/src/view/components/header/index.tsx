@@ -8,21 +8,17 @@ export const ConnectHeader = (dispatch: Dispatch<State>) => {
   const Header = () => {
     return (
       <header class="cookbook-header">
-        <h1 onclick={actions.router.goToHome}>
-          Cookbook
-        </h1>
+        <h1 onclick={actions.router.goToHome}>Cookbook</h1>
         <nav>
-          <ul>
-            <li>
-              <a onclick={actions.router.goToHome}>home</a>
-            </li>
-            <li>
-              <a onclick={actions.router.goToNew}>new</a>
-            </li>
-            <li>
-              <a onclick={actions.router.goToAll}>All Recipes</a>
-            </li>
-          </ul>
+          <button class="btn btn-sm" onclick={actions.router.goToHome}>
+            Home
+          </button>
+          <button class="btn btn-sm" onclick={actions.router.goToAll}>
+            View Recipes
+          </button>
+          <button class="btn btn-sm" onclick={actions.router.goToNew}>
+            Add Recipe
+          </button>
         </nav>
       </header>
     );

@@ -1,26 +1,48 @@
 import { h } from "src/view/h";
 import { Dispatch } from "src/controller";
 import { State, actionsCreator } from "src/model";
-import { set } from "icepick";
+import { createSelector } from "reselect";
 
 export function HomePage(dispatch: Dispatch<State>) {
   const actions = actionsCreator(dispatch);
-  return (state: State) => (
-    <main
-      oncreate={
-        state.api.status.allRecipes.timestamp === undefined && actions.api.downloadAllRecipes
-      }
-    >
-      <button style={{ width: "100px", height: "100px" }} onclick={actions.router.goToNew}>
-        new
-      </button>
-      <button style={{ width: "100px", height: "100px" }} onclick={actions.router.goToAll}>
-        view
-      </button>
-      <h1>Counter</h1>
-      <h1>{state.count}</h1>
-      <button onclick={() => dispatch(s => set(s, "count", state.count - 1))}>-</button>
-      <button onclick={() => dispatch(s => set(s, "count", state.count + 1))}>+</button>
-    </main>
+  const recipeListSelector = createSelector(
+    (state: State) => state.api.data.recipes,
+    recipes => Object.keys(recipes).map(k => recipes[k]),
   );
+  const recipeCountSelector = createSelector(recipeListSelector, arr => arr.length);
+  const recentRecipeSelector = createSelector(
+    recipeListSelector,
+    arr =>
+      arr.sort(
+        (a, b) =>
+          a.datePublished < b.datePublished ? -1 : a.datePublished > b.datePublished ? 1 : 0,
+      )[0],
+  );
+  return createSelector(recipeCountSelector, recentRecipeSelector, (count, recentRecipe) => (
+    <main style={{ maxWidth: "400px", margin: "auto" }}>
+      <p>
+        Found <span class="chip">{count}</span> recipes
+      </p>
+      {recentRecipe && (
+        <p>
+          Most recent recipe:{" "}
+          <a class="btn btn-link" onclick={() => actions.router.goToRecipe(recentRecipe.id)}>
+            {recentRecipe.name}
+          </a>
+        </p>
+      )}
+      <div class="columns text-center">
+        <div class="column col-6 col-sm-12">
+          <button class="btn btn-lg" onclick={actions.router.goToAll}>
+            View Recipes
+          </button>
+        </div>
+        <div class="column col-6 col-sm-12">
+          <button class="btn btn-lg" onclick={actions.router.goToNew}>
+            Add Recipe
+          </button>
+        </div>
+      </div>
+    </main>
+  ));
 }

@@ -5,7 +5,6 @@ import { State as uiState, initialState as uiInitialState } from "./ui";
 export { actionsCreator } from "./actions";
 
 export interface State {
-  count: number;
   route: routerState;
   forms: formsState;
   api: apiState;
@@ -13,7 +12,6 @@ export interface State {
 }
 
 export const initialState: Readonly<State> = {
-  count: 0,
   route: routerInitialState,
   forms: formsInitialState,
   api: apiInitialState,

@@ -1,0 +1,27 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="-500 -500 970 800">
+  <g id="group" stroke-width="10" stroke="#000">
+    <g id="ears">
+      <path id="right-ear" d="M 200 -150 l 250 -250 a 50 50 0 0 0 -100 -50 z" fill="#a0d"/>
+      <path id="left-ear" d="M 200 -150 l -250 -250 a 50 50 0 0 1 100 -50 z" fill="#a0d"/>
+    </g>
+    <circle id="tail" cx="-440" cy="0" r="50" fill="#a0d"/>
+    <g id="legs" stroke-width="30">
+      <path id="front-right-leg" d="M 200 200 l 0 75"/>
+      <path id="front-left-leg" d="M 150 200 l 0 75"/>
+      <path id="back-right-leg" d="M -150 200 l 0 75"/>
+      <path id="back-left-leg" d="M -200 200 l 0 75"/>
+    </g>
+    <ellipse id="body" cx="0" cy="0" rx="400" ry="250" fill="#a0d"/>
+    <g id="eyes">
+      <circle id="right-eye" cx="255" cy="-100" r="45" fill="#fff"/>
+      <circle id="right-pupil" cx="255" cy="-100" r="5" fill="#000"/>
+      <circle id="left-eye" cx="145" cy="-100" r="45" fill="#fff"/>
+      <circle id="left-pupil" cx="145" cy="-100" r="5" fill="#000"/>
+    </g>
+    <path id="nose" d="M175 -40 h 50 l -25 25 z" fill="#f05"/>
+    <g id="hat" fill="#fff">
+      <rect id="hat-base" x="100" y="-375" width="200" height="200" />
+      <ellipse id="hat-top-1" cx="200" cy="-375" rx="200" ry="75" />
+    </g>
+  </g>
+</svg>
