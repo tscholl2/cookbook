@@ -2,7 +2,7 @@
 # Build customization
 builds:
   -
-    main: backend/cmd/
+    main: ./backend/cmd/
     binary: cookbook
     ldflags: -s -w -X github.com/tscholl2/cookbook/backend/server.version={{.Version}}"
     goos:
