@@ -6,7 +6,7 @@
 
 A self hosted service to save/view personal recipes.
 
-[Demo]()
+[Demo](https://tscholl2.github.io/cookbook/)
 
 ## Why
 
