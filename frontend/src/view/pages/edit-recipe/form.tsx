@@ -203,7 +203,7 @@ export function RecipeForm(props: FormProps<RecipeFormValues> & { disabled?: boo
             }}
             onpaste={(e: any) => handleNewImageFile(handleFilePasteEvent(e))}
           >
-            <p id="hidden-selectable" style={{ position: "absolute", left: "-1000px" }}>
+            <p id="hidden-selectable" style="position:absolute;left:-1000px;">
               aaa
             </p>
             <ul
@@ -233,7 +233,7 @@ export function RecipeForm(props: FormProps<RecipeFormValues> & { disabled?: boo
                   type="file"
                   id="fileInputElement"
                   accept="image/*"
-                  style={{ display: "none" }}
+                  style="display:none;"
                   onchange={(e: any) => handleNewImageFile(handleFileInputEvent(e))}
                 />
                 <button

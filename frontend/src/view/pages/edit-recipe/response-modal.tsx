@@ -20,17 +20,9 @@ export function ResponseModal(props: Props) {
           <div class="content text-center">
             <div
               class="circle"
-              style={{
-                fontSize: "2em",
-                background: props.success ? "green" : "red",
-                display: "flex",
-                width: "200px",
-                height: "200px",
-                margin: "auto",
-                justifyContent: "center",
-                alignItems: "center",
-                color: "white",
-              }}
+              style={`font-size:2em;background:${
+                props.success ? "green" : "red"
+              };display:flex;width:200px;height:200px;margin:auto;justify-content:center;align-items:center;color:#fff;`}
             >
               {props.success ? "✓" : "×"}
             </div>

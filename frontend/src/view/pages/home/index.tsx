@@ -2,6 +2,7 @@ import { h } from "src/view/h";
 import { Dispatch } from "src/controller";
 import { State, actionsCreator } from "src/model";
 import { createSelector } from "reselect";
+import "./style.scss";
 
 export function HomePage(dispatch: Dispatch<State>) {
   const actions = actionsCreator(dispatch);
@@ -19,7 +20,7 @@ export function HomePage(dispatch: Dispatch<State>) {
       )[0],
   );
   return createSelector(recipeCountSelector, recentRecipeSelector, (count, recentRecipe) => (
-    <main style={{ maxWidth: "400px", margin: "auto" }}>
+    <main class="cookbook-home-page">
       <p>
         Found <span class="chip">{count}</span> recipes
       </p>

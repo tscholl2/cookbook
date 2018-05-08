@@ -26,7 +26,7 @@ export const View = (dispatch: Dispatch<State>) => {
   };
   const LoadingScreen = (
     <main>
-      <h2 style={{ textAlign: "center" }}>Downloading Recipes...</h2>
+      <h2 style="text-align:center;">Downloading Recipes...</h2>
       <div class="loading loading-lg" />
     </main>
   );

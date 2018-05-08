@@ -41,7 +41,7 @@ export const Preview = memoize(function Preview(input: RecipeFormValues) {
     ];
   } catch (e) {
     console.error(e);
-    preview = <p style={{ color: "red" }}>{`${e}`}</p>;
+    preview = <p style="color:red;">{`${e}`}</p>;
   }
   return preview;
 });

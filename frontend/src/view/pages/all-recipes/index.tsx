@@ -104,7 +104,7 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
             {recipes.length === 0 ? (
               <div class="empty">
                 <div class="empty-icon">
-                  <img style={{ maxWidth: "350px" }} src={DinnerPlate} />
+                  <img src={DinnerPlate} />
                 </div>
                 <p class="empty-title h5">No recipes found.</p>
                 <p class="empty-subtitle">Click the button to add a recipe.</p>

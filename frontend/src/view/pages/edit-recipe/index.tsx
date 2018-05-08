@@ -83,12 +83,12 @@ export function EditRecipePage(dispatch: Dispatch<State>) {
       <main class="cookbook-editor-container">
         <div class="columns">
           <div class="column col-6 col-md-12">
-            <h2 style={{ textAlign: "center" }}>Recipe</h2>
+            <h2 style="text-align:center;">Recipe</h2>
             <RecipeForm {...formProps} />
           </div>
           <div class="divider-vert" />
           <div class="column col-5 col-md-12">
-            <h2 style={{ textAlign: "center" }}>Preview</h2>
+            <h2 style="text-align:center;">Preview</h2>
             <Preview {...formProps.values} />
           </div>
         </div>

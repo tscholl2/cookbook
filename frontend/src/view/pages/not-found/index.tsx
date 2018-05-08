@@ -10,7 +10,7 @@ export function NotFoundPage(dispatch: Dispatch<State>) {
       <main>
         <div class="empty">
           <div class="empty-icon">
-            <span style={{ fontSize: "5em" }}>?</span>
+            <span style="font-size:5em;">?</span>
           </div>
           <p class="empty-title h5">404: Page {JSON.stringify(state.route.path)} not found.</p>
           <p class="empty-subtitle">Click the button to return home.</p>

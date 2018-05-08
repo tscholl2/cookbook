@@ -43,10 +43,7 @@ export const ViewRecipePage = (dispatch: Dispatch<State>) => {
             recipe.images.length === 1 ? (
               <img
                 class="img-fit-contain"
-                style={{
-                  maxHeight: "450px",
-                  width: "100%",
-                }}
+                style="max-height:450px; width:100%;"
                 src={recipe.images[0]}
                 alt="picture of recipe"
               />
@@ -81,10 +78,7 @@ export const ViewRecipePage = (dispatch: Dispatch<State>) => {
                       </label>
                       <img
                         src={s}
-                        style={{
-                          maxHeight: "450px",
-                          width: "100%",
-                        }}
+                        style="max-height:450px; width:100%;"
                         class="img-fit-contain rounded"
                         alt={`picture ${i + 1} of recipe of ${recipe.images.length}`}
                       />
@@ -103,7 +97,7 @@ export const ViewRecipePage = (dispatch: Dispatch<State>) => {
           ) : (
             <img class="img-fit-responsive" src={DinnerPlate} alt="picture of recipe" />
           )}
-          <div style={{ display: "flex", justifyContent: "center", marginBottom: "20px" }}>
+          <div style="display:flex; justify-content:center; margin-bottom:20px;">
             <div class="columns">
               {recipe.tags.length > 0 && (
                 <div class="column col-12">
