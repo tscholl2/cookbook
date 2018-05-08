@@ -13,5 +13,3 @@ builds:
       - amd64
       - arm
       - arm64
-    hooks:
-      pre: ./prebuild.sh
