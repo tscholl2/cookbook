@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	version string // set by ldflags // TODO: pass down to /server instead of having 2 ldflags
+	version string // set by ldflags
 	commit  string // set by ldflags
 	date    string // set by ldflags
 )
@@ -68,8 +68,11 @@ builddate=%s
 `, version, commit, date)
 		return
 	}
-	a := app.New(filename)
-	s := server.New(port, a)
+	s := server.New(server.Options{
+		Port:    port,
+		App:     app.New(filename),
+		Version: fmt.Sprintf("version: %s, commit: %s, date: %s", version, commit, date),
+	})
 	s.Start()
 	sigint := make(chan os.Signal, 1)
 	signal.Notify(sigint, os.Interrupt)
