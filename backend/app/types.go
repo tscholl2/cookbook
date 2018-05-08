@@ -2,10 +2,16 @@ package app
 
 import "time"
 
+// UUID is a unique random identifier like "a1bv33". It is usually 22 characters long.
 type UUID string
+
+// Tag is a string like "dinner".
 type Tag string
+
+// Duration is a string of the form "1 hour" or so.
 type Duration string
 
+// Recipe contains information and metadata about a recipe.
 type Recipe struct {
 	ID            UUID         `json:"id"`
 	Name          string       `json:"name"`
@@ -20,6 +26,7 @@ type Recipe struct {
 	DatePublished time.Time    `json:"datePublished"`
 }
 
+// Ingredient contains information about a particular ingrediant.
 type Ingredient struct {
 	Name        string `json:"name"`
 	Measurement string `json:"measurement"`
