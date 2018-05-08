@@ -8,4 +8,13 @@ export interface IAPI {
   status(): Promise<{ uptime: string }>;
 }
 
-export { API } from "./fake";
+declare const require: any;
+declare const process: any;
+let API: IAPI;
+if (process.env.NODE_ENV === "production") {
+  API = require("./real").API;
+} else {
+  API = require("./fake").API;
+}
+
+export { API };
