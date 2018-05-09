@@ -48,7 +48,8 @@ It uses a redux-style immutable (using [icepick](https://github.com/aearly/icepi
 To build and run the backend:
 
 ```
-    go build -o cookbook -ldflags "-X github.com/tscholl2/cookbook/backend/server.version=`git rev-parse HEAD`" ./backend/cmd
+    go get -u -v ./backend/cmd
+    go build -o cookbook ./backend/cmd
 ```
 
 To test the backend:
