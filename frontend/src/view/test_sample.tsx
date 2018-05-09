@@ -15,5 +15,4 @@ addStatefullSample("counter", 0, dispatch => state =>
   Counter(state, () => dispatch(() => state + 1)),
 );
 
-addStatelessSample("button", () => <button>clickme</button>);
-addStatelessSample("p", () => <p>paragraph</p>);
+addStatelessSample("paragraph", () => <p>this is a paragraph</p>);

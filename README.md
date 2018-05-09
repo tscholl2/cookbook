@@ -8,6 +8,12 @@ A self hosted service to save/view personal recipes.
 
 [Demo](https://tscholl2.github.io/cookbook/)
 
+### Screenshots
+
+![screenshot 1](docs/screenshots/home.png)
+
+![screenshot 2](docs/screenshots/edit.png)
+
 ## Why
 
 There is a lot of services to do this, but I thought it would be fun to build a self hosted one with all the features I wanted.
@@ -35,7 +41,7 @@ These endpoints are available at `http://yourserver.com/api/`.
 ### Frontend
 
 The frontend is written in Typescript with [ultradom](https://github.com/jorgebucaran/ultradom), [parcel](https://parceljs.org/), and [spectre](https://picturepan2.github.io/spectre/).
-It uses a redux-style immutable (using [icepick](https://github.com/aearly/icepick)) state container and is set up with some useful developer features such as redux-devtools, hot-reloading, and automatic test running via [tape](https://github.com/substack/tape). Think React but with only functional components. There is still plenty of room for optimizations via cacheing functions, but so far it hasn't been necessary because the site isn't that big.
+It uses a redux-style immutable (using [icepick](https://github.com/aearly/icepick)) state container and is set up with some useful developer features such as redux-devtools, storybook-like sampling, hot-reloading, and automatic test running via [tape](https://github.com/substack/tape). Think React and redux but only functional components and dispatching reducers instead of actions. There is still plenty of room for optimizations via cacheing functions, but so far it hasn't been necessary because the site isn't that big.
 
 ## Development
 
