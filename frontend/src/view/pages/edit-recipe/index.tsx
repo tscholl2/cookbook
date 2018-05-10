@@ -4,6 +4,7 @@ import { Dispatch } from "src/controller";
 import { actionsCreator } from "src/model/actions";
 import { FormStatus, FormErrors, FormProps } from "src/model/forms";
 import { parseIngrediant } from "src/utils/parse-ingrediant";
+import { parseDirections } from "src/utils/parse-directions";
 import {
   RecipeFormValues,
   formValuesToRecipe,
@@ -111,6 +112,12 @@ function validate(status: FormStatus<RecipeFormValues>): FormErrors<RecipeFormVa
   }
   if (!status.values.directions) {
     errors.directions = "required";
+  } else {
+    try {
+      parseDirections(status.values.directions);
+    } catch (e) {
+      errors.directions = `${e}`;
+    }
   }
   if (!status.values.time) {
     errors.time = "required";
