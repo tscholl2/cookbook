@@ -1,7 +1,12 @@
 .cookbook-editor-container {
   margin-left: 10%;
   margin-right: 10%;
+  input:invalid,
+  textarea:invalid {
+    box-shadow: none; // clear FF's auto-box shadow
+  }
 }
+
 .cookbook-new-recipe-form-image-list {
   border: 0.05rem solid #c6c4df;
   list-style: none;
