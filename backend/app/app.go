@@ -45,9 +45,13 @@ func (a *App) set(recipe Recipe) error {
 
 // EditRecipe edits one of the recipes in the collection.
 func (a *App) EditRecipe(recipe Recipe) (Recipe, error) {
-	if _, ok := a.store.Data[string(recipe.ID)]; !ok {
+	originalJSON, ok := a.store.Data[string(recipe.ID)]
+	if !ok {
 		return recipe, errors.New("recipe not found")
 	}
+	var original Recipe
+	json.Unmarshal(originalJSON, &original)
+	recipe.DatePublished = original.DatePublished
 	recipe.LastEdited = time.Now().UTC()
 	return recipe, a.set(recipe)
 }
