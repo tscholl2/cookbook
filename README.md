@@ -49,7 +49,7 @@ To build and run the backend:
 
 ```
     go get -u -v ./backend/cmd
-    go build -o cookbook ./backend/cmd
+    go build -o cookbook -ldflags "-X main.commit=$(git rev-list --max-count=1 HEAD) -X main.date=$(date +'%m-%d-%y') -X main.version=$(git describe --abbrev=0 --tags)" ./backend/cmd
 ```
 
 To test the backend:
