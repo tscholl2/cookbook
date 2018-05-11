@@ -32,7 +32,7 @@ export const API: IAPI = {
     return await resp.json();
   },
   status: async () => {
-    const resp = await fetch(base + "/status");
+    const resp = await fetch(base + "/status", options);
     return await resp.json();
   },
 };
