@@ -20,6 +20,7 @@ export function createActions(dispatch: Dispatch<State>) {
     goToNew: () => dispatch(goTo("/new")),
     goToEdit: (recipeID: string) => dispatch(goTo(`/edit/${recipeID}`, { recipeID })),
     goToAll: () => dispatch(goTo("/view")),
+    goToAbout: () => dispatch(goTo("/about")),
     selectPageName: (state: State) => pages[pm(state.path)!.index].name,
   };
 }
@@ -45,6 +46,7 @@ export const enum PageName {
   RECIPE = "RECIPE",
   EDIT_RECIPE = "EDIT_RECIPE",
   NEW_RECIPE = "NEW_RECIPE",
+  ABOUT = "ABOUT",
   NOT_FOUND = "NOT_FOUND",
 }
 
@@ -53,6 +55,7 @@ const pages = [
   { path: "/view", name: PageName.ALL_RECIPES },
   { path: "/new", name: PageName.NEW_RECIPE },
   { path: "/edit/:recipeID", name: PageName.EDIT_RECIPE },
+  { path: "/about", name: PageName.ABOUT },
   { path: "/\\w+", name: PageName.NOT_FOUND },
   { path: "/", name: PageName.HOME },
 ];

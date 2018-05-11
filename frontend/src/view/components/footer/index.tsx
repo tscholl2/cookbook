@@ -1,8 +1,12 @@
 import { h } from "src/view/h";
 import "./style.scss";
+import { Dispatch } from "src/controller";
+import { State } from "src/model";
+import { actionsCreator } from "src/model/actions";
 
-export function Footer() {
-  return (
+export function connectFooter(dispatch: Dispatch<State>) {
+  const actions = actionsCreator(dispatch);
+  const footer = (
     <footer class="cookbook-footer">
       <ul>
         <li>
@@ -15,13 +19,13 @@ export function Footer() {
           </a>
         </li>
         <li>
-          <a href="#">
+          <a class="c-hand" onclick={actions.router.goToHome}>
             <span>🏠</span>
             <span>Home</span>
           </a>
         </li>
         <li>
-          <a href="#">
+          <a class="c-hand" onclick={actions.router.goToAbout}>
             <span>?</span>
             <span>About</span>
           </a>
@@ -33,4 +37,5 @@ export function Footer() {
       />
     </footer>
   );
+  return () => footer;
 }

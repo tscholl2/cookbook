@@ -3,7 +3,7 @@ import { Dispatch } from "src/controller";
 import { State, actionsCreator } from "src/model";
 import "./style.scss";
 
-export const ConnectHeader = (dispatch: Dispatch<State>) => {
+export const connectHeader = (dispatch: Dispatch<State>) => {
   const actions = actionsCreator(dispatch);
   const Header = () => {
     return (

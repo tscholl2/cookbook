@@ -5,7 +5,7 @@ export interface IAPI {
   downloadAllRecipes(): Promise<{ [key: string]: Recipe }>;
   editRecipe(recipe: Recipe): Promise<Recipe>;
   newRecipe(recipe: Recipe): Promise<Recipe>;
-  status(): Promise<{ uptime: string }>;
+  status(): Promise<{ uptime: string; version: string }>;
 }
 
 declare const require: any;

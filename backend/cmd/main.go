@@ -71,7 +71,7 @@ builddate=%s
 	s := server.New(server.Options{
 		Port:    port,
 		App:     app.New(filename),
-		Version: fmt.Sprintf("version: %s, commit: %s, date: %s", version, commit, date),
+		Version: fmt.Sprintf("version: %s, commit: %s, built: %s", version, commit[:6], date),
 	})
 	s.Start()
 	sigint := make(chan os.Signal, 1)

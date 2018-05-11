@@ -27,7 +27,10 @@ export const API: IAPI = {
   newRecipe: async (recipe: Recipe) => API.editRecipe(recipe),
   status: async () => {
     await pause();
-    return { uptime: "1 day 3 hr 9 min" };
+    return {
+      uptime: "1 day 3 hr 9 min",
+      version: "version: v0.0.0, commit: aaaaaa, built: 1234-56-78",
+    };
   },
 };
 
