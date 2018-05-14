@@ -16,13 +16,13 @@ A self hosted service to save/view personal recipes.
 
 ## Why
 
-There is a lot of services to do this, but I thought it would be fun to build a self hosted one with all the features I wanted.
-Also it is a good exercise in building apps.
+There are a lot of services that store recipes, but I thought it would be fun to build a self hosted one with all the features I wanted.
+Also it is a good exercise in building/designing apps.
 
 ## How
 
 To run it, download the latest [release](https://github.com/tscholl2/cookbook/releases) and run it on your server.
-It migt be helpful to run it behind something like [caddy](https://github.com/mholt/caddy) over `HTTPS` and a basicauth.
+It might be helpful to run it behind something like [caddy](https://github.com/mholt/caddy) over `HTTPS` with `basicauth`.
 
 ## Technical
 
@@ -37,11 +37,12 @@ The backend is written in Go and runs an http server that 1) serves the frontend
 * `/edit`, POST, Edit a current recipe.
 
 These endpoints are available at `http://yourserver.com/api/`.
+A current TODO is to make the API endpoints more REST-ful-like.
 
 ### Frontend
 
 The frontend is written in Typescript with [ultradom](https://github.com/jorgebucaran/ultradom), [parcel](https://parceljs.org/), and [spectre](https://picturepan2.github.io/spectre/).
-It uses a redux-style immutable (using [icepick](https://github.com/aearly/icepick)) state container and is set up with some useful developer features such as redux-devtools, storybook-like sampling, hot-reloading, and automatic test running via [tape](https://github.com/substack/tape). Think React and redux but only functional components and dispatching reducers instead of actions. There is still plenty of room for optimizations via cacheing functions, but so far it hasn't been necessary because the site isn't that big.
+It uses a redux-style immutable (using [icepick](https://github.com/aearly/icepick)) state container and is set up with some useful developer features such as redux-devtools, storybook-like component sampling, hot-reloading, and automatic test running via [tape](https://github.com/substack/tape). Think React and redux but only functional components and dispatching reducers instead of actions. There is still plenty of room for optimizations via cacheing/memoizing functions, but so far it hasn't been necessary because the site isn't that big.
 
 ## Development
 
@@ -71,6 +72,13 @@ To build the frontend (make sure to switch `api/index` to use the real api inste
 ```
     cd frontend
     yarn build
+```
+
+To view the component samples:
+
+```
+    cd frontend
+    yarn run samples
 ```
 
 To test the frontend:
