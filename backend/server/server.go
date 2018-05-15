@@ -5,6 +5,7 @@ import (
 	"log"
 	"net/http"
 	"os"
+	"regexp"
 	"strings"
 
 	"github.com/tscholl2/cookbook/backend/app"
@@ -30,9 +31,17 @@ func New(options Options) (s Server) {
 	apiHandler := newAPIHandler(options)
 	handler := http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		if strings.HasPrefix(r.URL.Path, "/api") {
-			r.URL.Path = r.URL.Path[4:]
+			r.URL.Path = r.URL.Path[4:] // TODO: make new request or edit path?
 			apiHandler.ServeHTTP(w, r)
 			return
+		}
+		arr := strings.Split(r.URL.Path, "/")
+		end := arr[len(arr)-1]
+		isFile := regexp.MustCompile("\\.\\w+$").MatchString(end)
+		if isFile {
+			r.URL.Path = "/" + end // TODO: make new request or edit path?
+		} else {
+			r.URL.Path = "/" // TODO: make new request or edit path?
 		}
 		webHandler.ServeHTTP(w, r)
 		return
