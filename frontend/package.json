@@ -32,7 +32,7 @@
     "icepick": "2.3.0",
     "reselect": "3.0.1",
     "spectre.css": "0.5.1",
-    "tslib": "1.9.0",
-    "ultradom": "3.2.0"
+    "tslib": "1.9.1",
+    "ultradom": "3.3.0"
   }
 }
