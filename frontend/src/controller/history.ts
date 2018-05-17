@@ -11,7 +11,10 @@ export function connectControllerToHistory<S>(
   listeners.set(c, route =>
     c.dispatch(logReducer("native navigation", route, reducerCreator(go(route)))),
   );
-  c.addPlugin;
+  // TODO: initialize route here and do not use "data" attribute in history,
+  // instead storing everything in the url itself and running some extract
+  // function in selector.
+  // listeners.get(c)!(getCurrentRoute());
 }
 
 export function disconnectControllerFromHistory<S>(c: Controller<S>) {
