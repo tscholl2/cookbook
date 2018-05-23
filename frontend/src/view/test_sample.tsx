@@ -1,7 +1,7 @@
 import { h } from "src/view/h";
 import { addStatelessSample, addStatefullSample } from "src/sample";
 
-function Counter(count = 0, onClick: any) {
+function Counter({ count = 0, onClick = (): void => undefined }) {
   return (
     <div>
       <h1>Counter</h1>
@@ -11,8 +11,8 @@ function Counter(count = 0, onClick: any) {
   );
 }
 
-addStatefullSample("counter", 0, dispatch => state =>
-  Counter(state, () => dispatch(() => state + 1)),
-);
+addStatefullSample("counter", 0, dispatch => state => (
+  <Counter count={state} onClick={() => dispatch(() => state + 1)} />
+));
 
 addStatelessSample("paragraph", () => <p>this is a paragraph</p>);

@@ -28,7 +28,11 @@ function start(state = initialState) {
   controller.addListener(state => (window["state"] = state));
   // Render loop
   const v = View(controller.dispatch);
-  const update = debounce(() => render(v(controller.getState()), document.body));
+  const update = debounce(() => {
+    const vdom = v(controller.getState());
+    console.log("VDOM SIZE = ", vdomLength(vdom));
+    render(vdom, document.body);
+  });
   controller.addListener(update);
   setTimeout(update, 100);
 }
@@ -44,4 +48,18 @@ if (module.hot && process.env.NODE_ENV !== "production") {
 if (!window["__already_loaded__"]) {
   window["__already_loaded__"] = true;
   start();
+}
+
+function vdomLength(node?: any) {
+  if (!node) {
+    return 0;
+  }
+  if (!node.children) {
+    return 1;
+  }
+  let i = 0;
+  for (let c of node.children) {
+    i += vdomLength(c);
+  }
+  return i;
 }
