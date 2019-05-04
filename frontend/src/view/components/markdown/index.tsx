@@ -1,4 +1,4 @@
-import { h } from "src/view/h";
+import * as View from "src/view/h";
 declare const require: any;
 const bear = require("./bundle.min.js");
 const printer = bear.newPrinter(

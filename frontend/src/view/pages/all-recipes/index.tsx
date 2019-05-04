@@ -1,7 +1,7 @@
-import { h } from "src/view/h";
-import { State } from "src/model";
-import { actionsCreator } from "src/model/actions";
-import { Dispatch } from "src/controller";
+import * as View from "../../h";
+import { State } from "../../../model";
+import { actionsCreator } from "../../../model/actions";
+import { Dispatch } from "../../../controller";
 import { createSelector } from "reselect";
 import { Preview } from "./preview";
 import Fuse from "fuse.js";
@@ -65,7 +65,7 @@ export const AllRecipesPage = (dispatch: Dispatch<State>) => {
         return recipes;
       }
       const fuse = new Fuse(recipes, { shouldSort: true, keys: ["name", "directions"] });
-      return fuse.search<typeof recipes[0]>(form.values.search).slice(0, 5);
+      return fuse.search(form.values.search).slice(0, 5);
     },
     (form, recipes) => {
       const tags = form.values.tags

@@ -1,10 +1,10 @@
-import { h } from "src/view/h";
-import { State } from "src/model";
-import { Dispatch } from "src/controller";
-import { actionsCreator } from "src/model/actions";
-import { FormStatus, FormErrors, FormProps } from "src/model/forms";
-import { parseIngrediant } from "src/utils/parse-ingrediant";
-import { parseDirections } from "src/utils/parse-directions";
+import * as View from "../../h";
+import { State } from "../../../model";
+import { Dispatch } from "../../../controller";
+import { actionsCreator } from "../../../model/actions";
+import { FormStatus, FormErrors, FormProps } from "../../../model/forms";
+import { parseIngrediant } from "../../../utils/parse-ingrediant";
+import { parseDirections } from "../../../utils/parse-directions";
 import {
   RecipeFormValues,
   formValuesToRecipe,

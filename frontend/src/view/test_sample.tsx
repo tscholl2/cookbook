@@ -1,4 +1,4 @@
-import { h } from "src/view/h";
+import * as View from "src/view/h";
 import { addStatelessSample, addStatefullSample } from "src/sample";
 
 function Counter({ count = 0, onClick = (): void => undefined }) {

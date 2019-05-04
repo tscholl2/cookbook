@@ -1,6 +1,6 @@
-import { h } from "src/view/h";
+import * as View from "src/view/h";
 
-export function IngredientAmount({ amount }: { amount: string }) {
+export function IngredientAmount({ amount }: { amount: string }): any {
   if (amount.includes("/")) {
     const arr = amount.split("/");
     if (arr[0].includes(" ")) {

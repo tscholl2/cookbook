@@ -1,7 +1,7 @@
-import { h } from "src/view/h";
-import { Dispatch } from "src/controller";
-import { State } from "src/model";
-import { actionsCreator } from "src/model/actions";
+import * as View from "../../h";
+import { Dispatch } from "../../../controller";
+import { State } from "../../../model";
+import { actionsCreator } from "../../../model/actions";
 import { createSelector } from "reselect";
 import { sort } from "icepick";
 import "./style.scss";
@@ -11,26 +11,33 @@ export function AboutPage(dispatch: Dispatch<State>) {
   const recipesSelector = createSelector(
     (state: State) => state.api.data.recipes,
     recipes =>
-      sort(
-        Object.keys(recipes).map(k => recipes[k]),
-        (a, b) =>
-          a.datePublished < b.datePublished ? -1 : a.datePublished === b.datePublished ? 0 : 1,
+      sort(Object.keys(recipes).map(k => recipes[k]), (a, b) =>
+        a.datePublished < b.datePublished ? -1 : a.datePublished === b.datePublished ? 0 : 1,
       ),
   );
-  const oldestSelector = createSelector(recipesSelector, recipes => recipes[0]);
-  const newestSelector = createSelector(recipesSelector, recipes => recipes[recipes.length - 1]);
-  const mostIngrediantsSelector = createSelector(recipesSelector, recipes => {
-    if (recipes.length === 0) {
-      return;
-    }
-    let R = recipes[0];
-    for (let r of recipes) {
-      if (r.ingredients.length > R.ingredients.length) {
-        R = r;
+  const oldestSelector = createSelector(
+    recipesSelector,
+    recipes => recipes[0],
+  );
+  const newestSelector = createSelector(
+    recipesSelector,
+    recipes => recipes[recipes.length - 1],
+  );
+  const mostIngrediantsSelector = createSelector(
+    recipesSelector,
+    recipes => {
+      if (recipes.length === 0) {
+        return;
       }
-    }
-    return R;
-  });
+      let R = recipes[0];
+      for (let r of recipes) {
+        if (r.ingredients.length > R.ingredients.length) {
+          R = r;
+        }
+      }
+      return R;
+    },
+  );
   return (state: State) => {
     const oldest = oldestSelector(state);
     const newest = newestSelector(state);

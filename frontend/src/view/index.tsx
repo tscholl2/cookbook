@@ -1,8 +1,8 @@
-import { h } from "src/view/h";
-import { Dispatch } from "src/controller";
-import { State } from "src/model";
-import { PageName } from "src/model/router";
-import { actionsCreator } from "src/model/actions";
+import * as View from "../view/h";
+import { Dispatch } from "../controller";
+import { State } from "../model";
+import { PageName } from "../model/router";
+import { actionsCreator } from "../model/actions";
 import { AllRecipesPage } from "./pages/all-recipes";
 import { EditRecipePage } from "./pages/edit-recipe";
 import { ViewRecipePage } from "./pages/view-recipe";

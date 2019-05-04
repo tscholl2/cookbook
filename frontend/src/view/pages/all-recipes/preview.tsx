@@ -1,6 +1,6 @@
-import { h } from "src/view/h";
-import { Recipe } from "src/api";
-import { DinnerPlate } from "src/view/components/dinner-plate";
+import * as View from "../../h";
+import { Recipe } from "../../../api";
+import { DinnerPlate } from "../../components/dinner-plate";
 import "./style.scss";
 
 export function Preview(props: { recipe: Recipe; key?: string }) {

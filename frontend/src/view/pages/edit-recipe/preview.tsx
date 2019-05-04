@@ -1,7 +1,7 @@
-import { h } from "src/view/h";
-import { RecipeFormValues, formValuesToRecipe } from "src/utils/recipe-form-values";
-import { memoize } from "src/utils/memoize";
-import { IngredientAmount } from "src/view/components/ingredient-amount";
+import * as View from "../../h";
+import { RecipeFormValues, formValuesToRecipe } from "../../../utils/recipe-form-values";
+import { memoize } from "../../../utils/memoize";
+import { IngredientAmount } from "../../components/ingredient-amount";
 
 export const Preview = memoize(function Preview(input: RecipeFormValues) {
   let preview: JSX.Element | JSX.Element[];

@@ -1,40 +1,51 @@
-import { render } from "ultradom";
-import { View } from "src/view";
-import { Controller } from "src/controller";
-import { initialState, State } from "src/model";
-import { getStateFromPath } from "src/model/router";
-import { debounce } from "src/utils/debounce";
-import { connectControllerToHistory } from "src/controller/history";
-import { connectControllerToReduxDevtools } from "src/controller/redux-devtools";
+import { patch } from "superfine";
+import { View } from "./view";
+import { Controller } from "./controller";
+import { initialState, State } from "./model";
+import { debounce } from "./utils/debounce";
+import { connectControllerToHistory } from "./controller/history";
+import { connectControllerToReduxDevtools } from "./controller/redux-devtools";
 import { set } from "icepick";
-import { getCurrentRoute } from "./utils/history";
+import { getCurrentRoute, go } from "./utils/history";
+import { vdomStats } from "./utils/vdom-stats";
 
 declare const window: any;
 
 function start(state = initialState) {
+  // clear any remaining containers/content
   const controller = new Controller(state);
   connectControllerToHistory(controller, route => state =>
     set(state, "route", route as State["route"]),
   );
-  // To intialize routing based off initial URL.
-  const route = getCurrentRoute();
-  route.data = getStateFromPath(route.path);
-  controller.dispatch(state => set(state, "route", route));
+  // To intialize routing based off initial URL if not already loaded
+  if (!window["state"]) {
+    let route = getCurrentRoute();
+    controller.dispatch(state => set(state, "route", route));
+  }
   // Devtools
   connectControllerToReduxDevtools(controller);
-  // TODO: delete
-  controller.addListener(state => console.log("new state", state));
   // persist state in window for hot reloading
   controller.addListener(state => (window["state"] = state));
   // Render loop
   const v = View(controller.dispatch);
   const update = debounce(() => {
-    const vdom = v(controller.getState());
-    console.log("VDOM SIZE = ", vdomLength(vdom));
-    render(vdom, document.body);
+    const vdomstart = performance.now();
+    const nextVdom = v(controller.getState());
+    const vdomend = performance.now();
+    const renderstart = performance.now();
+    // we need to keep vdom around after hot-reloading otherwise
+    // render will attach another div
+    window["vdom"] = patch(window["vdom"], nextVdom, document.body);
+    const renderend = performance.now();
+    console.log(
+      JSON.stringify({
+        vdom: { ...vdomStats(nextVdom), δms: (vdomend - vdomstart).toFixed(2) },
+        dom: { δms: (renderend - renderstart).toFixed(2) },
+      }),
+    );
   });
   controller.addListener(update);
-  setTimeout(update, 100);
+  setTimeout(update, 100); // TODO: cancel on hotreload
 }
 
 declare const module: any;
@@ -48,18 +59,4 @@ if (module.hot && process.env.NODE_ENV !== "production") {
 if (!window["__already_loaded__"]) {
   window["__already_loaded__"] = true;
   start();
-}
-
-function vdomLength(node?: any) {
-  if (!node) {
-    return 0;
-  }
-  if (!node.children) {
-    return 1;
-  }
-  let i = 0;
-  for (let c of node.children) {
-    i += vdomLength(c);
-  }
-  return i;
 }

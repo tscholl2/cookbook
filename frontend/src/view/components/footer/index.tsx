@@ -1,4 +1,4 @@
-import { h } from "src/view/h";
+import * as View from "src/view/h";
 import "./style.scss";
 import { Dispatch } from "src/controller";
 import { State } from "src/model";

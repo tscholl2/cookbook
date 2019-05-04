@@ -1,4 +1,4 @@
-import { h } from "src/view/h";
+import * as View from "../../h";
 import { FormProps } from "src/model/forms";
 
 export interface SearchFormValues {

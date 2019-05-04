@@ -1,6 +1,6 @@
-import { h } from "src/view/h";
-import { RecipeFormValues } from "src/utils/recipe-form-values";
-import { FormProps, FormErrors, FormTouched } from "src/model/forms";
+import * as View from "../../h";
+import { RecipeFormValues } from "../../../utils/recipe-form-values";
+import { FormProps, FormErrors, FormTouched } from "../../../model/forms";
 
 const autoFocus = (el: HTMLElement) => el.focus();
 
