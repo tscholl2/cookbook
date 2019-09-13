@@ -24,8 +24,15 @@ function update() {
   if (name === undefined) {
     return;
   }
-  const root = document.getElementById("sample-container")!;
-  root.innerHTML = "";
+  let root = document.getElementById("root");
+  if (root == null) {
+    const container = document.getElementById("sample-container")!
+    container.innerHTML = "";
+    root = document.createElement("div");
+    container.appendChild(root);
+  } else {
+    root.innerHTML = "";
+  }
   // TODO: try shadow dom?
   // const shadow = host.attachShadow({ mode: "open" });
   // TODO: iframe is probably better

@@ -26,6 +26,12 @@
     "noUnusedLocals": true,
     "noUnusedParameters": true
   },
+  "baseUrl": ".",
+  "paths": {
+    "__src/*": [
+      "src/*"
+    ]
+  },
   "include": [
     "src/**/*",
     "samples/**/*",
