@@ -1,7 +1,11 @@
 import { samples } from ".";
 import "./imports";
 
+const RESET_HTML = document.body.innerHTML;
+
 function update() {
+  document.body.innerHTML = "";
+  document.body.innerHTML = RESET_HTML;
   const sidebar = document.getElementById("sample-links")!;
   sidebar.innerHTML = "";
   const ul = document.createElement("ul");
@@ -9,7 +13,11 @@ function update() {
     const { name, filename } = samples[k];
     const li = document.createElement("li");
     li.onclick = () => {
-      history.pushState({}, "", `${location.pathname}?name=${encodeURIComponent(name)}`);
+      history.pushState(
+        {},
+        "",
+        `${location.pathname}?name=${encodeURIComponent(name)}`
+      );
       update();
     };
     li.innerText = name;
@@ -24,15 +32,8 @@ function update() {
   if (name === undefined) {
     return;
   }
-  let root = document.getElementById("root");
-  if (root == null) {
-    const container = document.getElementById("sample-container")!
-    container.innerHTML = "";
-    root = document.createElement("div");
-    container.appendChild(root);
-  } else {
-    root.innerHTML = "";
-  }
+  renderControls();
+  const root = document.getElementById("root")!;
   // TODO: try shadow dom?
   // const shadow = host.attachShadow({ mode: "open" });
   // TODO: iframe is probably better
@@ -48,10 +49,10 @@ function renderControls() {
       () => {
         history.pushState({}, "", `${location.pathname}${location.search}`);
         update();
-      },
+      }
     ],
     ["back", () => history.back()],
-    ["forward", () => history.forward()],
+    ["forward", () => history.forward()]
   ].forEach(([name, action]) => {
     const btn = document.createElement("button");
     btn.innerText = name as any;
@@ -63,4 +64,3 @@ function renderControls() {
 addEventListener("popstate", update);
 
 update();
-renderControls();
