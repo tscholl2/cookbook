@@ -13,6 +13,8 @@ declare module "superfine" {
     type: number
   }
 
+  export type Component<Props> = (props: Props, children?: Array<Children | Children[]>) => VNode<Props>
+
   /**
    * Create a new virtual DOM node. A virtual DOM is a description of what a DOM should look like using a tree of virtual nodes.
    * @param name The name of an Element or a function that returns a virtual DOM node.
@@ -20,7 +22,7 @@ declare module "superfine" {
    * @param children The element's child nodes.
    */
   export function h<Props>(
-    name: string | ((props: Props, children?: Array<Children | Children[]>) => VNode<Props>),
+    name: string | Component<Props>,
     props?: Props | null,
     ...children: Array<Children | Children[]>
   ): VNode<Props>

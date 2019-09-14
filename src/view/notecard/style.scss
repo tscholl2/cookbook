@@ -1,0 +1,72 @@
+@import url("https://fonts.googleapis.com/css?family=Chilanka&display=swap");
+
+.notecard {
+  padding: 5px;
+  // size
+  width: 5in;
+  height: 3in;
+  // background
+  background: repeating-linear-gradient(
+    #fff 0px,
+    #fff 27px,
+    rgba(0, 0, 255, 0.15) 28px,
+    rgba(0, 0, 255, 0.15) 30px
+  );
+  // text
+  display: flex;
+  flex-wrap: wrap;
+  font-family: "Chilanka", cursive;
+  font-size: 20px;
+  line-height: 30px;
+  // outline
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  // shadow
+  box-shadow: 2px 2px 0 0 rgba(0, 0, 0, 0.25);
+  transition: box-shadow 0.2s ease;
+  &:hover {
+    box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.5);
+  }
+  // title
+  > h1 {
+    margin: 0;
+    padding: 0;
+    flex-basis: 100%;
+    font-size: 23px;
+    text-align: center;
+    margin-block-end: 0;
+    margin-block-start: 0;
+    margin-inline-start: 0;
+    margin-inline-end: 0;
+  }
+  // instructions and directions
+  ul {
+    flex-basis: 50%;
+    display: inline-block;
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+}
+/*
+  > ul {
+    margin: 0;
+    padding: 0;
+    > li {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      list-style: none;
+      padding: 0 5px 0 5px;
+      // border-bottom: 2px solid rgba(0, 0, 255, 0.15);
+      &:first-child {
+        display: block;
+        text-align: center;
+        font-size: 24px;
+        // border-bottom: 3px solid rgba(255, 0, 0, 0.15);
+      }
+      &:last-child {
+        border-bottom: none;
+      }
+    }
+  }
+*/
