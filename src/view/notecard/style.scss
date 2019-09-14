@@ -7,11 +7,12 @@
   height: 3in;
   // background
   background: repeating-linear-gradient(
-    #fff 0px,
-    #fff 27px,
-    rgba(0, 0, 255, 0.15) 28px,
-    rgba(0, 0, 255, 0.15) 30px
-  );
+      #fff 0px,
+      #fff 27px,
+      rgba(0, 0, 255, 0.15) 28px,
+      rgba(0, 0, 255, 0.15) 30px
+    ),
+    linear-gradient(#fff 0, #fff 28px, rgba(255,0,0,0.25) 28px, rgba(255,0,0,0.75) 30px, #fff 30px);
   // text
   display: flex;
   flex-wrap: wrap;
