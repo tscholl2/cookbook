@@ -13,15 +13,20 @@ export function Notecard() {
             <li>1 pan</li>
             <li>1 stove</li>
             <li>2 eagles</li>
+            <li>1 egg</li>
+            <li>salt</li>
         </ul>
         <ul>
             <li>Put pancake in pan</li>
-            <li>Put pancake in pan</li>
-            <li>Put pancake in pan</li>
-            <li>Put pancake in pan</li>
-            <li>Put pancake in pan</li>
-            <li>Put pancake in pan</li>
-            <li>Put pancake in pan</li>
+            <li>do something else</li>
+            <li>listen to music</li>
+            <li>mix something</li>
+            <li>idk</li>
+            <li>this is just a test</li>
+            <li>another test</li>
+            <li>do something else</li>
+            <li>listen to music</li>
+            <li>mix something</li>
         </ul>
     </div>
 }
