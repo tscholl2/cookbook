@@ -1,16 +1,39 @@
 import * as Superfine from "superfine";
-import { addStatelessSample } from "../../../samples";
-import { Notecard } from './';
+import { addStatelessSample, addStatefullSample } from "../../../samples";
+import { Notecard } from "./";
 
-addStatelessSample(
+const recipe = {
+  title: "Pancakes",
+  ingrediants: `
+1 pancake
+1/4 cup flour
+1/2 cup sugar
+100 eggs
+11 liters 
+1 pan
+1 stove
+2 eagles
+1 egg
+salt
+`,
+  directions: `
+Put pancake in pan
+do something else
+listen to music
+mix something
+idk
+this is just a test
+another test
+do something else
+listen to music
+mix something
+`
+};
 
+addStatelessSample("notecard", () => <Notecard {...recipe} />);
 
-
-
-
-    "notecard", () =>
-
-    <Notecard />
-
-
-)
+addStatefullSample("editable notecard", recipe, dispatch => recipe =>
+  console.log("rendering notecard with ", JSON.stringify(recipe, null, 2)) || (
+    <Notecard {...recipe} onchange={r => dispatch(() => r)} />
+  )
+);
