@@ -35,29 +35,35 @@
     box-shadow: 0 0 4px 4px rgba(0, 0, 0, 0.5);
   }
   // title
-  > h1 {
+  > [name="title"] {
     flex-basis: 100%;
     font-size: 23px;
     text-align: center;
     margin: 0;
     min-width: 100px;
+    max-height: 25px;
   }
   // instructions and directions
-  > ul,
-  > ol {
+  > [name="ingrediants"],
+  [name="directions"] {
     display: block;
     margin: 0;
     padding: 0;
     text-align: left;
+    &[name="ingrediants"] {
+      list-style: none;
+    }
+    &[name="directions"] {
+      list-style: decimal;
+      margin-left: 25px;
+    }
+    > li {
+      min-width: 50px;
+    }
   }
-  > ul {
-    list-style: none;
-  }
-  > ol {
-    list-style: decimal;
-    margin-left: 25px;
-  }
-  li {
-    min-width: 50px;
+  > textarea {
+    width: 225px;
+    height: 240px;
+    resize: none;
   }
 }

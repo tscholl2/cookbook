@@ -34,7 +34,7 @@ export function addStatefullSample<S>(
     const v = view(controller.dispatch);
     const listener = (state: S) => {
       const vdom = v(state)
-      Superfine.patch(root, Array.isArray(vdom) ? <div>{vdom}</div> : vdom);
+      root = Superfine.patch(root, Array.isArray(vdom) ? <div>{vdom}</div> : vdom);
     };
     controller.addListener(listener);
     controller.addListener(s =>
