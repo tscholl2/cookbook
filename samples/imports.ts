@@ -5,3 +5,5 @@ require("../src/_sample.tsx");
 a("../src/_sample.tsx");
 require("../src/view/notecard/_sample.tsx");
 a("../src/view/notecard/_sample.tsx");
+require("../src/view/notecard2/_sample.tsx");
+a("../src/view/notecard2/_sample.tsx");

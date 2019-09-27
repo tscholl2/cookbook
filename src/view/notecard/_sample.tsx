@@ -1,6 +1,6 @@
 import * as Superfine from "superfine";
 import { addStatelessSample, addStatefullSample } from "../../../samples";
-import { Notecard, EditableNotecard } from "./";
+import { Notecard } from "./notecard";
 
 const recipe = {
   title: "Pancakes",
@@ -26,31 +26,9 @@ listen to music
 mix something`
 };
 
-addStatelessSample("notecard", () => <Notecard {...recipe} />);
-
-addStatefullSample("editing notecard", recipe, dispatch => recipe => (
-  <EditableNotecard
-    {...recipe}
+addStatefullSample("editing notecard2", recipe, dispatch => recipe => (
+  <Notecard
+    recipe={recipe}
     onchange={r => console.log("UPDATE: ", dispatch(() => r))}
   />
 ));
-
-addStatefullSample(
-  "editable notecard",
-  { recipe, focus: false },
-  dispatch => state => (
-    <div>
-      {state.focus ? (
-        <EditableNotecard
-          {...state.recipe}
-          onblur={() => dispatch(s => ({ ...s, focus: false }))}
-        />
-      ) : (
-        <Notecard
-          {...state.recipe}
-          onclick={() => dispatch(s => ({ ...s, focus: true }))}
-        />
-      )}
-    </div>
-  )
-);

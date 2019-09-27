@@ -1,33 +1,45 @@
 import * as Superfine from "superfine";
 import "./style.scss";
-import { Recipe } from '../../model';
 
+export interface Recipe {
+  title: string;
+  ingrediants: string;
+  directions: string;
+}
 
-
-export interface NotecardProps {
-  recipe: Recipe;
+export interface NotecardProps extends Recipe {
+  key?: string;
   onclick?(): void;
-  onchange?(r: Recipe): void;
 }
 
 export function Notecard(props: NotecardProps) {
   const {
-    recipe: { title = "", ingrediants = "", directions = "" },
+    title = "",
+    ingrediants = "",
+    directions = "",
     ...otherProps
   } = props;
   return (
     <div {...otherProps} class="notecard">
       <h1 name="title">{title}</h1>
       <ul name="ingrediants">
-        {ingrediants.split("\n").map((s, i) => (
+        {stringToList(ingrediants).map((s, i) => (
           <li key={`ingrediant-${i}-${s}`}>{s}</li>
         ))}
       </ul>
       <ol name="directions">
-        {directions.split("\n").map((s, i) => (
+        {stringToList(directions).map((s, i) => (
           <li key={`direction-${i}-${s}`}>{s}</li>
         ))}
       </ol>
     </div>
   );
+}
+
+function stringToList(s: string) {
+  const arr = s
+    .split("\n")
+    .map(s => s.trim())
+    .filter(s => s !== "");
+  return arr.length === 0 ? [""] : arr;
 }
