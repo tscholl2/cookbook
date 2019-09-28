@@ -40,3 +40,24 @@ export function encodeRecipes(arr: Recipe[]): string {
       .join("\n\n") + "\n"
   );
 }
+
+export function validate(s: string): undefined | string {
+  s = s.trim();
+  if (s[0] !== "#") {
+    return "should start with # TITLE";
+  }
+  const chunks = s.split("\n\n").map(s => s.trim());
+  if (chunks.length !== 3) {
+    return "should have 3 sections: TITLE, INGREDIANTS, DIRECTIONS";
+  }
+  if (chunks[0] === "#") {
+    return "title should not be empty";
+  }
+  if (chunks[0].includes("\n")) {
+    return "title should not have a newline";
+  }
+  if (!chunks[1]) {
+    return "missing ingrediants";
+  }
+  return;
+}

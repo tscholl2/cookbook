@@ -15,7 +15,6 @@ export function Login(dispatch: Dispatch<State>) {
     dispatch(state => ({ ...state, status: "logging in" }));
     setTimeout(async () => {
       const recipes = await load(data.username);
-      alert(`logged in with ${JSON.stringify(data)}`);
       dispatch(state => ({
         ...state,
         recipes,
