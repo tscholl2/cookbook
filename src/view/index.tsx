@@ -10,13 +10,13 @@ export function App(dispatch: Dispatch<State>) {
   return function(state: State) {
     let Screen;
     switch (state.status) {
-      case "loaded":
+      case "logged in":
         Screen = home(state);
         break;
-      case "loading":
+      case "logging in":
         Screen = <progress />;
         break;
-      default:
+      case "not logged in":
         Screen = login(state);
         break;
     }

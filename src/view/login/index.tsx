@@ -1,6 +1,7 @@
 import * as Superfine from "superfine";
 import { Dispatch } from "../../controller";
 import { State } from "../../model";
+import { load } from "../../utils/api";
 
 export function Login(dispatch: Dispatch<State>) {
   function onsubmit(e: any) {
@@ -11,19 +12,19 @@ export function Login(dispatch: Dispatch<State>) {
       const item: any = form.elements.item(i)!;
       data[item.name] = item.value;
     }
-    dispatch(state => ({ ...state, status: "loading" }));
-    alert(`logged in with ${JSON.stringify(data)}`);
-    setTimeout(
-      () =>
-        dispatch(state => ({
-          ...state,
-          status: "loaded",
-          user: data["username"]
-        })),
-      500
-    );
+    dispatch(state => ({ ...state, status: "logging in" }));
+    setTimeout(async () => {
+      const recipes = await load(data.username);
+      alert(`logged in with ${JSON.stringify(data)}`);
+      dispatch(state => ({
+        ...state,
+        recipes,
+        status: "logged in",
+        user: data.username
+      }));
+    }, 500);
   }
-  return function(state: State) {
+  return function(_: State) {
     return (
       <form id="login-form" onsubmit={onsubmit}>
         <label>

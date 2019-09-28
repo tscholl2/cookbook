@@ -1,28 +1,55 @@
 import * as Superfine from "superfine";
 import { Dispatch } from "../../controller";
 import { State } from "../../model";
+import { encodeRecipes } from "../../utils/parse";
 
 export function Home(dispatch: Dispatch<State>) {
-  return function(state: State) {
+  const setFocus = (e: any) => {
+    e.preventDefault();
+    dispatch(state => ({ ...state, editing: e.target.getAttribute("name") }));
+  };
+  const unsetFocus = (e: any) => {
+    e.preventDefault();
+    if (e.keyCode === 9 || e.keyCode === 27) {
+      dispatch(state => ({ ...state, editing: e.target.getAttribute("name") }));
+    }
+  };
+  return function({ user, recipes, editing }: State) {
     return [
-      <h2 key="title">Welcome {state.user}!</h2>,
-      state.recipes && !isEmpty(state.recipes) ? (
+      <h2 key="title">Welcome {user}!</h2>,
+      recipes && recipes.length > 0 ? (
         <ul key="list">
-          {Object.entries(state.recipes).map(value => (
-            <li key={value[0]}>{JSON.stringify(value[1].data)}</li>
-          ))}
+          {recipes.map((r, i) =>
+            editing != i ? (
+              <li key={i} name={i} onclick={setFocus}>
+                {JSON.stringify(r)}
+              </li>
+            ) : (
+              <li key={i}>
+                <textarea
+                  value={encodeRecipes([r])[0]}
+                  onkeydown={unsetFocus}
+                  onchange={(e: any) => console.log(`SAVING ${e.target.value}`)}
+                ></textarea>
+                <img
+                  style="display:none;"
+                  src="#"
+                  onerror={(e: any) =>
+                    // TODO this is just bad
+                    e.target.previousSibling.focus()
+                  }
+                ></img>
+                <button>save</button>
+              </li>
+            )
+          )}
         </ul>
       ) : (
         <h3 key="empty">No recipes :(</h3>
       ),
-      <button key="new">Add</button>
+      <button key="new" onclick={() => dispatch(state => ({ ...state }))}>
+        Add
+      </button>
     ];
   };
-}
-
-function isEmpty(object: { [key: string]: any } = {}) {
-  for (let _ in object) {
-    return true;
-  }
-  return false;
 }

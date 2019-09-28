@@ -1,13 +1,14 @@
 export interface State {
-  recipes?: {
-    [id: string]: { data: Recipe; editing: string; focus?: boolean };
-  };
+  recipes?: Recipe[];
   user?: string;
-  status?: "loading" | "loaded";
+  status: "not logged in" | "logging in" | "logged in";
+  editing?: string | number;
 }
+
+export const initialState: State = { status: "not logged in" };
 
 export interface Recipe {
   title: string;
-  ingrediants: string;
-  directions: string;
+  ingrediants: string[];
+  directions: string[];
 }
