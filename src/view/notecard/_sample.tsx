@@ -1,10 +1,12 @@
 import * as Superfine from "superfine";
-import { addStatelessSample, addStatefullSample } from "../../../samples";
+import { addStatefullSample } from "../../../samples";
 import { Notecard } from "./notecard";
+import { parseRecipe } from "../../utils/parse";
 
-const recipe = {
-  title: "Pancakes",
-  ingrediants: `1 pancake
+const recipe = parseRecipe(`
+# Pancakes
+
+1 pancake
 1/4 cup flour
 1/2 cup sugar
 100 eggs
@@ -13,8 +15,9 @@ const recipe = {
 1 stove
 2 eagles
 1 egg
-salt`,
-  directions: `Put pancake in pan
+salt
+
+Put pancake in pan
 do something else
 listen to music
 mix something
@@ -23,8 +26,9 @@ this is just a test
 another test
 do something else
 listen to music
-mix something`
-};
+mix something
+
+`);
 
 addStatefullSample("editing notecard2", recipe, dispatch => recipe => (
   <Notecard

@@ -2,6 +2,7 @@ import * as Superfine from "superfine";
 import { Dispatch } from "../../controller";
 import { State } from "../../model";
 import { load } from "../../utils/api";
+import { parseRecipes, encodeRecipe } from "../../utils/parse";
 
 export function Login(dispatch: Dispatch<State>) {
   function onsubmit(e: any) {
@@ -14,10 +15,10 @@ export function Login(dispatch: Dispatch<State>) {
     }
     dispatch(state => ({ ...state, status: "logging in" }));
     setTimeout(async () => {
-      const recipes = await load(data.username);
+      const recipeData = await load(data.username);
       dispatch(state => ({
         ...state,
-        recipes,
+        recipes: parseRecipes(recipeData).map(encodeRecipe),
         status: "logged in",
         user: data.username
       }));

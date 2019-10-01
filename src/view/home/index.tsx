@@ -1,7 +1,7 @@
 import * as Superfine from "superfine";
 import { Dispatch } from "../../controller";
 import { State } from "../../model";
-import { encodeRecipes, validate, parseRecipes } from "../../utils/parse";
+import { encodeRecipes, validate, parseRecipe } from "../../utils/parse";
 import { save } from "../../utils/api";
 
 export function Home(dispatch: Dispatch<State>) {
@@ -9,7 +9,6 @@ export function Home(dispatch: Dispatch<State>) {
     console.log(e.target);
     const i = parseInt(e.target.getAttribute("name"), 10);
     const s = e.target.value;
-    console.log(e);
     const error = validate(s);
     if (error) {
       dispatch(state => ({ ...state, editingError: error }));
@@ -20,10 +19,10 @@ export function Home(dispatch: Dispatch<State>) {
       const state = { ...s2 };
       state.editing = undefined;
       state.editingError = undefined;
-      state.recipes = state.recipes!.splice(0);
-      state.recipes[i] = parseRecipes(s)[0];
-      console.log("recipes updated", i, s, JSON.stringify(state.recipes));
-      save(state.user!, state.recipes);
+      state.recipes = ([] as string[]).concat(state.recipes!); // copy array
+      console.log("ABOUT TO UPDATE", JSON.stringify(state.recipes), i, s);
+      state.recipes![i] = s;
+      save(state.user!, encodeRecipes(state.recipes!.map(parseRecipe)));
       return state;
     });
   };
@@ -42,16 +41,16 @@ export function Home(dispatch: Dispatch<State>) {
       <h2 key="title">Welcome {user}!</h2>,
       recipes && recipes.length > 0 ? (
         <ul key="list">
-          {recipes.map((r, i) =>
+          {["# title\n\n\n\nadd new recipe"].concat(recipes).map((r, i) =>
             editing != i ? (
               <li key={i} name={i} onclick={setFocus}>
-                {JSON.stringify(r)}
+                {JSON.stringify(parseRecipe(r))}
               </li>
             ) : (
               <li key={i}>
                 <textarea
-                  name={i}
-                  value={encodeRecipes([r])}
+                  name={i === 0 ? recipes.length : i}
+                  value={r}
                   onkeydown={onKeyDown}
                   onblur={validateAndSaveInput}
                 ></textarea>

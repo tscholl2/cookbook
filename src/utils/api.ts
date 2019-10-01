@@ -1,12 +1,9 @@
-import { Recipe } from "../model";
-import { parseRecipes, encodeRecipes } from "./parse";
-
-export async function load(_: string): Promise<Recipe[]> {
-  return parseRecipes(SERVER);
+export async function load(_: string): Promise<string> {
+  return SERVER;
 }
 
-export async function save(_: string, data: Recipe[]) {
-  SERVER = encodeRecipes(data);
+export async function save(_: string, data: string) {
+  SERVER = data;
   return;
 }
 
