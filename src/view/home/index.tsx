@@ -6,21 +6,24 @@ import { save } from "../../utils/api";
 
 export function Home(dispatch: Dispatch<State>) {
   const validateAndSaveInput = (e: any) => {
-    console.log(e.target);
     const i = parseInt(e.target.getAttribute("name"), 10);
     const s = e.target.value;
     const error = validate(s);
     if (error) {
-      dispatch(state => ({ ...state, editingError: error }));
+      dispatch(state =>
+        state.editing ? { ...state, editingError: error } : state
+      );
       console.error(error);
       return;
     }
     dispatch(s2 => {
+      if (s2.editing === undefined) {
+        return s2;
+      }
       const state = { ...s2 };
       state.editing = undefined;
       state.editingError = undefined;
       state.recipes = ([] as string[]).concat(state.recipes!); // copy array
-      console.log("ABOUT TO UPDATE", JSON.stringify(state.recipes), i, s);
       state.recipes![i] = s;
       save(state.user!, encodeRecipes(state.recipes!.map(parseRecipe)));
       return state;
@@ -33,10 +36,14 @@ export function Home(dispatch: Dispatch<State>) {
   const onKeyDown = (e: any) => {
     if (e.keyCode === 9 || e.keyCode === 27) {
       e.preventDefault();
-      validateAndSaveInput(e);
+      dispatch(state => ({
+        ...state,
+        editing: undefined,
+        editingError: undefined
+      }));
     }
   };
-  return function({ user, recipes, editing }: State) {
+  return function({ user, recipes, editing, editingError }: State) {
     return [
       <h2 key="title">Welcome {user}!</h2>,
       recipes && recipes.length > 0 ? (
@@ -49,12 +56,22 @@ export function Home(dispatch: Dispatch<State>) {
             ) : (
               <li key={i}>
                 <textarea
-                  name={i === 0 ? recipes.length : i}
+                  key="input"
+                  name={i === 0 ? recipes.length : i - 1}
                   value={r}
                   onkeydown={onKeyDown}
                   onblur={validateAndSaveInput}
+                  autofocus={true}
                 ></textarea>
+                {editingError ? (
+                  <span key="err" style="color:red;">
+                    {editingError}
+                  </span>
+                ) : (
+                  undefined
+                )}
                 <img
+                  key="idk"
                   style="display:none;"
                   src="#"
                   onerror={(e: any) => {
@@ -64,17 +81,13 @@ export function Home(dispatch: Dispatch<State>) {
                     e.target.previousSibling.selectionEnd = 0;
                   }}
                 ></img>
-                <button>save</button>
               </li>
             )
           )}
         </ul>
       ) : (
         <h3 key="empty">No recipes :(</h3>
-      ),
-      <button key="new" onclick={() => dispatch(state => ({ ...state }))}>
-        Add
-      </button>
+      )
     ];
   };
 }
