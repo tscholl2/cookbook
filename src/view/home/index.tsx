@@ -1,7 +1,12 @@
 import * as Superfine from "superfine";
 import { Dispatch } from "../../controller";
-import { State } from "../../model";
-import { encodeRecipes, validate, parseRecipe } from "../../utils/parse";
+import { State, Recipe } from "../../model";
+import {
+  encodeRecipes,
+  validate,
+  encodeRecipe,
+  parseRecipe
+} from "../../utils/parse";
 import { save } from "../../utils/api";
 
 export function Home(dispatch: Dispatch<State>) {
@@ -23,9 +28,9 @@ export function Home(dispatch: Dispatch<State>) {
       const state = { ...s2 };
       state.editing = undefined;
       state.editingError = undefined;
-      state.recipes = ([] as string[]).concat(state.recipes!); // copy array
-      state.recipes![i] = s;
-      save(state.user!, encodeRecipes(state.recipes!.map(parseRecipe)));
+      state.recipes = state.recipes!.slice(0); // copy array
+      state.recipes![i] = parseRecipe(s);
+      save(state.user!, encodeRecipes(state.recipes!));
       return state;
     });
   };
@@ -48,42 +53,50 @@ export function Home(dispatch: Dispatch<State>) {
       <h2 key="title">Welcome {user}!</h2>,
       recipes && recipes.length > 0 ? (
         <ul key="list">
-          {["# title\n\n\n\nadd new recipe"].concat(recipes).map((r, i) =>
-            editing != i ? (
-              <li key={i} name={i} onclick={setFocus}>
-                {JSON.stringify(parseRecipe(r))}
-              </li>
-            ) : (
-              <li key={i}>
-                <textarea
-                  key="input"
-                  name={i === 0 ? recipes.length : i - 1}
-                  value={r}
-                  onkeydown={onKeyDown}
-                  onblur={validateAndSaveInput}
-                  autofocus={true}
-                ></textarea>
-                {editingError ? (
-                  <span key="err" style="color:red;">
-                    {editingError}
-                  </span>
-                ) : (
-                  undefined
-                )}
-                <img
-                  key="idk"
-                  style="display:none;"
-                  src="#"
-                  onerror={(e: any) => {
-                    // TODO this is just bad
-                    e.target.previousSibling.focus();
-                    e.target.previousSibling.scrollTop = 0;
-                    e.target.previousSibling.selectionEnd = 0;
-                  }}
-                ></img>
-              </li>
-            )
-          )}
+          {[
+            {
+              title: "TITLE",
+              ingrediants: [],
+              directions: ["Add recipe"]
+            } as Recipe
+          ]
+            .concat(recipes)
+            .map((r, i) =>
+              editing != i ? (
+                <li key={i} name={i} onclick={setFocus}>
+                  {JSON.stringify(r)}
+                </li>
+              ) : (
+                <li key={i}>
+                  <textarea
+                    key="input"
+                    name={i === 0 ? recipes.length : i - 1}
+                    value={encodeRecipe(r)}
+                    onkeydown={onKeyDown}
+                    onblur={validateAndSaveInput}
+                    autofocus={true}
+                  ></textarea>
+                  {editingError ? (
+                    <span key="err" style="color:red;">
+                      {editingError}
+                    </span>
+                  ) : (
+                    undefined
+                  )}
+                  <img
+                    key="idk"
+                    style="display:none;"
+                    src="#"
+                    onerror={(e: any) => {
+                      // TODO this is just bad
+                      e.target.previousSibling.focus();
+                      e.target.previousSibling.scrollTop = 0;
+                      e.target.previousSibling.selectionEnd = 0;
+                    }}
+                  ></img>
+                </li>
+              )
+            )}
         </ul>
       ) : (
         <h3 key="empty">No recipes :(</h3>

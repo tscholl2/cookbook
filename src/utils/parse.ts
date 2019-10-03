@@ -1,8 +1,4 @@
-export interface Recipe {
-  title: string;
-  ingrediants: string[];
-  directions: string[];
-}
+import { Recipe } from "../model";
 
 export function parseRecipes(s: string): Recipe[] {
   if (!s.includes("#")) {
