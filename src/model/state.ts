@@ -4,6 +4,7 @@ export interface State {
   status: "not logged in" | "logging in" | "logged in";
   editing?: string | number;
   editingError?: string;
+  search?: string;
 }
 
 export interface Recipe {

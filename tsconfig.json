@@ -1,15 +1,13 @@
 {
   "compilerOptions": {
     "allowJs": false,
+    "allowSyntheticDefaultImports": true,
     "baseUrl": ".",
     "charset": "uft8",
     "importHelpers": true,
     "jsx": "react",
     "jsxFactory": "Superfine.h",
-    "lib": [
-      "dom",
-      "es6"
-    ],
+    "lib": ["dom", "es6"],
     "module": "es6",
     "moduleResolution": "node",
     "pretty": true,
@@ -28,16 +26,8 @@
   },
   "baseUrl": ".",
   "paths": {
-    "__src/*": [
-      "src/*"
-    ]
+    "__src/*": ["src/*"]
   },
-  "include": [
-    "src/**/*",
-    "samples/**/*",
-    "typings/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ]
+  "include": ["src/**/*", "samples/**/*", "typings/**/*"],
+  "exclude": ["node_modules"]
 }

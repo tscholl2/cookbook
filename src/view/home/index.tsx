@@ -8,6 +8,7 @@ import {
   parseRecipe
 } from "../../utils/parse";
 import { save } from "../../utils/api";
+import Fuse from "fuse.js";
 
 export function Home(dispatch: Dispatch<State>) {
   const validateAndSaveInput = (e: any) => {
@@ -48,59 +49,80 @@ export function Home(dispatch: Dispatch<State>) {
       }));
     }
   };
-  return function({ user, recipes, editing, editingError }: State) {
+  const onSearchInput = (e: any) => {
+    e.preventDefault();
+    dispatch(state => ({ ...state, search: e.target.value }));
+  };
+  return function({
+    user,
+    recipes = [],
+    editing,
+    editingError,
+    search = ""
+  }: State) {
+    const fuse = new Fuse(recipes, {
+      shouldSort: true,
+      keys: ["title", "ingrediants", "directions"]
+    });
+    let filteredRecipes: Recipe[] = recipes;
+    if (search) {
+      filteredRecipes = fuse.search(search).slice(0, 5);
+    }
     return [
       <h2 key="title">Welcome {user}!</h2>,
-      recipes && recipes.length > 0 ? (
-        <ul key="list">
-          {[
-            {
-              title: "TITLE",
-              ingrediants: [],
-              directions: ["Add recipe"]
-            } as Recipe
-          ]
-            .concat(recipes)
-            .map((r, i) =>
-              editing != i ? (
-                <li key={i} name={i} onclick={setFocus}>
-                  {JSON.stringify(r)}
-                </li>
-              ) : (
-                <li key={i}>
-                  <textarea
-                    key="input"
-                    name={i === 0 ? recipes.length : i - 1}
-                    value={encodeRecipe(r)}
-                    onkeydown={onKeyDown}
-                    onblur={validateAndSaveInput}
-                    autofocus={true}
-                  ></textarea>
-                  {editingError ? (
-                    <span key="err" style="color:red;">
-                      {editingError}
-                    </span>
-                  ) : (
-                    undefined
-                  )}
-                  <img
-                    key="idk"
-                    style="display:none;"
-                    src="#"
-                    onerror={(e: any) => {
-                      // TODO this is just bad
-                      e.target.previousSibling.focus();
-                      e.target.previousSibling.scrollTop = 0;
-                      e.target.previousSibling.selectionEnd = 0;
-                    }}
-                  ></img>
-                </li>
-              )
-            )}
-        </ul>
-      ) : (
-        <h3 key="empty">No recipes :(</h3>
-      )
+      <input
+        key="search"
+        value={search}
+        oninput={onSearchInput}
+        placeHolder="search"
+      />,
+      <ul key="list">
+        {[
+          {
+            title: "TITLE",
+            ingrediants: [],
+            directions: ["Add recipe"]
+          } as Recipe
+        ]
+          // TODO: this is slow
+          .concat(recipes.filter(r => filteredRecipes.includes(r)))
+          .map((r, i) =>
+            editing != i ? (
+              <li key={i} name={i} onclick={setFocus}>
+                {JSON.stringify(r)}
+              </li>
+            ) : (
+              <li key={i}>
+                <textarea
+                  key="input"
+                  name={i === 0 ? recipes.length : i - 1}
+                  value={encodeRecipe(r)}
+                  onkeydown={onKeyDown}
+                  onblur={validateAndSaveInput}
+                  autofocus={true}
+                ></textarea>
+                {editingError ? (
+                  <span key="err" style="color:red;">
+                    {editingError}
+                  </span>
+                ) : (
+                  undefined
+                )}
+                <img
+                  key="idk"
+                  style="display:none;"
+                  src="#"
+                  onerror={(e: any) => {
+                    // TODO this is just bad
+                    e.target.previousSibling.focus();
+                    e.target.previousSibling.scrollTop = 0;
+                    e.target.previousSibling.selectionEnd = 0;
+                  }}
+                ></img>
+              </li>
+            )
+          )}
+      </ul>
     ];
   };
 }
