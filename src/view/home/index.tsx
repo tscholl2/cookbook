@@ -37,7 +37,11 @@ export function Home(dispatch: Dispatch<State>) {
   };
   const setFocus = (e: any) => {
     e.preventDefault();
-    dispatch(state => ({ ...state, editing: e.target.getAttribute("name") }));
+    dispatch(state => ({
+      ...state,
+      editing: e.target.getAttribute("name"),
+      editingError: undefined
+    }));
   };
   const onKeyDown = (e: any) => {
     if (e.keyCode === 9 || e.keyCode === 27) {
