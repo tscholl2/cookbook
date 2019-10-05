@@ -15,7 +15,7 @@ export function Home(dispatch: Dispatch<State>) {
     const i = parseInt(e.target.getAttribute("name"), 10);
     const s = e.target.value;
     const error = validate(s);
-    if (error) {
+    if (s && error) {
       dispatch(state =>
         state.editing ? { ...state, editingError: error } : state
       );
@@ -30,7 +30,11 @@ export function Home(dispatch: Dispatch<State>) {
       state.editing = undefined;
       state.editingError = undefined;
       state.recipes = state.recipes!.slice(0); // copy array
-      state.recipes![i] = parseRecipe(s);
+      if (s) {
+        state.recipes![i] = parseRecipe(s);
+      } else {
+        state.recipes = state.recipes!.filter((_, j) => i != j);
+      }
       save(state.user!, encodeRecipes(state.recipes!));
       return state;
     });
