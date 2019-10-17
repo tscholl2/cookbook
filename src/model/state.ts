@@ -4,7 +4,10 @@ export interface State {
   status: "not logged in" | "logging in" | "logged in";
   editing?: string | number;
   editingError?: string;
-  search?: string;
+  search: {
+    value?: string;
+    field?: "" | "title" | "ingrediants";
+  };
 }
 
 export interface Recipe {
@@ -13,4 +16,4 @@ export interface Recipe {
   directions: string[];
 }
 
-export const initialState: State = { status: "not logged in" };
+export const initialState: State = { status: "not logged in", search: {} };

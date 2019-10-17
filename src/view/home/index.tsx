@@ -9,6 +9,7 @@ import {
 } from "../../utils/parse";
 import { save } from "../../utils/api";
 import Fuse from "fuse.js";
+import { Search } from "./search";
 
 export function Home(dispatch: Dispatch<State>) {
   const validateAndSaveInput = (e: any) => {
@@ -57,33 +58,25 @@ export function Home(dispatch: Dispatch<State>) {
       }));
     }
   };
-  const onSearchInput = (e: any) => {
-    e.preventDefault();
-    dispatch(state => ({ ...state, search: e.target.value }));
-  };
-  return function({
-    user,
-    recipes = [],
-    editing,
-    editingError,
-    search = ""
-  }: State) {
-    const fuse = new Fuse(recipes, {
-      shouldSort: true,
-      keys: ["title", "ingrediants", "directions"]
-    });
+  const searchForm = Search(dispatch);
+  return function(state: State) {
+    const { user, recipes = [], editing, editingError, search } = state;
     let filteredRecipes: Recipe[] = recipes;
-    if (search) {
-      filteredRecipes = fuse.search(search).slice(0, 5);
+    if (search.value) {
+      const fuse = new Fuse(recipes, {
+        shouldSort: true,
+        keys:
+          search.field === "title"
+            ? ["title"]
+            : search.field === "ingrediants"
+            ? ["ingrediants"]
+            : ["title", "ingrediants", "directions"]
+      });
+      filteredRecipes = fuse.search(search.value).slice(0, 5);
     }
     return [
       <h2 key="title">Welcome {user}!</h2>,
-      <input
-        key="search"
-        value={search}
-        oninput={onSearchInput}
-        placeHolder="search"
-      />,
+      searchForm(state),
       <ul key="list">
         {[
           {
