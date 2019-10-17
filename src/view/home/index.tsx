@@ -65,6 +65,12 @@ export function Home(dispatch: Dispatch<State>) {
     if (search.value) {
       const fuse = new Fuse(recipes, {
         shouldSort: true,
+        tokenize: false,
+        threshold: 0.5,
+        location: 0,
+        distance: 50,
+        maxPatternLength: 32,
+        minMatchCharLength: 1,
         keys:
           search.field === "title"
             ? ["title"]

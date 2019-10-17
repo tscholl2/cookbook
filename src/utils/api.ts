@@ -29,4 +29,14 @@ chop veggies
 put in water
 heat for a while
 
+# sandwich
+
+veggies
+bread
+mayo
+
+put stuff on bread
+add veggies and stuff
+toast maybe
+
 `;
