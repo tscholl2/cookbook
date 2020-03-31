@@ -1,8 +1,9 @@
 import * as Superfine from "superfine";
-import { addStatefullSample } from "../../../samples";
+import { addStatefullSample, addStatelessSample } from "../../../samples";
 import { Notecard } from "./notecard";
+import { NotecardEditor } from "./notecard-editor";
 
-const recipe = {
+let recipe = {
   title: "Pancakes",
   ingrediants: [
     "1 pancake",
@@ -30,8 +31,10 @@ const recipe = {
   ]
 };
 
-addStatefullSample("editing notecard2", recipe, dispatch => recipe => (
-  <Notecard
+addStatelessSample("notecard", () => <Notecard recipe={recipe} />);
+
+addStatefullSample("notecard editor", recipe, dispatch => recipe => (
+  <NotecardEditor
     recipe={recipe}
     onchange={r =>
       console.log(
@@ -39,5 +42,10 @@ addStatefullSample("editing notecard2", recipe, dispatch => recipe => (
         dispatch(() => r)
       )
     }
+    oncancel={() => {
+      console.log("canceled");
+      dispatch(() => recipe);
+    }}
+    error="woops"
   />
 ));

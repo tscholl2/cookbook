@@ -4,7 +4,6 @@ import { Recipe } from "../../model";
 
 export interface NotecardProps {
   recipe: Recipe;
-  onchange?(r: Recipe): void;
 }
 
 export function Notecard(props: NotecardProps) {
