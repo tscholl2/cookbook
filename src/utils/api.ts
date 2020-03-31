@@ -1,42 +1,28 @@
-export async function load(_: string): Promise<string> {
+import { Recipe } from "src/model";
+
+export async function load(_: string): Promise<Array<Recipe>> {
   return SERVER;
 }
 
-export async function save(_: string, data: string) {
+export async function save(_: string, data: Array<Recipe>) {
   SERVER = data;
   return;
 }
 
-let SERVER = `
-
-# grilled cheese
-
-bread
-cheese
-butter
-
-butter the bread
-add cheese
-grill
-
-# soup
-
-veggies
-water
-spices
-
-chop veggies
-put in water
-heat for a while
-
-# sandwich
-
-veggies
-bread
-mayo
-
-put stuff on bread
-add veggies and stuff
-toast maybe
-
-`;
+let SERVER = [
+  {
+    title: "grilled cheese",
+    ingrediants: ["bread", "cheese", "butter"],
+    directions: ["butter the bread", "add cheese", "grill"]
+  },
+  {
+    title: "soup",
+    ingrediants: ["veggies", "water", "spices"],
+    directions: ["chop veggies", "put in water", "heat for a while"]
+  },
+  {
+    title: "sandwich",
+    ingrediants: ["veggies", "bread", "mayo"],
+    directions: ["put stuff on bread", "add veggies and stuff", "toast maybe"]
+  }
+];

@@ -1,22 +1,40 @@
 import * as Superfine from "superfine";
 import { Dispatch } from "../../controller";
 import { State, Recipe } from "../../model";
-import {
-  encodeRecipes,
-  validate,
-  encodeRecipe,
-  parseRecipe
-} from "../../utils/parse";
 import { save } from "../../utils/api";
 import Fuse from "fuse.js";
 import { Search } from "./search";
+import {createSelector} from 'reselect';
+
+const fuseSelector = createSelector(
+  (state: State) => state.recipes || [],
+  (state: State) => state.search.field,
+  (recipes,field) => new Fuse(recipes, {
+    shouldSort: true,
+    tokenize: false,
+    threshold: 0.5,
+    location: 0,
+    distance: 50,
+    maxPatternLength: 32,
+    minMatchCharLength: 1,
+    keys:
+      field === "title"
+        ? ["title"]
+        : field === "ingrediants"
+        ? ["ingrediants"]
+        : ["title", "ingrediants", "directions"]
+  })
+)
 
 export function Home(dispatch: Dispatch<State>) {
   const validateAndSaveInput = (e: any) => {
     const i = parseInt(e.target.getAttribute("name"), 10);
     const s = e.target.value;
-    const error = validate(s);
-    if (s && error) {
+    let r: Recipe | undefined = undefined;
+    try {
+      r = JSON.parse(s);
+    } catch (e) {
+      const error = `${e}`;
       dispatch(state =>
         state.editing ? { ...state, editingError: error } : state
       );
@@ -31,12 +49,12 @@ export function Home(dispatch: Dispatch<State>) {
       state.editing = undefined;
       state.editingError = undefined;
       state.recipes = state.recipes!.slice(0); // copy array
-      if (s) {
-        state.recipes![i] = parseRecipe(s);
+      if (r) {
+        state.recipes![i] = r;
       } else {
         state.recipes = state.recipes!.filter((_, j) => i != j);
       }
-      save(state.user!, encodeRecipes(state.recipes!));
+      setTimeout(() => save(state.user!, state.recipes!), 1);
       return state;
     });
   };
@@ -59,26 +77,12 @@ export function Home(dispatch: Dispatch<State>) {
     }
   };
   const searchForm = Search(dispatch);
-  return function(state: State) {
+  return function (state: State) {
     const { user, recipes = [], editing, editingError, search } = state;
     let filteredRecipes: Recipe[] = recipes;
     if (search.value) {
-      const fuse = new Fuse(recipes, {
-        shouldSort: true,
-        tokenize: false,
-        threshold: 0.5,
-        location: 0,
-        distance: 50,
-        maxPatternLength: 32,
-        minMatchCharLength: 1,
-        keys:
-          search.field === "title"
-            ? ["title"]
-            : search.field === "ingrediants"
-            ? ["ingrediants"]
-            : ["title", "ingrediants", "directions"]
-      });
-      filteredRecipes = fuse.search(search.value).slice(0, 5);
+      const fuse = fuseSelector(state);
+      filteredRecipes = fuse.search(search.value).slice(0, 5).map((x: any) => x.item);
     }
     return [
       <h2 key="title">Welcome {user}!</h2>,
@@ -103,7 +107,7 @@ export function Home(dispatch: Dispatch<State>) {
                 <textarea
                   key="input"
                   name={i === 0 ? recipes.length : i - 1}
-                  value={encodeRecipe(r)}
+                  value={JSON.stringify(r)}
                   onkeydown={onKeyDown}
                   onblur={validateAndSaveInput}
                   autofocus={true}
@@ -112,9 +116,7 @@ export function Home(dispatch: Dispatch<State>) {
                   <span key="err" style="color:red;">
                     {editingError}
                   </span>
-                ) : (
-                  undefined
-                )}
+                ) : undefined}
                 <img
                   key="idk"
                   style="display:none;"
