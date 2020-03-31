@@ -4,7 +4,6 @@ import { Recipe } from "../../model";
 
 export interface NotecardProps {
   recipe: Recipe;
-  onclick?(): void;
   onchange?(r: Recipe): void;
 }
 
