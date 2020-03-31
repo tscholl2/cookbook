@@ -9,7 +9,7 @@
     "prebuild": "rm -f dist/*",
     "build": "parcel build --no-cache src/index.html --public-url ./",
     "postbuild": "echo '⟶  bundle    =' $(du -sbh dist/ | sed 's/\\sdist\\///') && echo '⟶  bundle.gz =' $(tar -zc dist/ | wc -c | numfmt --to=iec)",
-    "docs": "parcel build src/index.html samples/index.html --public-url ./ --out-dir docs/",
+    "docs": "parcel build src/index.html samples/index.html --public-url ../ --out-dir docs/",
     "lint": "prettier --print-width 100 --trailing-comma all --write src/**/*.{ts,js,tsx,jsx,scss,css}",
     "bench": "find src/ -name *_bench* | xargs -n 1 ts-node -O '{\"module\":\"commonjs\"}'",
     "run": "ts-node -O '{\"module\":\"commonjs\"}'",
