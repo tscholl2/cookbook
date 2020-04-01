@@ -10,24 +10,25 @@ export function Search(dispatch: Dispatch<State>) {
       search: { ...state.search, [e.target.name]: e.target.value }
     }));
   };
-  return function(state: State) {
+  const onNew = () => {
+    dispatch(state => ({
+      ...state,
+      editing: (state.recipes || [])!.length
+    }));
+  };
+  return function (state: State) {
     const { search } = state;
     return (
-      <form key="search">
+      <form class="search" key="search">
         <input
           name="value"
           value={search.value}
           oninput={onChange}
-          placeHolder="search"
+          placeHolder="🔍"
         />
-        <label>
-          Search in{" "}
-          <select name="field" value={search.field} onchange={onChange}>
-            <option value="">All</option>
-            <option value="title">Title</option>
-            <option value="ingrediants">Ingrediants</option>
-          </select>
-        </label>
+        <button onclick={onNew} type="button">
+          ➕
+        </button>
       </form>
     );
   };

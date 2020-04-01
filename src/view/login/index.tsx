@@ -24,14 +24,16 @@ export function Login(dispatch: Dispatch<State>) {
       }));
     }, 500);
   }
-  return function(_: State) {
+  return function (_: State) {
     return (
-      <form id="login-form" onsubmit={onsubmit}>
-        <label>
-          Username:
-          <input name="username" type="text" placeholder="hippotomus" />
-        </label>
-      </form>
+      <main>
+        <form id="login-form" onsubmit={onsubmit}>
+          <label>
+            Username:
+            <input name="username" type="text" placeholder="hippotomus" />
+          </label>
+        </form>
+      </main>
     );
   };
 }

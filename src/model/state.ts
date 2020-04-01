@@ -2,11 +2,10 @@ export interface State {
   recipes?: Recipe[];
   user?: string;
   status: "not logged in" | "logging in" | "logged in";
-  editing?: string | number;
+  editing?: number;
   editingError?: string;
   search: {
     value?: string;
-    field?: "" | "title" | "ingrediants";
   };
 }
 
