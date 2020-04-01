@@ -12,17 +12,24 @@ export function Login(dispatch: Dispatch<State>) {
       const item: any = form.elements.item(i)!;
       values[item.name] = item.value;
     }
-    dispatch(state => ({ ...state, status: "logging in" }));
-    setTimeout(async () => {
-      const data = await load(values.username);
-      // TODO: error handling
-      dispatch(state => ({
-        ...state,
-        recipes: data,
-        status: "logged in",
-        user: values.username
-      }));
-    }, 500);
+    dispatch(state => ({
+      ...state,
+      status: "logging in",
+      api: { ...state.api, status: "loading" }
+    }));
+    load(values.username)
+      .then(recipes =>
+        dispatch(s => ({
+          ...s,
+          status: "logged in",
+          user: values.username,
+          recipes
+        }))
+      )
+      .catch(e => dispatch(s => ({ ...s, api: { ...s.api, error: `${e}` } })))
+      .finally(() =>
+        dispatch(s => ({ ...s, api: { ...s.api, status: undefined } }))
+      );
   }
   return function (_: State) {
     return (

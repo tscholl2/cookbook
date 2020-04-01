@@ -35,7 +35,9 @@ export const filteredRecipesSelector = createSelector(
   }
 );
 
-export const onNotecardEditorCancel = (dispatch: Dispatch<State>) => (e: any) => {
+export const onNotecardEditorCancel = (dispatch: Dispatch<State>) => (
+  e: any
+) => {
   e.preventDefault();
   e.stopPropagation();
   dispatch(state => ({
@@ -43,7 +45,7 @@ export const onNotecardEditorCancel = (dispatch: Dispatch<State>) => (e: any) =>
     editing: undefined,
     editingError: undefined
   }));
-}
+};
 
 export const onNotecardEditorSubmit = (dispatch: Dispatch<State>) => (
   e: any,
@@ -57,7 +59,8 @@ export const onNotecardEditorSubmit = (dispatch: Dispatch<State>) => (
     return;
   }
   let parent = e.target;
-  while (parent.tagName !== "LI") parent = parent.parentElement;
+  while (parent.tagName !== "LI" || !parent.getAttribute("name"))
+    parent = parent.parentElement;
   const i = parseInt(parent.getAttribute("name"), 10);
   dispatch(state => {
     const recipes = state.recipes!.slice(0);
@@ -66,20 +69,36 @@ export const onNotecardEditorSubmit = (dispatch: Dispatch<State>) => (
     } else {
       recipes.unshift(r);
     }
-    return { ...state, recipes, editingError: undefined, editing: undefined };
+    if (state.user && recipes && recipes.length > 0)
+      save(state.user, recipes)
+        .then(() => dispatch(s => ({ ...s, recipes })))
+        .catch((e: any) => dispatch(s => ({ ...s, api: { ...s.api, error: `${e}` } })))
+        .finally(() =>
+          dispatch(s => ({
+            ...s,
+            api: { ...s.api, status: undefined },
+            editingError: undefined,
+            editing: undefined
+          }))
+        );
+    return {
+      ...state,
+      api: { ...state.api, status: "saving" }
+    };
   });
 };
 
 export const onNotecardClick = (dispatch: Dispatch<State>) => (e: any) => {
   e.preventDefault();
   e.stopPropagation();
-  console.log(e.target)
+  console.log(e.target);
   let parent = e.target;
-  while (parent.tagName !== "LI") parent = parent.parentElement;
+  while (parent.tagName !== "LI" || !parent.getAttribute("name"))
+    parent = parent.parentElement;
   const i = parseInt(parent.getAttribute("name"), 10);
   dispatch(state => ({
     ...state,
     editing: i
   }));
-  document.getElementById("title-input")?.focus()
+  document.getElementById("title-input")?.focus();
 };

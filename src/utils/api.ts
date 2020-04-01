@@ -1,15 +1,17 @@
 import { Recipe } from "src/model";
+import * as real from "./api_real";
 
-export async function load(_: string): Promise<Array<Recipe>> {
-  return SERVER;
-}
+declare const process: any;
 
-export async function save(_: string, data: Array<Recipe>) {
-  SERVER = data;
-  return;
-}
+export const load: (user: string) => Promise<Array<Recipe>> =
+  process.env.NODE_ENV === "production" ? real.load : async () => SERVER;
 
-let SERVER = [
+export const save: (user: string, data: Array<Recipe>) => Promise<void> =
+  process.env.NODE_ENV === "production"
+    ? real.save
+    : async (_, data) => (SERVER = data) && undefined;
+
+let SERVER: Array<Recipe> = [
   {
     title: "grilled cheese",
     ingrediants: ["bread", "cheese", "butter"],

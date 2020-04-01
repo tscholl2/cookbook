@@ -14,18 +14,14 @@ export function App(dispatch: Dispatch<State>) {
         Screen = home(state);
         break;
       case "logging in":
-        Screen = <main><progress /></main>;
+        Screen = (
+          <progress />
+        );
         break;
       case "not logged in":
         Screen = login(state);
         break;
     }
-    return (
-      <div>
-        <header>HEADER</header>
-          {Screen}
-        <footer>FOOTER</footer>
-      </div>
-    );
+    return <div>{Screen}</div>;
   };
 }
