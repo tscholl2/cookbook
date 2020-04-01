@@ -13,12 +13,12 @@ if (module.hot && process.env.NODE_ENV !== "production") {
 
 function start(state: State = (window as any)["__state"] || initialState) {
   const controller = new Controller(state);
-  if (process.env.NODE_ENV !== "production") {
+  //if (process.env.NODE_ENV !== "production") {
     controller.addListener(s => {
       console.log("STATE UPDATE", s);
       return s;
     });
-  }
+  //}
   const view = App(controller.dispatch);
   const node = document.getElementById("app")!;
   controller.addListener(state => update(((window as any)["__state"] = state)));
