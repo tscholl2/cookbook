@@ -26,13 +26,8 @@ export function NotecardEditor(props: NotecardProps) {
       class="notecard notecard-editor"
     >
       <h1>
-        <button
-          onclick={() => {
-            //if (onchange) onchange(r);
-          }}
-          disabled={disabled}
-        >
-          ✔️
+        <button onclick={oncancel} disabled={disabled}>
+          ❌
         </button>
         <input
           id="title-input"
@@ -41,8 +36,13 @@ export function NotecardEditor(props: NotecardProps) {
           value={title}
           disabled={disabled}
         />
-        <button onclick={oncancel} disabled={disabled}>
-          ❌
+        <button
+          onclick={() => {
+            //if (onchange) onchange(r);
+          }}
+          disabled={disabled}
+        >
+          ✔️
         </button>
       </h1>
       <textarea

@@ -9,9 +9,9 @@ import { NotecardEditor } from "../notecard/notecard-editor";
 
 export function Home(dispatch: Dispatch<State>) {
   const searchForm = Search(dispatch);
-  const setFocus = actions.setFocus(dispatch);
-  const onKeyDown = actions.onKeyDown(dispatch);
-  const validateAndSaveInput = actions.validateAndSaveInput(dispatch);
+  const onNotecardClick = actions.onNotecardClick(dispatch);
+  const onCancel = () =>
+    dispatch(s => ({ ...s, editing: undefined, editingError: undefined }));
   return function (state: State) {
     const { user, recipes = [], editing, editingError } = state;
     let filteredRecipes = actions.filteredRecipesSelector(state);
@@ -21,40 +21,36 @@ export function Home(dispatch: Dispatch<State>) {
         {searchForm(state)}
         <ul key="list">
           {editing === recipes.length ? (
-            <li key={editing} name={editing}>
+            <li key={"editor"} name={editing}>
               <NotecardEditor
-                recipe={{ title: "", ingrediants: [], directions: [] }}
-                oncancel={() => dispatch(s => ({ ...s, editing: undefined }))}
+                recipe={
+                  recipes[editing] || {
+                    title: "",
+                    ingrediants: [],
+                    directions: []
+                  }
+                }
+                oncancel={onCancel}
                 // TODO: onsubmit/change
+                error={editingError}
               />
             </li>
-          ) : (
-            filteredRecipes.map(({ item: r, refIndex: i }) => {
-              if (editing != i)
-                return (
-                  <li key={i} name={i} onclick={setFocus}>
-                    <Notecard recipe={r} />
-                  </li>
-                );
-              return (
-                <li key={i}>
-                  <textarea
-                    key="input"
-                    name={i === 0 ? recipes.length : i - 1}
-                    value={JSON.stringify(r)}
-                    onkeydown={onKeyDown}
-                    onblur={validateAndSaveInput}
-                    autofocus={true}
-                  ></textarea>
-                  {editingError ? (
-                    <span key="err" style="color:red;">
-                      {editingError}
-                    </span>
-                  ) : undefined}
-                </li>
-              );
-            })
-          )}
+          ) : null}
+          {filteredRecipes.map(({ item: r, refIndex: i }) => (
+            <li key={i} name={i}>
+              {editing === i ? (
+                <NotecardEditor
+                  key={"editor"}
+                  recipe={r}
+                  oncancel={onCancel}
+                  // TODO: onsubmit/change
+                  error={editingError}
+                />
+              ) : (
+                <Notecard recipe={r} onclick={onNotecardClick} />
+              )}
+            </li>
+          ))}
         </ul>
       </main>
     );

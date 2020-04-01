@@ -67,22 +67,11 @@ export const validateAndSaveInput = (dispatch: Dispatch<State>) => (e: any) => {
   });
 };
 
-export const setFocus = (dispatch: Dispatch<State>) => (e: any) => {
+export const onNotecardClick = (dispatch: Dispatch<State>) => (e: any) => {
   e.preventDefault();
   dispatch(state => ({
     ...state,
-    editing: e.target.getAttribute("name"),
+    editing: parseInt(e.target.parentElement.getAttribute("name"), 10),
     editingError: undefined
   }));
-};
-
-export const onKeyDown = (dispatch: Dispatch<State>) => (e: any) => {
-  if (e.keyCode === 9 || e.keyCode === 27) {
-    e.preventDefault();
-    dispatch(state => ({
-      ...state,
-      editing: undefined,
-      editingError: undefined
-    }));
-  }
 };
