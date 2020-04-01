@@ -16,10 +16,11 @@ export function Search(dispatch: Dispatch<State>) {
       editing: -1
     }));
   };
+  const onSubmit = (e: any) => e.preventDefault();
   return function (state: State) {
     const { search } = state;
     return (
-      <form class="search" key="search">
+      <form class="search" key="search" onsubmit={onSubmit}>
         <input
           name="value"
           value={search.value}
