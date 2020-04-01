@@ -13,7 +13,7 @@ export function Search(dispatch: Dispatch<State>) {
   const onNew = () => {
     dispatch(state => ({
       ...state,
-      editing: (state.recipes || [])!.length
+      editing: -1
     }));
   };
   return function (state: State) {

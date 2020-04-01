@@ -35,43 +35,51 @@ export const filteredRecipesSelector = createSelector(
   }
 );
 
-export const validateAndSaveInput = (dispatch: Dispatch<State>) => (e: any) => {
-  const i = parseInt(e.target.getAttribute("name"), 10);
-  const s = e.target.value;
-  let r: Recipe | undefined = undefined;
-  try {
-    r = JSON.parse(s);
-  } catch (e) {
-    const error = `${e}`;
-    dispatch(state =>
-      state.editing ? { ...state, editingError: error } : state
-    );
-    console.error(error);
+export const onNotecardEditorCancel = (dispatch: Dispatch<State>) => (e: any) => {
+  e.preventDefault();
+  e.stopPropagation();
+  dispatch(state => ({
+    ...state,
+    editing: undefined,
+    editingError: undefined
+  }));
+}
+
+export const onNotecardEditorSubmit = (dispatch: Dispatch<State>) => (
+  e: any,
+  r: Recipe,
+  err?: string
+) => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (err) {
+    dispatch(state => ({ ...state, editingError: err }));
     return;
   }
-  dispatch(s2 => {
-    if (s2.editing === undefined) {
-      return s2;
-    }
-    const state = { ...s2 };
-    state.editing = undefined;
-    state.editingError = undefined;
-    state.recipes = state.recipes!.slice(0); // copy array
-    if (r) {
-      state.recipes![i] = r;
+  let parent = e.target;
+  while (parent.tagName !== "LI") parent = parent.parentElement;
+  const i = parseInt(parent.getAttribute("name"), 10);
+  dispatch(state => {
+    const recipes = state.recipes!.slice(0);
+    if (i > -1) {
+      recipes[i] = r;
     } else {
-      state.recipes = state.recipes!.filter((_, j) => i != j);
+      recipes.unshift(r);
     }
-    setTimeout(() => save(state.user!, state.recipes!), 1);
-    return state;
+    return { ...state, recipes, editingError: undefined, editing: undefined };
   });
 };
 
 export const onNotecardClick = (dispatch: Dispatch<State>) => (e: any) => {
   e.preventDefault();
+  e.stopPropagation();
+  console.log(e.target)
+  let parent = e.target;
+  while (parent.tagName !== "LI") parent = parent.parentElement;
+  const i = parseInt(parent.getAttribute("name"), 10);
   dispatch(state => ({
     ...state,
-    editing: parseInt(e.target.parentElement.getAttribute("name"), 10),
-    editingError: undefined
+    editing: i
   }));
+  document.getElementById("title-input")?.focus()
 };

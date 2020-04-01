@@ -10,8 +10,8 @@ import { NotecardEditor } from "../notecard/notecard-editor";
 export function Home(dispatch: Dispatch<State>) {
   const searchForm = Search(dispatch);
   const onNotecardClick = actions.onNotecardClick(dispatch);
-  const onCancel = () =>
-    dispatch(s => ({ ...s, editing: undefined, editingError: undefined }));
+  const onNotecardEditorSubmit = actions.onNotecardEditorSubmit(dispatch);
+  const onNotecardEditorCancel = actions.onNotecardEditorCancel(dispatch);
   return function (state: State) {
     const { user, recipes = [], editing, editingError } = state;
     let filteredRecipes = actions.filteredRecipesSelector(state);
@@ -20,8 +20,8 @@ export function Home(dispatch: Dispatch<State>) {
         <h2 key="title">Cookbook /{user}</h2>
         {searchForm(state)}
         <ul key="list">
-          {editing === recipes.length ? (
-            <li key={"editor"} name={editing}>
+          {editing === -1 ? (
+            <li key={"editor"} name={-1}>
               <NotecardEditor
                 recipe={
                   recipes[editing] || {
@@ -30,24 +30,32 @@ export function Home(dispatch: Dispatch<State>) {
                     directions: []
                   }
                 }
-                oncancel={onCancel}
-                // TODO: onsubmit/change
+                onCancel={onNotecardEditorCancel}
+                onSubmit={onNotecardEditorSubmit}
                 error={editingError}
               />
             </li>
           ) : null}
           {filteredRecipes.map(({ item: r, refIndex: i }) => (
-            <li key={i} name={i}>
+            <li
+              key={i}
+              name={i}
+              onclick={editing === i ? undefined : onNotecardClick}
+              onkeydown={
+                editing === i
+                  ? undefined
+                  : (e: any) => e.keyCode === 13 && onNotecardClick(e)
+              }
+            >
               {editing === i ? (
                 <NotecardEditor
-                  key={"editor"}
                   recipe={r}
-                  oncancel={onCancel}
-                  // TODO: onsubmit/change
+                  onCancel={onNotecardEditorCancel}
+                  onSubmit={onNotecardEditorSubmit}
                   error={editingError}
                 />
               ) : (
-                <Notecard recipe={r} onclick={onNotecardClick} />
+                <Notecard recipe={r} tabindex="0" />
               )}
             </li>
           ))}
