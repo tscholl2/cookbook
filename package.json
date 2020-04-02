@@ -33,7 +33,7 @@
   "dependencies": {
     "bear-markdown": "https://github.com/tscholl2/bear-markdown.git#ff12ae9616272ff58e229e5998cf1890fdaaaf1d",
     "classcat": "4.0.2",
-    "fuse.js": "v5.0.10-beta",
+    "fuse.js": "5.1.0",
     "icepick": "2.4.0",
     "reselect": "4.0.0",
     "superfine": "7.0.0",
