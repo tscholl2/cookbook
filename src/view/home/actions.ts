@@ -42,20 +42,22 @@ export const onNotecardEditorCancel = (dispatch: Dispatch<State>) => (
   e.stopPropagation();
   dispatch(state => ({
     ...state,
-    editing: undefined,
-    editingError: undefined
+    editor: { ...state.editor, i: undefined, error: undefined }
   }));
 };
 
 export const onNotecardEditorSubmit = (dispatch: Dispatch<State>) => (
   e: any,
   r: Recipe,
-  err?: string
+  error?: string
 ) => {
   e.preventDefault();
   e.stopPropagation();
-  if (err) {
-    dispatch(state => ({ ...state, editingError: err }));
+  if (error) {
+    dispatch(state => ({
+      ...state,
+      editor: { ...state.editor, value: r, error }
+    }));
     return;
   }
   let parent = e.target;
@@ -71,14 +73,24 @@ export const onNotecardEditorSubmit = (dispatch: Dispatch<State>) => (
     }
     if (state.user && recipes && recipes.length > 0)
       save(state.user, recipes)
-        .then(() => dispatch(s => ({ ...s, recipes })))
-        .catch((e: any) => dispatch(s => ({ ...s, api: { ...s.api, error: `${e}` } })))
+        .then(() =>
+          dispatch(s => ({
+            ...s,
+            recipes,
+            editor: {}
+          }))
+        )
+        .catch((e: any) =>
+          dispatch(s => ({
+            ...s,
+            editor: { ...s.editor, value: r },
+            api: { ...s.api, error: `${e}` }
+          }))
+        )
         .finally(() =>
           dispatch(s => ({
             ...s,
-            api: { ...s.api, status: undefined },
-            editingError: undefined,
-            editing: undefined
+            api: { ...s.api, status: undefined }
           }))
         );
     return {
@@ -91,14 +103,13 @@ export const onNotecardEditorSubmit = (dispatch: Dispatch<State>) => (
 export const onNotecardClick = (dispatch: Dispatch<State>) => (e: any) => {
   e.preventDefault();
   e.stopPropagation();
-  console.log(e.target);
   let parent = e.target;
   while (parent.tagName !== "LI" || !parent.getAttribute("name"))
     parent = parent.parentElement;
   const i = parseInt(parent.getAttribute("name"), 10);
   dispatch(state => ({
     ...state,
-    editing: i
+    editor: { ...state.editor, i }
   }));
   document.getElementById("title-input")?.focus();
 };

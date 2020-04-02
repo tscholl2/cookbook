@@ -13,7 +13,7 @@ export function Search(dispatch: Dispatch<State>) {
   const onNew = () => {
     dispatch(state => ({
       ...state,
-      editing: -1
+      editor: { ...state.editor, i: -1, value: undefined }
     }));
   };
   const onSubmit = (e: any) => e.preventDefault();

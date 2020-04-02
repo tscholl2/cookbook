@@ -71,11 +71,11 @@ export function NotecardEditor(props: NotecardProps) {
           };
           let err: string | undefined;
           if (r.title == "") {
-            err = "title is required";
+            err = "a title is required";
           } else if (r.directions.length == 0) {
-            err = "some directions are required";
+            err = "directions are required";
           } else if (r.ingrediants.length == 0) {
-            err = "some ingrediants are required";
+            err = "ingrediants are required";
           }
           if (onSubmit) onSubmit(e, r, err);
         }}

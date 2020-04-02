@@ -6,8 +6,11 @@ export interface State {
     status?: "saving" | "loading" | "error";
     error?: string;
   };
-  editing?: number;
-  editingError?: string;
+  editor: {
+    i?: number;
+    value?: Recipe;
+    error?: string;
+  }
   search: {
     value?: string;
   };
@@ -22,5 +25,6 @@ export interface Recipe {
 export const initialState: State = {
   status: "not logged in",
   search: {},
+  editor: {},
   api: {}
 };

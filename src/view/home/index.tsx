@@ -13,18 +13,18 @@ export function Home(dispatch: Dispatch<State>) {
   const onNotecardEditorSubmit = actions.onNotecardEditorSubmit(dispatch);
   const onNotecardEditorCancel = actions.onNotecardEditorCancel(dispatch);
   return function (state: State) {
-    const { user, recipes = [], editing, editingError } = state;
+    const { user, editor } = state;
     let filteredRecipes = actions.filteredRecipesSelector(state);
     return (
       <main class="home">
         <h2 key="title">Cookbook /{user}</h2>
         {searchForm(state)}
         <ul key="list">
-          {editing === -1 ? (
+          {editor.i === -1 ? (
             <li key={"editor"} name={-1}>
               <NotecardEditor
                 recipe={
-                  recipes[editing] || {
+                  editor.value || {
                     title: "",
                     ingrediants: [],
                     directions: []
@@ -32,7 +32,7 @@ export function Home(dispatch: Dispatch<State>) {
                 }
                 onCancel={onNotecardEditorCancel}
                 onSubmit={onNotecardEditorSubmit}
-                error={editingError}
+                error={editor.error}
               />
             </li>
           ) : null}
@@ -40,19 +40,19 @@ export function Home(dispatch: Dispatch<State>) {
             <li
               key={i}
               name={i}
-              onclick={editing === i ? undefined : onNotecardClick}
+              onclick={editor.i === i ? undefined : onNotecardClick}
               onkeydown={
-                editing === i
+                editor.i === i
                   ? undefined
                   : (e: any) => e.keyCode === 13 && onNotecardClick(e)
               }
             >
-              {editing === i ? (
+              {editor.i === i ? (
                 <NotecardEditor
-                  recipe={r}
+                  recipe={editor.value || r}
                   onCancel={onNotecardEditorCancel}
                   onSubmit={onNotecardEditorSubmit}
-                  error={editingError}
+                  error={editor.error}
                 />
               ) : (
                 <Notecard recipe={r} tabindex="0" />

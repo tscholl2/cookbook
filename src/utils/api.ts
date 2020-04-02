@@ -11,7 +11,7 @@ export const save: (user: string, data: Array<Recipe>) => Promise<void> =
     ? real.save
     : async (_, data) => (SERVER = data) && undefined;
 
-let SERVER: Array<Recipe> = [
+let SERVER: Array<Recipe> = [];[
   {
     title: "grilled cheese",
     ingrediants: ["bread", "cheese", "butter"],
