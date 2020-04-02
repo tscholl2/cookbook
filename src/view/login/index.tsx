@@ -2,6 +2,7 @@ import * as Superfine from "superfine";
 import { Dispatch } from "../../controller";
 import { State } from "../../model";
 import { load } from "../../utils/api";
+import "./style.scss";
 
 export function Login(dispatch: Dispatch<State>) {
   function onsubmit(e: any) {
@@ -18,14 +19,15 @@ export function Login(dispatch: Dispatch<State>) {
       api: { ...state.api, status: "loading" }
     }));
     load(values.username)
-      .then(recipes =>
+      .then(recipes => {
+        document.title = `Cookbook/${values.username}`;
         dispatch(s => ({
           ...s,
           status: "logged in",
           user: values.username,
           recipes
-        }))
-      )
+        }));
+      })
       .catch(e => dispatch(s => ({ ...s, api: { ...s.api, error: `${e}` } })))
       .finally(() =>
         dispatch(s => ({ ...s, api: { ...s.api, status: undefined } }))
@@ -33,12 +35,14 @@ export function Login(dispatch: Dispatch<State>) {
   }
   return function (_: State) {
     return (
-      <main>
+      <main class="login">
         <form id="login-form" onsubmit={onsubmit}>
-          <label>
-            Username:
-            <input name="username" type="text" placeholder="hippotomus" />
-          </label>
+          <input
+            autofocus="true"
+            name="username"
+            type="text"
+            placeholder="username"
+          />
         </form>
       </main>
     );

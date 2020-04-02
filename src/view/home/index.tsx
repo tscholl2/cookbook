@@ -17,7 +17,7 @@ export function Home(dispatch: Dispatch<State>) {
     let filteredRecipes = actions.filteredRecipesSelector(state);
     return (
       <main class="home">
-        <h2 key="title">Cookbook /{user}</h2>
+        <h1 key="title">Recipes /{user}</h1>
         {searchForm(state)}
         <ul key="list">
           {editor.i === -1 ? (

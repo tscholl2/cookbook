@@ -1,6 +1,6 @@
 import * as Superfine from "superfine";
-import "./style.scss";
 import { Recipe } from "../../model";
+import "./style.scss";
 
 export interface NotecardProps {
   recipe: Recipe;

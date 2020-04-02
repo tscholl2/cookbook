@@ -3,6 +3,7 @@ import { Dispatch } from "../controller";
 import { State } from "../model";
 import { Login } from "./login";
 import { Home } from "./home";
+import "./style.scss";
 
 export function App(dispatch: Dispatch<State>) {
   const login = Login(dispatch);
@@ -14,9 +15,7 @@ export function App(dispatch: Dispatch<State>) {
         Screen = home(state);
         break;
       case "logging in":
-        Screen = (
-          <progress />
-        );
+        Screen = <progress />;
         break;
       case "not logged in":
         Screen = login(state);

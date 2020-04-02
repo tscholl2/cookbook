@@ -2,7 +2,12 @@ main.home {
   display: flex;
   flex-direction: column;
   align-items: center;
-  //background-image: url(https://upload.wikimedia.org/wikipedia/commons/thumb/4/4c/Bamboo_cutting_board_surface_texture_2014_01.jpg/1175px-Bamboo_cutting_board_surface_texture_2014_01.jpg);
+  > h1 {
+    background-color: #fff;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding: 10px;
+  }
   > ul {
     list-style: none;
     padding: 0;
@@ -16,7 +21,6 @@ main.home {
   }
   > form.search {
     width: 100%;
-    text-align: center;
     display: flex;
     justify-content: center;
     > input {
@@ -39,8 +43,8 @@ main.home {
       padding: 0;
       margin: 0;
       border: 1px solid black;
-      background-color: #2da532;
-      border-radius: 10%;
+      background-color: #03a9f4;
+      border-radius: 5px;
       margin-left: 25px;
       &:focus,
       &:hover {
