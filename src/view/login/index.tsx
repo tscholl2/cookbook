@@ -28,7 +28,12 @@ export function Login(dispatch: Dispatch<State>) {
           recipes
         }));
       })
-      .catch(e => dispatch(s => ({ ...s, api: { ...s.api, error: `${e}` } })))
+      .catch(e =>
+        dispatch(s => ({
+          ...s,
+          api: { ...s.api, error: `${e}` }
+        }))
+      )
       .finally(() =>
         dispatch(s => ({ ...s, api: { ...s.api, status: undefined } }))
       );
