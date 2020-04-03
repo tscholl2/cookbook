@@ -14,6 +14,6 @@ export async function save(page: string, data: Array<Recipe>) {
     headers: {
       "Content-Type": "application/json"
     },
-    body: JSON.stringify({ page, new_text: JSON.stringify(data) })
+    body: JSON.stringify({ page, new_text: JSON.stringify(data, null, 2) })
   });
 }
