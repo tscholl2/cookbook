@@ -32,17 +32,15 @@ let recipe = {
 };
 
 addStatelessSample("notecard", () => <Notecard recipe={recipe} />);
-
 addStatefullSample("notecard editor", recipe, dispatch => recipe => (
   <NotecardEditor
     recipe={recipe}
-    onchange={r =>
-      console.log(
-        "UPDATE: ",
-        dispatch(() => r)
-      )
+    onSubmit={(_, r, err) => {
+      console.log("SUBMIT:", r);
+      err ? console.error(err) : dispatch(() => r);
     }
-    oncancel={() => {
+    }
+    onCancel={() => {
       console.log("canceled");
       dispatch(() => recipe);
     }}

@@ -55,7 +55,7 @@ export function Home(dispatch: Dispatch<State>) {
                   error={editor.error}
                 />
               ) : (
-                <Notecard recipe={r} tabindex="0" />
+                <Notecard recipe={r} containerProps={divprops} />
               )}
             </li>
           ))}
@@ -64,3 +64,5 @@ export function Home(dispatch: Dispatch<State>) {
     );
   };
 }
+
+const divprops = {tabindex:"0"};
