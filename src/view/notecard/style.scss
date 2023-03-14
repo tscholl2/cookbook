@@ -103,12 +103,16 @@
       border-radius: 5px;
       line-height: 40px;
       position: absolute;
-      &:first-child {
-        top: 125px;
+      &[title="Cancel"] {
+        top: 25px;
         left: -95px;
       }
-      &:last-child {
-        top: 125px;
+      &[title="Delete"] {
+        bottom: 25px;
+        left: -95px;
+      }
+      &[title="Save"] {
+        top: 25px;
         right: -95px;
       }
       &:focus,

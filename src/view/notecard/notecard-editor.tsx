@@ -6,6 +6,7 @@ export interface NotecardProps {
   recipe: Recipe;
   onSubmit?(e: any, r: Recipe, err?: string): void;
   onCancel?(e: any): void;
+  onDelete?(e: any): void;
   error?: string;
   disabled?: boolean;
 }
@@ -15,6 +16,7 @@ export function NotecardEditor(props: NotecardProps) {
     recipe: { title = "", ingrediants = [], directions = [] },
     onSubmit,
     onCancel,
+    onDelete,
     disabled,
     error,
     ...otherProps
@@ -25,8 +27,11 @@ export function NotecardEditor(props: NotecardProps) {
       data-error={error || ""}
       class="notecard notecard-editor"
     >
-      <button onclick={onCancel} disabled={disabled} type="button">
+      <button onclick={onCancel} title="Cancel" disabled={disabled} type="button">
         ❌
+      </button>
+      <button onclick={onDelete} title="Delete" disabled={disabled} type="button">
+        🗑️
       </button>
       <h1>
         <input
@@ -79,6 +84,7 @@ export function NotecardEditor(props: NotecardProps) {
           }
           if (onSubmit) onSubmit(e, r, err);
         }}
+        title="Save"
         disabled={disabled}
         type="button"
       >

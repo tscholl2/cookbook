@@ -35,6 +35,22 @@ export const filteredRecipesSelector = createSelector(
   }
 );
 
+export const onNotecardEditorDelete = (dispatch: Dispatch<State>) => (
+  e: any
+) => {
+  e.preventDefault();
+  e.stopPropagation();
+  let parent = e.target;
+  while (parent.tagName !== "LI" || !parent.getAttribute("name"))
+    parent = parent.parentElement;
+  const i = parseInt(parent.getAttribute("name"), 10);
+  dispatch(state => ({
+    ...state,
+    recipes: state.recipes?.filter((_, j) => j != i),
+    editor: { ...state.editor, i: undefined, error: undefined }
+  }));
+}
+
 export const onNotecardEditorCancel = (dispatch: Dispatch<State>) => (
   e: any
 ) => {

@@ -12,6 +12,8 @@ export function Home(dispatch: Dispatch<State>) {
   const onNotecardClick = actions.onNotecardClick(dispatch);
   const onNotecardEditorSubmit = actions.onNotecardEditorSubmit(dispatch);
   const onNotecardEditorCancel = actions.onNotecardEditorCancel(dispatch);
+  const onNotecardEditorDelete = actions.onNotecardEditorDelete(dispatch);
+  console.log('delete = ', onNotecardEditorDelete)
   return function (state: State) {
     const { user, editor } = state;
     let filteredRecipes = actions.filteredRecipesSelector(state);
@@ -32,6 +34,7 @@ export function Home(dispatch: Dispatch<State>) {
                 }
                 onCancel={onNotecardEditorCancel}
                 onSubmit={onNotecardEditorSubmit}
+                onDelete={onNotecardEditorDelete}
                 error={editor.error}
               />
             </li>
@@ -52,6 +55,7 @@ export function Home(dispatch: Dispatch<State>) {
                   recipe={editor.value || r}
                   onCancel={onNotecardEditorCancel}
                   onSubmit={onNotecardEditorSubmit}
+                  onDelete={onNotecardEditorDelete}
                   error={editor.error}
                 />
               ) : (
@@ -65,4 +69,4 @@ export function Home(dispatch: Dispatch<State>) {
   };
 }
 
-const divprops = {tabindex:"0"};
+const divprops = { tabindex: "0" };
